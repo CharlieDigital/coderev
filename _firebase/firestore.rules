@@ -1,0 +1,36 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /profiles/{profile} {
+      allow read, create: if request.auth != null
+
+      allow update: if request.auth.uid == request.resource.id
+    }
+
+    match /workspaces/{workspace} {
+      allow read, update, delete: if request.auth != null
+        && request.auth.uid in resource.data.collaborators
+
+      allow create: if request.auth != null
+    }
+
+    match /candidates/{candidate} {
+      // Allow read and update by the user that the candidate review is assigned
+      // to or if the user is a collaborator on the workspace referenced by the
+      // review.
+      allow read, update: if request.auth != null
+        && (request.auth.token.email == resource.data.email
+          || request.auth.uid in get(/databases/$(database)/documents/workspaces/$(resource.data.workspaceUid)).data.collaborators)
+
+      // Only allow delete if the user is referenced on the workspace document.
+      allow delete: if request.auth != null
+        && request.auth.uid in get(/databases/$(database)/documents/workspaces/$(resource.data.workspaceUid)).data.collaborators
+
+      // Allow create for the workspace if the user is a collaborator on the
+      // referenced workspace.
+      allow create: if request.auth != null
+        && request.auth.uid in get(/databases/$(database)/documents/workspaces/$(request.resource.data.workspaceUid)).data.collaborators
+    }
+  }
+}

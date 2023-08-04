@@ -1,0 +1,39 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "candidates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "workspaceUid", "order": "ASCENDING" },
+        { "fieldPath": "uid", "order": "ASCENDING" },
+        { "fieldPath": "email", "order": "ASCENDING" },
+        { "fieldPath": "createdAtUtc", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "candidates",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "workspaceUid", "order": "ASCENDING" },
+        { "fieldPath": "createdAtUtc", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "workspaces",
+      "fieldPath": "sources",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "candidates",
+      "fieldPath": "sources",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "candidates",
+      "fieldPath": "comments",
+      "indexes": []
+    }
+  ]
+}
