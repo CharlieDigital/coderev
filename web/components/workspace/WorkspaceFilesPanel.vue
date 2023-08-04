@@ -435,7 +435,7 @@ function confirmNewFile() {
   }
 
   const file: SourceFile = {
-    name: newFileName.value,
+    name: `${newFileName.value}${newFileExt.value}`,
     ext: newFileExt.value,
     text: newFileName.value,
   };
