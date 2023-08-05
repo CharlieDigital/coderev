@@ -5,10 +5,16 @@
         <QToolbarTitle>
           {{ selectedSourceFile ? selectedSourceFile.name : "Select a file" }}
         </QToolbarTitle>
+        <QBtn
+          v-bind="btnProps"
+          :icon="lineWrap ? tabTextWrap : tabTextWrapDisabled"
+          @click="lineWrap = !lineWrap"
+          flat/>
       </QToolbar>
     </QHeader>
     <QPageContainer>
-      <QPage>
+      <QPage
+        :class="dark ? '' : 'bg-white'">
         <Codemirror
           ref="editor"
           v-model="code"
@@ -54,6 +60,7 @@ import { julia } from '@codemirror/legacy-modes/mode/julia'
 import { swift } from '@codemirror/legacy-modes/mode/swift'
 import { dracula, tomorrow } from "thememirror";
 import { SourceFile, SourceSelection } from "../../../shared/viewModels";
+import { tabTextWrap, tabTextWrapDisabled } from "quasar-extras-svg-icons/tabler-icons";
 
 const props = defineProps<{
   editable: boolean;
@@ -77,6 +84,8 @@ The following file extensions are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join
 const { dark } = storeToRefs(useAppStore());
 
 const { selectedComment, selection } = storeToRefs(useWorkspaceStore());
+
+const lineWrap = ref(false)
 
 const code = ref(defaultText);
 
@@ -156,10 +165,13 @@ const language = computed(() => {
 // Codemirror extensions
 const extensions = computed(() => {
   const ext = [
-    //EditorView.lineWrapping,
     //EditorView.editable.of(false),
     $q.dark.isActive ? dracula : tomorrow,
   ];
+
+  if (lineWrap.value) {
+    ext.push(EditorView.lineWrapping)
+  }
 
   if (!!language.value) {
     ext.push(language.value);

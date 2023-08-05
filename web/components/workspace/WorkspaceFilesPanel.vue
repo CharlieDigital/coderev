@@ -5,11 +5,12 @@
         <QLayout view="lHh lpr lFf" container>
           <QHeader>
             <QToolbar
-              :class="[dark ? 'bg-dark text-white' : 'bg-white text-black']"
+              :class="[dark ? 'bg-dark text-white' : 'bg-grey-2 text-black']"
             >
               <QToolbarTitle>Files</QToolbarTitle>
 
               <QBtnDropdown
+                v-show="isEditable  && !isReview"
                 :icon="tabFilePlus"
                 :color="dark ? 'deep-purple-4' : 'accent'"
                 auto-close
@@ -46,7 +47,11 @@
             </QToolbar>
           </QHeader>
 
-          <QPageContainer>
+          <QPageContainer
+            :class="{
+            'bg-dark text-white': dark,
+            'bg-grey-2 text-black': !dark,
+          }">
             <QPage class="column">
               <QList class="col">
                 <QItem
@@ -126,6 +131,7 @@
                         <QBtn
                           :icon="tabX"
                           @click="cancelNewFile"
+                          flat
                           dense/>
                       </template>
 
@@ -134,6 +140,7 @@
                           :icon="tabFileCheck"
                           :disable="newFileName.trim().length === 0"
                           @click="confirmNewFile"
+                          flat
                           dense/>
                       </template>
                     </QInput>
@@ -144,7 +151,7 @@
               <QBanner
                 v-if="Object.keys(sourceRefs).length === 0 && isEditable && !isReview"
                 class="col-shrink q-ma-sm"
-                :class="[dark ? 'bg-grey-9' : 'bg-grey-3']"
+                :class="[dark ? 'bg-grey-9' : 'bg-grey-4']"
                 rounded
               >
                 <template #avatar>

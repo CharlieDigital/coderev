@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="padding-left: 2px; padding-right: 2px">
     <QCard
       class="rounded-borders cursor-pointer"
       :class="
