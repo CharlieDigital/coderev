@@ -52,7 +52,7 @@
 
               <QItem @click="sendFeedback" clickable>
                 <QItemSection avatar>
-                  <QIcon :name="tabMail" />
+                  <QIcon :name="tabBrandGithub" />
                 </QItemSection>
                 <QItemSection> Feedback </QItemSection>
               </QItem>
@@ -105,6 +105,7 @@ tabBrandMastodon,
 tabUser,
 } from "quasar-extras-svg-icons/tabler-icons";
 import {
+tabBrandGithub,
   tabLogout,
   tabMoon,
   tabSun,
@@ -123,8 +124,13 @@ async function logout() {
 /**
  * Opens a mail to link.
  */
-function sendFeedback() {
-  window.location.href = "mailto:chen.charles.c@gmail.com";
+async function sendFeedback() {
+  await navigateTo('https://github.com/CharlieDigital/coderev/issues', {
+    external: true,
+    open: {
+      target: '_blank'
+    }
+  })
 }
 </script>
 

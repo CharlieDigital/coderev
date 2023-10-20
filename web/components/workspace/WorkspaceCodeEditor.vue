@@ -85,7 +85,7 @@ const { dark } = storeToRefs(useAppStore());
 
 const { selectedComment, selection } = storeToRefs(useWorkspaceStore());
 
-const lineWrap = ref(false)
+const lineWrap = useLocalStorage('editor-line-wrap', true)
 
 const code = ref(defaultText);
 

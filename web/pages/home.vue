@@ -43,6 +43,28 @@
             </QItem>
           </template>
         </QList>
+
+        <QBanner
+          class="q-mt-md"
+          :dark="dark"
+          inline-actions
+          rounded>
+          Have feedback, ideas, or ran into an issue?
+          <template #action>
+            <QBtn
+              v-bind="btnProps"
+              label="Feedback"
+              color="accent"
+              :icon="tabBrandGithub"
+              @click="navigateTo('https://github.com/CharlieDigital/coderev/issues', {
+                external: true,
+                open: {
+                  target: '_blank'
+                }
+              })"
+              unelevated/>
+          </template>
+        </QBanner>
       </div>
 
       <NewWorkspaceDialog
@@ -60,6 +82,7 @@
 
 <script setup lang="ts">
 import { tabPlus } from "quasar-extras-svg-icons/tabler-icons";
+import { tabBrandGithub } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 definePageMeta({
   layout: "app-layout",
