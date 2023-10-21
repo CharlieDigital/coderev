@@ -20,9 +20,10 @@ jobs:
           cache-dependency-path: ./web/yarn.lock
 
       - run: |
-          yarn --cwd ./web add --immutable --immutable-cache --check-cache
-          yarn --cwd ./web build
-          pwd
+          pushd web
+          yarn add --immutable --immutable-cache --check-cache
+          yarn build
+          popd
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
