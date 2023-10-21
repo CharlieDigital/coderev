@@ -21,7 +21,8 @@ jobs:
 
       - run: |
           pushd web
-          yarn add --immutable --immutable-cache --check-cache
+          ls -la
+          yarn add --immutable --immutable-cache
           yarn build
           popd
 
