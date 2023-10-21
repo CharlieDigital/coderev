@@ -21,7 +21,11 @@
   },
   "hosting": {
     "public": "web/.output/public",
-    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
     "headers": [
       {
         "source": "**/*.@(woff2|webp|jpg)",
