@@ -20,7 +20,7 @@ jobs:
           cache-dependency-path: ./web/yarn.lock
 
       - run: |
-          yarn --cwd ./web add --immutable --immutable-cache --check-cache \
+          yarn --cwd ./web add --immutable --immutable-cache --check-cache
           yarn --cwd ./web build
           pwd
 
