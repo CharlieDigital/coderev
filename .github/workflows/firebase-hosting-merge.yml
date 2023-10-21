@@ -9,6 +9,7 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - uses: actions/checkout@v3
 
@@ -21,6 +22,7 @@ jobs:
 
       - run: |
           pushd web
+          echo "${{ secrets.ENV_FILE }}" > .env
           yarn install --immutable --immutable-cache
           yarn generate
           popd
