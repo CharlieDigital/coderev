@@ -22,7 +22,7 @@ jobs:
       - run: |
           pushd web
           ls -la
-          yarn add --immutable --immutable-cache
+          yarn install --immutable --immutable-cache
           yarn build
           popd
 
