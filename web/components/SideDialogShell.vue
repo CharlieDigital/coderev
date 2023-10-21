@@ -3,9 +3,9 @@
     v-model="model"
     :position="position"
     :maximized="$q.screen.lt.sm"
+    :persistent="persistent"
     transition-duration="200"
-    full-height
-    persistent>
+    full-height>
     <QCard
       class="column full-height full-width no-wrap dialog-card"
       ref="dropZone"
@@ -87,11 +87,13 @@ const props = withDefaults(
     widthPx?: string
     fillHeight?: boolean
     helpUrl?: string
-    noPadding?: boolean,
+    noPadding?: boolean
+    persistent?: boolean
   }>(),
   {
     position: 'right',
     showClose: true,
+    persistent: false
   }
 )
 
