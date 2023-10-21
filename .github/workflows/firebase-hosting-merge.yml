@@ -17,6 +17,7 @@ jobs:
         with:
           node-version: '18'
           cache: 'yarn'
+          cache-dependency-path: ./web/yarn.lock
 
       - run: |
           yarn --cwd ./web add --immutable --immutable-cache --check-cache \
