@@ -4,6 +4,7 @@
     title="Preferences"
     :icon="tabSettings2"
     :visible="visible"
+    :persistent="disableEscape"
     @close="handleClose"
   >
     <QItem
@@ -74,6 +75,8 @@ const { profile, dark } = storeToRefs(useAppStore());
 const { receiveEmails, receiveFeedbackRequests, updateNotificationOptions } =
   useProfileOptions(profile);
 
+const disableEscape = ref(true)
+
 const displayName = computed({
   get() {
     return profile.value.displayName ?? profile.value.name
@@ -91,6 +94,10 @@ watch(profile, (p) => {
   }
 
   originalProfileName = p.displayName ?? p.name
+
+  if (typeof p.receiveEmails !== 'undefined') {
+    disableEscape.value = false // User has already set terms
+  }
 })
 
 /**
