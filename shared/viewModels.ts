@@ -2,6 +2,7 @@
  * This file holds view models which are only used on the front-end.
  */
 
+import { ReviewComment } from "./domainModels"
 import { MediaRef } from "./models"
 
 /**
@@ -92,3 +93,18 @@ export type MenuPosition =
   | "bottom start"
   | "bottom end"
   | undefined;
+
+/**
+ * Models a simple comment chain with one root comment.
+ */
+export type CommentChain = {
+  /**
+   * The root comment of the chain.
+   */
+  rootComment: ReviewComment
+
+  /**
+   * An array of reply comments.
+   */
+  replyComments: ReviewComment[]
+}
