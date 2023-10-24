@@ -3,33 +3,46 @@
     <QCard
       class="rounded-borders cursor-pointer"
       :class="
-        selectedComment?.uid === comment.uid
+        selectedComment?.uid === comment.rootComment.uid
           ? dark
             ? 'bg-purple-10'
             : 'bg-purple-10 text-white'
           : undefined
       "
       :bordered="dark"
-      @click="showComment(comment)"
+      @click="showComment(comment.rootComment)"
     >
       <QCardSection
         class="q-pt-none"
-        :class="[commentStates[comment.uid] ? 'q-pb-none' : undefined]"
+        :class="[commentStates[comment.rootComment.uid] ? 'q-pb-none' : undefined]"
       >
         <QItem class="q-pa-none">
           <QItemSection class="text-caption">
             <QItemLabel lines="1">
               <span class="text-bold"
-                >{{ resolveSourceName(comment.contextUid) }}
+                >{{ resolveSourceName(comment.rootComment.contextUid) }}
               </span>
             </QItemLabel>
             <QItemLabel>
               <span class="text-italic">
-                {{ renderSourceRange(comment.sourceRange) }}</span
+                {{ renderSourceRange(comment.rootComment.sourceRange) }}</span
               >
             </QItemLabel>
           </QItemSection>
-          <QItemSection v-if="profile.uid === comment.author.uid" side>
+          <QItemSection side>
+            <QBtn
+              size="sm"
+              :icon="tabCornerDownRight"
+              @click.stop="startingReply = true"
+              rounded
+              flat
+              dense
+            />
+          </QItemSection>
+          <QItemSection
+            v-if="profile.uid === comment.rootComment.author.uid"
+            style="padding-left: 4px !important"
+            side>
             <QBtn size="sm" :icon="tabDots" @click.stop rounded flat dense>
               <QMenu anchor="top right" self="top right" auto-close>
                 <QList>
@@ -40,14 +53,14 @@
                     <QItemSection> Cancel </QItemSection>
                   </QItem>
 
-                  <QItem @click="editComment(comment)" clickable>
+                  <QItem @click="editComment(comment.rootComment)" clickable>
                     <QItemSection avatar>
                       <QAvatar :icon="tabPencil" size="md" font-size="0.8em" />
                     </QItemSection>
                     <QItemSection> Edit </QItemSection>
                   </QItem>
 
-                  <QItem @click="deleteComment(comment)" clickable>
+                  <QItem @click="deleteComment(comment.rootComment)" clickable>
                     <QItemSection avatar>
                       <QAvatar :icon="tabTrash" size="md" font-size="0.8em" />
                     </QItemSection>
@@ -57,11 +70,13 @@
               </QMenu>
             </QBtn>
           </QItemSection>
-          <QItemSection side style="padding-left: 4px !important">
+          <QItemSection
+            style="padding-left: 4px !important"
+            side>
             <QBtn
               size="sm"
               :icon="
-              commentStates[comment.uid] ? tabChevronDown : tabChevronUp
+              commentStates[comment.rootComment.uid] ? tabChevronDown : tabChevronUp
               "
               @click.stop="handleToggleCollapse"
               rounded
@@ -70,10 +85,11 @@
             />
           </QItemSection>
         </QItem>
+
         <!-- Text portion that can be hidden -->
         <QSlideTransition>
-          <div v-show="!commentStates[comment.uid]">
-            <template v-if="editCommentUid === comment.uid">
+          <div v-show="!commentStates[comment.rootComment.uid]">
+            <template v-if="editCommentUid === comment.rootComment.uid">
               <QInput
                 v-model="editCommentText"
                 color="purple-4"
@@ -93,7 +109,7 @@
                   :icon="tabDeviceFloppy"
                   :disable="
                     editCommentText.trim().length === 0 ||
-                    editCommentText === comment.text
+                    editCommentText === comment.rootComment.text
                   "
                   @click.stop="saveCommentEdits"
                   rounded
@@ -103,16 +119,77 @@
               </div>
             </template>
             <QItemLabel v-else class="q-mb-md comment-body">
-              <VueMarkdown :source="comment.text"></VueMarkdown>
+              <!-- The markdown editor for the comment -->
+              <VueMarkdown :source="comment.rootComment.text"></VueMarkdown>
             </QItemLabel>
             <QItemLabel class="text-caption">
-              <span class="text-bold">{{ comment.author.name }}</span>
-              &mdash;
-              <span>{{ $dayjs.utc(comment.author.addedUtc).fromNow() }}</span>
+                <span class="text-bold">{{ comment.rootComment.author.name }}</span>
+                &mdash;
+                <span>{{ $dayjs.utc(comment.rootComment.author.addedUtc).fromNow() }}</span>
             </QItemLabel>
           </div>
         </QSlideTransition>
       </QCardSection>
+
+      <!-- User is adding a reply -->
+      <template v-if="startingReply">
+        <QSeparator/>
+        <QItem dense>
+          <QItemSection>
+            <QItemLabel class="text-caption">Add reply</QItemLabel>
+          </QItemSection>
+        </QItem>
+        <QItem dense>
+          <QInput
+            v-model="replyText"
+            color="purple-4"
+            class="full-width"
+            :bg-color="dark ? 'grey-10' : 'white'"
+            autogrow
+            outlined
+          />
+        </QItem>
+        <div class="q-mr-md">
+          <div class="text-right q-my-xs">
+            <QBtn
+              :icon="tabX"
+              @click.stop="startingReply = false"
+              rounded
+              dense
+              flat
+            />
+            <QBtn
+              :icon="tabDeviceFloppy"
+              :disable="replyText.trim().length === 0"
+              @click.stop="addCommentReply"
+              rounded
+              dense
+              flat
+            />
+          </div>
+        </div>
+      </template>
+
+      <!-- Replies -->
+      <template v-for="reply in comment.replyComments">
+        <QSeparator/>
+        <QItem>
+          <QItemSection side>
+            <QIcon :name="tabCornerDownRight"/>
+          </QItemSection>
+          <QItemSection>
+            <QItemLabel  class="comment-body">
+              <VueMarkdown :source="reply.text"></VueMarkdown>
+            </QItemLabel>
+            <QItemLabel class="text-caption">
+                <span class="text-bold">{{ reply.author.name }}</span>
+                &mdash;
+                <span>{{ $dayjs.utc(reply.author.addedUtc).fromNow() }}</span>
+            </QItemLabel>
+          </QItemSection>
+        </QItem>
+      </template>
+
     </QCard>
   </div>
 </template>
@@ -129,10 +206,12 @@ import {
 } from "quasar-extras-svg-icons/tabler-icons";
 import VueMarkdown from "vue-markdown-render";
 import { deleteField } from 'firebase/firestore';
-import { ReviewComment } from '../../../shared/domainModels';
+import { ReviewComment } from '#shared/domainModels';
+import { CommentChain } from "#shared/viewModels";
+import { tabArrowBack, tabArrowDownRight, tabArrowForward, tabCornerDownRight } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const props = defineProps<{
-  comment: ReviewComment,
+  comment: CommentChain,
   commentStates: Record<string, boolean>
 }>()
 
@@ -141,7 +220,9 @@ const emits = defineEmits<{
   expand: []
 }>()
 
-const { dark, profile } = storeToRefs(useAppStore());
+const appStore = useAppStore()
+
+const { dark, profile } = storeToRefs(appStore);
 
 const workspaceStore = useWorkspaceStore();
 
@@ -150,6 +231,10 @@ const { candidate, selection, selectedComment } = storeToRefs(workspaceStore);
 const editCommentText = ref("")
 
 const editCommentUid = ref("")
+
+const startingReply = ref(false)
+
+const replyText = ref('')
 
 /**
  * Renders a source range.
@@ -179,7 +264,7 @@ function resolveSourceName(uid: string) {
  * Handles the event when the user clicks to toggle the state of the comment.
  */
 function handleToggleCollapse() {
-  if (props.commentStates[props.comment.uid]) {
+  if (props.commentStates[props.comment.rootComment.uid]) {
     emits("expand")
   } else {
     emits("collapse")
@@ -251,7 +336,30 @@ async function deleteComment(comment: ReviewComment) {
   await candidateReviewRepository.updateFields(
     candidate.value.uid, {
       [`comments.${comment.uid}`]: deleteField()
-    })
+    }
+  )
+}
+
+/**
+ * Adds a comment reply to the current comment chain.
+ */
+async function addCommentReply() {
+  const reply: ReviewComment = {
+    uid: nanoid(6),
+    text: replyText.value,
+    contextType: 'comment',
+    contextUid: props.comment.rootComment.uid,
+    author: appStore.getCurrentUserRef()
+  }
+
+  await candidateReviewRepository.updateFields(
+    candidate.value.uid, {
+      [`comments.${reply.uid}`]: reply
+    }
+  )
+
+  replyText.value = ''
+  startingReply.value = false
 }
 </script>
 

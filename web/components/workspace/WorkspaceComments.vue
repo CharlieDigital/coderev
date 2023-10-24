@@ -81,8 +81,8 @@
           v-for="comment in comments"
           :comment-states="commentCollapsed"
           :comment="comment"
-          @expand="commentCollapsed[comment.uid] = false"
-          @collapse="commentCollapsed[comment.uid] = true"/>
+          @expand="commentCollapsed[comment.rootComment.uid] = false"
+          @collapse="commentCollapsed[comment.rootComment.uid] = true"/>
       </div>
 
       <p class="q-pa-md text-grey-6" v-else>
@@ -107,6 +107,7 @@
 <script setup lang="ts">
 import { tabMessagePlus } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { ReviewComment } from "#shared/domainModels";
+import { CommentChain } from "#shared/viewModels";
 import {
   tabArrowUp,
   tabChevronDown,
@@ -134,23 +135,47 @@ const commentCollapsed = reactive<Record<string, boolean>>({});
 
 const showBackToTop = ref(false)
 
-const comments = computed(() => {
-  return (
-    Object.values(candidate.value.comments)
-      // Only the source level comments and not a response comment.
-      .filter((c) => c.contextType === "source")
-      // Sort by the date added.
-      .sort((a, b) => {
-        if (a.author.addedUtc < b.author.addedUtc) {
-          return -1;
-        } else if (a.author.addedUtc > b.author.addedUtc) {
-          return 1;
-        } else {
-          return 0;
-        }
-      })
-  );
+const comments = computed<CommentChain[]>(() => {
+  const replies: Record<string, ReviewComment[]> = { }
+
+  Object.values(candidate.value.comments)
+    .reduce((acc, comment) => {
+      if (comment.contextType === 'source') {
+        return acc // This is a top level comment
+      }
+
+      if (!acc[comment.contextUid]) {
+        acc[comment.contextUid] = []
+      }
+
+      acc[comment.contextUid].push(comment) // Push a reply
+
+      return acc
+    }, replies)
+
+  return Object.values(candidate.value.comments)
+    // Only the source level comments and not a response comment.
+    .filter((c) => c.contextType === "source")
+    // Sort by the date added.
+    .sort(sortComments)
+    // Now get the reply comments for each top level comment
+    .map(c => {
+      return {
+        rootComment: c,
+        replyComments: replies[c.uid]?.sort(sortComments) ?? []
+      }
+    })
 });
+
+function sortComments(a: ReviewComment, b: ReviewComment) {
+  if (a.author.addedUtc < b.author.addedUtc) {
+    return -1;
+  } else if (a.author.addedUtc > b.author.addedUtc) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
 
 /**
  * Adds the currently entered comment for this candidate workspace.
@@ -192,7 +217,7 @@ async function addComment() {
 function collapseComments(state: boolean) {
   comments.value.reduce(
     (acc, c) => {
-      acc[c.uid] = state
+      acc[c.rootComment.uid] = state
       return acc
     },
     commentCollapsed)
