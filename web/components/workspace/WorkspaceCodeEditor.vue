@@ -10,6 +10,7 @@
           v-show="selectedSourceFile?.name.endsWith('.md')"
           v-bind="btnProps"
           :icon="tab === 'markdown' ? tabFileCode : tabMarkdown"
+          :label="tab === 'markdown' ? 'View markdown' :  'View doc'"
           @click="toggleMarkdownViewer"
           flat/>
 
@@ -22,9 +23,11 @@
     </QHeader>
     <QPageContainer>
       <QPage
-        :class="dark ? '' : 'bg-white'">
+        :class="dark ? '' : 'bg-white'"
+        class="row">
         <QTabPanels
           v-model="tab"
+          class="column full-width"
           keep-alive
           animated>
           <!-- Default panel that shows code -->
@@ -46,9 +49,10 @@
           <!-- Panel that shows markdown -->
           <QTabPanel
             name="markdown"
-            class="q-ma-none"
-            v-html="markdownHtml">
-
+            class="q-ma-none column full-height markdown-html">
+            <div class="row full-height">
+              <div class="col offset-sm-1 col-sm-10offset-md-2 col-md-8 offset-lg-3 col-lg-6 full-height" v-html="markdownHtml"></div>
+            </div>
           </QTabPanel>
         </QTabPanels>
         <QInnerLoading :showing="loadingCode" />
@@ -384,9 +388,6 @@ function toggleMarkdownViewer() {
     return
   }
 
-  markdownHtml.value = converter.makeHtml(code.value)
-
-  /*
   markdownHtml.value = sanitizeHtml(
     converter.makeHtml(code.value), {
       allowedTags: [
@@ -394,10 +395,16 @@ function toggleMarkdownViewer() {
         'table', 'tr', 'td', 'th', 'tbody', 'thead', 'strike',
         'blockquote', 'img', 'i', 'b', 'sub', 'super', 'ul', 'ol', 'li',
         'div', 'code', 'span'
-      ]
+      ],
+      allowedAttributes: {
+        'code': ['class'],
+        'pre': ['class'],
+        'span': ['class'],
+        'a': ['href', 'target'],
+        'img': ['src']
+      }
     }
   )
-  */
 }
 
 /**
@@ -415,5 +422,29 @@ const debouncedSourceSelect = useDebounceFn((s: SourceSelection) => {
 
 :deep(code.hljs) {
   border-radius: 8px;
+}
+
+:deep(.markdown-html) h1 {
+  font-size: 2.6rem;
+  line-height: 2.8rem;
+  font-weight: 500;
+}
+
+:deep(.markdown-html) h2 {
+  font-size: 2.0rem;
+  line-height: 2.2rem;
+  font-weight: 500;
+}
+
+:deep(.markdown-html) h3 {
+  font-size: 1.4rem;
+  line-height: 1.6rem;
+  font-weight: 500;
+}
+
+:deep(.markdown-html) h4 {
+  font-size: 1.2rem;
+  line-height: 1.4rem;
+  font-weight: 500;
 }
 </style>
