@@ -1,7 +1,5 @@
-import { CandidateReview, ReviewComment, Workspace } from "#shared/domainModels";
 import { QueryConstraint, orderBy, where } from "firebase/firestore";
 import { defaultWorkspace } from "../workspaceStore";
-import { SourceSelection } from "#shared/viewModels";
 
 export const defaultCandidate: CandidateReview = {
   uid: "default-candidate-review",

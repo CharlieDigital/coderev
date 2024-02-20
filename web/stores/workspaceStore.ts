@@ -1,8 +1,6 @@
 import dayjs from "dayjs";
 import { deleteField, where } from "firebase/firestore";
 import { sourceStorage } from "../utils/data/Storage";
-import { MediaRef } from '#shared/models';
-import { Workspace } from "#shared/domainModels";
 import { useCandidates } from "./composables/candidates";
 
 export const defaultWorkspace: Workspace = {

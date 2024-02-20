@@ -36,7 +36,6 @@
 
 <script setup lang="ts">
 import { tabTrash, tabX } from 'quasar-extras-svg-icons/tabler-icons'
-import { MenuPosition } from '../../shared/viewModels';
 
 const props = defineProps<{
   message: string,

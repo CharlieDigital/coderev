@@ -125,7 +125,7 @@
             <QItemLabel class="text-caption">
                 <span class="text-bold">{{ comment.rootComment.author.name }}</span>
                 &mdash;
-                <span>{{ $dayjs.utc(comment.rootComment.author.addedUtc).fromNow() }}</span>
+                <span>{{ $dayjs(comment.rootComment.author.addedUtc).utc().fromNow() }}</span>
             </QItemLabel>
           </div>
         </QSlideTransition>
@@ -184,7 +184,7 @@
             <QItemLabel class="text-caption">
                 <span class="text-bold">{{ reply.author.name }}</span>
                 &mdash;
-                <span>{{ $dayjs.utc(reply.author.addedUtc).fromNow() }}</span>
+                <span>{{ $dayjs(reply.author.addedUtc).utc().fromNow() }}</span>
             </QItemLabel>
           </QItemSection>
         </QItem>
@@ -206,8 +206,8 @@ import {
 } from "quasar-extras-svg-icons/tabler-icons";
 import VueMarkdown from "vue-markdown-render";
 import { deleteField } from 'firebase/firestore';
-import { ReviewComment } from '#shared/domainModels';
-import { CommentChain } from "#shared/viewModels";
+import type { ReviewComment } from '../../../shared/domainModels';
+import type { CommentChain } from "../../../shared/viewModels";
 import { tabArrowBack, tabArrowDownRight, tabArrowForward, tabCornerDownRight } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const props = defineProps<{

@@ -17,7 +17,7 @@
             collaborator.name
           }}</QItemLabel>
           <QItemLabel>{{
-            $dayjs.utc(collaborator.addedUtc).fromNow()
+            $dayjs(collaborator.addedUtc).utc().fromNow()
           }}</QItemLabel>
         </QItemSection>
         <!-- The role selection -->
@@ -61,7 +61,6 @@
 
 <script setup lang="ts">
 import { tabSend, tabUsersGroup } from "quasar-extras-svg-icons/tabler-icons-v2";
-import { CollaboratorRef } from "../../../shared/domainModels";
 import { where } from "firebase/firestore";
 
 defineProps<{
@@ -144,7 +143,7 @@ async function updateCollaboratorRole(collaborator: CollaboratorRef) {
     role: 'editor',
     pending: false,
     entityType: 'user',
-    addedUtc: dayjs.utc().toISOString()
+    addedUtc: dayjs().utc().toISOString()
   }
 
   await workspaceRepository.updateFields(workspace.value.uid, {

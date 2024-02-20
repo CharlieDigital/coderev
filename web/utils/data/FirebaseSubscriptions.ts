@@ -1,6 +1,6 @@
 /// <reference lib="dom" />
 
-import { Unsubscribe } from 'firebase/firestore'
+import type { Unsubscribe } from 'firebase/firestore'
 
 /**
  * Plugin to manage global subscriptions

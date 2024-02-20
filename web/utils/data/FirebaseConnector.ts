@@ -1,5 +1,3 @@
-import { Profile } from "#shared/models";
-import { CandidateReview, Workspace } from "#shared/domainModels";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
@@ -8,12 +6,12 @@ import {
   FacebookAuthProvider,
   getAuth,
   GoogleAuthProvider,
-  NextFn,
+  type NextFn,
   OAuthProvider,
   signInAnonymously,
   signInWithPopup,
   signOut,
-  User,
+  type User,
   GithubAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

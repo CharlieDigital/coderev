@@ -1,6 +1,7 @@
 {
-  "name": "nuxt-app",
+  "name": "coderev",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
@@ -9,15 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@nuxt/devtools": "latest",
     "@nuxtjs/google-fonts": "^3.0.2",
     "@types/nanoid-dictionary": "^4.2.0",
     "@types/node": "^18.16.19",
-    "nuxt": "^3.6.5",
-    "nuxt-quasar-ui": "^2.0.4",
-    "quasar-extras-svg-icons": "^1.31.0",
-    "sass": "^1.63.6",
-    "sass-loader": "^13.3.2"
+    "@types/sanitize-html": "^2.11.0",
+    "@types/showdown": "^2.0.6",
+    "nuxt": "^3.10.2",
+    "nuxt-quasar-ui": "^2.0.7",
+    "quasar-extras-svg-icons": "^1.36.0",
+    "sass": "^1.71.0",
+    "sass-loader": "^14.1.1"
   },
   "dependencies": {
     "@codemirror/lang-cpp": "^6.0.2",
@@ -36,8 +38,8 @@
     "@codemirror/lang-xml": "^6.0.2",
     "@codemirror/legacy-modes": "^6.3.3",
     "@firebase/app-types": "^0.9.0",
-    "@pinia/nuxt": "^0.4.11",
-    "@quasar/extras": "^1.16.5",
+    "@pinia/nuxt": "^0.5.1",
+    "@quasar/extras": "^1.16.9",
     "@replit/codemirror-lang-csharp": "^6.1.0",
     "@tiptap/extension-character-count": "^2.0.4",
     "@tiptap/extension-link": "^2.0.4",
@@ -48,10 +50,10 @@
     "codemirror": "^6.0.1",
     "dayjs": "^1.11.9",
     "dayjs-nuxt": "^1.1.2",
-    "firebase": "^9.23.0",
-    "firebase-admin": "^11.10.1",
-    "firebase-frameworks": "0.10.4",
-    "firebase-functions": "^4.4.1",
+    "firebase": "10.8.0",
+    "firebase-admin": "12.0.0",
+    "firebase-frameworks": "0.11.2",
+    "firebase-functions": "4.7.0",
     "lexorank": "^1.0.5",
     "lru-cache": "^10.0.0",
     "nanoid": "^4.0.2",
@@ -67,11 +69,15 @@
     "prosemirror-transform": "^1.7.3",
     "prosemirror-view": "^1.31.6",
     "qrcode": "^1.5.3",
-    "quasar": "^2.12.3",
+    "quasar": "^2.14.4",
     "sanitize-html": "^2.11.0",
+    "showdown": "^2.1.0",
+    "showdown-highlight": "^3.1.0",
     "thememirror": "^2.0.1",
+    "vue": "^3.4.19",
     "vue-codemirror": "^6.1.1",
     "vue-markdown-render": "^2.0.1",
+    "vue-router": "^4.2.5",
     "vue3-smooth-dnd": "^0.0.5"
   }
 }

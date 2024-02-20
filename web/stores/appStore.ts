@@ -1,8 +1,6 @@
-import { User } from "firebase/auth";
+import type { User } from "firebase/auth";
 import { where } from "firebase/firestore";
 import { Dark } from "quasar";
-import { EmbeddedRef, Profile } from "#shared/models";
-import { CollaboratorRef, CollaboratorRole } from "#shared/domainModels";
 
 export const defaultProfile: Profile = {
   uid: "default",
@@ -56,7 +54,7 @@ export const useAppStore = defineStore("appStore", () => {
     return {
       uid: profile.value?.uid ?? "",
       name: profile.value?.name ?? "",
-      addedUtc: dayjs.utc().toISOString(),
+      addedUtc: dayjs().utc().toISOString(),
       entityType: "profile",
     };
   }
@@ -72,7 +70,7 @@ export const useAppStore = defineStore("appStore", () => {
     return {
       uid: profile.uid,
       name: profile.name,
-      addedUtc: dayjs.utc().toISOString(),
+      addedUtc: dayjs().utc().toISOString(),
       entityType: "user",
       pending: !profile.activatedUtc ? true : false,
       role: role ?? "editor",
@@ -114,11 +112,11 @@ export const useAppStore = defineStore("appStore", () => {
             uid: authUser.uid,
             name: name,
             email: authUser.email ?? `user.${authUser.uid}@example.com`,
-            createdAtUtc: dayjs.utc().toISOString(),
+            createdAtUtc: dayjs().utc().toISOString(),
             createdBy: {
               uid: authUser.uid,
               name: name,
-              addedUtc: dayjs.utc().toISOString(),
+              addedUtc: dayjs().utc().toISOString(),
               entityType: "user"
             }
           }

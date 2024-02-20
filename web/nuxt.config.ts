@@ -2,10 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
-    pageTransition: { name: "page", mode: "out-in" },
-  },
-  alias: {
-    "#shared": "../shared"
+    pageTransition: { name: "page", mode: "out-in" }
   },
   modules: [
     "nuxt-quasar-ui",
@@ -34,7 +31,6 @@ export default defineNuxtConfig({
   },
   pinia: {
     // https://pinia.vuejs.org/ssr/nuxt.html
-    autoImports: ["defineStore", "acceptHMRUpdate", "storeToRefs"],
   },
   dayjs: {
     locales: ["en"],

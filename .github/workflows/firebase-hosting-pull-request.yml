@@ -7,11 +7,27 @@ jobs:
   build_and_preview:
     if: '${{ github.event.pull_request.head.repo.full_name == github.repository }}'
     runs-on: ubuntu-latest
+    environment: prod
     steps:
       - uses: actions/checkout@v3
-      - run: yarn && yarn build
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'yarn'
+          cache-dependency-path: ./web/yarn.lock
+
+      - run: |
+          pushd web
+          echo "${{ secrets.ENV_FILE }}" > .env
+          yarn install --immutable --immutable-cache
+          yarn generate
+          popd
+
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CODEREV_APP }}'
+          channelId: live
           projectId: coderev-app

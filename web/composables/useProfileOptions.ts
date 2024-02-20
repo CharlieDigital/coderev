@@ -1,4 +1,3 @@
-import { Profile } from '#shared/models';
 import dayjs from "dayjs";
 import { computed } from "vue";
 

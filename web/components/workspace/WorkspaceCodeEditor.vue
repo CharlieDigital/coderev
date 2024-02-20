@@ -5,6 +5,14 @@
         <QToolbarTitle>
           {{ selectedSourceFile ? selectedSourceFile.name : "Select a file" }}
         </QToolbarTitle>
+
+        <QBtn
+          v-show="selectedSourceFile?.name.endsWith('.md')"
+          v-bind="btnProps"
+          :icon="tab === 'markdown' ? tabFileCode : tabMarkdown"
+          @click="toggleMarkdownViewer"
+          flat/>
+
         <QBtn
           v-bind="btnProps"
           :icon="lineWrap ? tabTextWrap : tabTextWrapDisabled"
@@ -15,18 +23,34 @@
     <QPageContainer>
       <QPage
         :class="dark ? '' : 'bg-white'">
-        <Codemirror
-          ref="editor"
-          v-model="code"
-          :extensions="extensions"
-          :selection="editorSelection"
-          :tab-size="2"
-          :style="editorStyle"
-          :disabled="!editable"
-          @ready="handleEditorReady"
-          @update:model-value="handleUpdateCode"
-          @update="handleUpdate"
-        />
+        <QTabPanels
+          v-model="tab"
+          keep-alive
+          animated>
+          <!-- Default panel that shows code -->
+          <QTabPanel name="code" class="q-pa-none">
+            <Codemirror
+              ref="editor"
+              v-model="code"
+              :extensions="extensions"
+              :selection="editorSelection"
+              :tab-size="2"
+              :style="editorStyle"
+              :disabled="!editable"
+              @ready="handleEditorReady"
+              @update:model-value="handleUpdateCode"
+              @update="handleUpdate"
+            />
+          </QTabPanel>
+
+          <!-- Panel that shows markdown -->
+          <QTabPanel
+            name="markdown"
+            class="q-ma-none"
+            v-html="markdownHtml">
+
+          </QTabPanel>
+        </QTabPanels>
         <QInnerLoading :showing="loadingCode" />
       </QPage>
     </QPageContainer>
@@ -59,8 +83,18 @@ import { clike } from '@codemirror/legacy-modes/mode/clike'
 import { julia } from '@codemirror/legacy-modes/mode/julia'
 import { swift } from '@codemirror/legacy-modes/mode/swift'
 import { dracula, tomorrow } from "thememirror";
-import { SourceFile, SourceSelection } from "../../../shared/viewModels";
-import { tabTextWrap, tabTextWrapDisabled } from "quasar-extras-svg-icons/tabler-icons";
+import { type SourceFile, type SourceSelection } from "../../../shared/viewModels";
+import { tabFileCode, tabMarkdown, tabTextWrap, tabTextWrapDisabled } from "quasar-extras-svg-icons/tabler-icons";
+import showdown from 'showdown'
+import showdownHighlight from 'showdown-highlight'
+import sanitizeHtml from 'sanitize-html'
+
+useHead({
+  link: [{
+    rel: 'stylesheet',
+    href: 'https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/default.min.css'
+  }]
+})
 
 const props = defineProps<{
   editable: boolean;
@@ -88,6 +122,10 @@ const { selectedComment, selection } = storeToRefs(useWorkspaceStore());
 const lineWrap = useLocalStorage('editor-line-wrap', true)
 
 const code = ref(defaultText);
+
+const tab = ref<'code'|'markdown'>('code')
+
+const markdownHtml = ref('')
 
 const editorSelection = ref<EditorSelection>();
 
@@ -214,6 +252,12 @@ watch(
     } else {
       code.value = defaultText;
     }
+
+    if (f.ext !== '.md') {
+      tab.value = 'code'
+    } else if (tab.value !== 'markdown'){
+      toggleMarkdownViewer()
+    }
   }
 );
 
@@ -317,6 +361,45 @@ function handleUpdate(e: ViewUpdate) {
   }
 }
 
+showdown.setFlavor('github')
+
+const converter = new showdown.Converter({
+  extensions: [
+    showdownHighlight({
+      pre: true,
+      auto_detection: true
+    })
+  ]
+})
+
+/**
+ * If the file is a markdown file, toggle the view for the markdown.
+ */
+function toggleMarkdownViewer() {
+  tab.value = tab.value === 'markdown'
+    ? 'code'
+    : 'markdown'
+
+  if (tab.value === 'code') {
+    return
+  }
+
+  markdownHtml.value = converter.makeHtml(code.value)
+
+  /*
+  markdownHtml.value = sanitizeHtml(
+    converter.makeHtml(code.value), {
+      allowedTags: [
+        'a', 'p', 'em', 'strong', 'h1', 'h2', 'h3', 'h4', 'hr', 'pre',
+        'table', 'tr', 'td', 'th', 'tbody', 'thead', 'strike',
+        'blockquote', 'img', 'i', 'b', 'sub', 'super', 'ul', 'ol', 'li',
+        'div', 'code', 'span'
+      ]
+    }
+  )
+  */
+}
+
 /**
  * Trigger the update to the store at a debounced interval.
  */
@@ -328,5 +411,9 @@ const debouncedSourceSelect = useDebounceFn((s: SourceSelection) => {
 <style scoped>
 :deep(.cm-content) {
   font-family: Menlo, Monaco, Lucida Console, monospace
+}
+
+:deep(code.hljs) {
+  border-radius: 8px;
 }
 </style>

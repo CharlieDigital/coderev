@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
 import { tabSend, tabUserCode } from "quasar-extras-svg-icons/tabler-icons-v2";
-import { MediaRef } from "../../../shared/models";
+import { type MediaRef } from "../../../shared/models";
 
 defineProps<{
   visible: boolean;
@@ -66,11 +66,12 @@ async function addCandidate() {
 
   let sourceCount = 0;
 
-  Object.values(workspace.value.sources).reduce((acc, s) => {
-    acc[s.uid] = s;
-    sourceCount++;
-    return acc;
-  }, sources);
+  Object.values(workspace.value.sources)
+    .reduce((acc, s) => {
+      acc[s.uid] = s;
+      sourceCount++;
+      return acc;
+    }, sources);
 
   if (sourceCount === 0) {
     console.error("There were no source files.");

@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { FirebaseStorage, uploadBytes, ref, getDownloadURL, deleteObject, getBlob } from "firebase/storage";
+import { type FirebaseStorage, uploadBytes, ref, getDownloadURL, deleteObject, getBlob } from "firebase/storage";
 
 /**
  * Models the result of a file upload

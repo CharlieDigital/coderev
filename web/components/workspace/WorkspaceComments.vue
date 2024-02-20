@@ -106,8 +106,8 @@
 
 <script setup lang="ts">
 import { tabMessagePlus } from "quasar-extras-svg-icons/tabler-icons-v2";
-import { ReviewComment } from "#shared/domainModels";
-import { CommentChain } from "#shared/viewModels";
+import type { ReviewComment } from "../../../shared/domainModels";
+import type { CommentChain } from "../../../shared/viewModels";
 import {
   tabArrowUp,
   tabChevronDown,
@@ -190,7 +190,7 @@ async function addComment() {
     author: {
       name: profile.value.displayName ?? profile.value.name,
       uid: profile.value.uid,
-      addedUtc: dayjs.utc().toISOString(),
+      addedUtc: dayjs().utc().toISOString(),
       entityType: "user",
     },
   };

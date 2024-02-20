@@ -61,7 +61,6 @@
 
 <script setup lang="ts">
 import { tabHexagon, tabPlus } from "quasar-extras-svg-icons/tabler-icons-v2";
-import { Workspace } from "#shared/domainModels";
 
 defineProps<{
   visible: boolean;

@@ -16,7 +16,8 @@
       >
         <QToolbarTitle
           class="text-h4 text-weight-medium cursor-pointer"
-          @click="navigateTo('/')">
+          @click="navigateTo('/')"
+        >
           CodeRev.app
         </QToolbarTitle>
 
@@ -36,12 +37,16 @@
                   <QIcon :name="tabUser" />
                 </QItemSection>
                 <QItemSection>
-                  <QItemLabel class="text-body1 text-bold">{{ profile.name }}</QItemLabel>
-                  <QItemLabel class="text-caption">{{ profile.email }}</QItemLabel>
+                  <QItemLabel class="text-body1 text-bold">{{
+                    profile.name
+                  }}</QItemLabel>
+                  <QItemLabel class="text-caption">{{
+                    profile.email
+                  }}</QItemLabel>
                 </QItemSection>
               </QItem>
 
-              <QSeparator/>
+              <QSeparator />
 
               <QItem @click="showPreferencesDialog = true" clickable>
                 <QItemSection avatar>
@@ -62,8 +67,10 @@
                   navigateTo('https://mastodon.social/@chrlschn', {
                     external: true,
                     open: { target: '_blank' },
-                  })"
-                clickable>
+                  })
+                "
+                clickable
+              >
                 <QItemSection avatar>
                   <QIcon :name="tabBrandMastodon" />
                 </QItemSection>
@@ -98,14 +105,13 @@
 
 <script setup lang="ts">
 import {
-tabBrandMastodon,
-  tabMail,
+  tabBrandMastodon,
   tabMenu,
   tabSettings2,
-tabUser,
+  tabUser,
 } from "quasar-extras-svg-icons/tabler-icons";
 import {
-tabBrandGithub,
+  tabBrandGithub,
   tabLogout,
   tabMoon,
   tabSun,
@@ -115,7 +121,9 @@ const $q = useQuasar();
 
 const dark = computed(() => $q.dark.isActive);
 
-const { profile, showLeftDrawer, showPreferencesDialog } = storeToRefs(useAppStore());
+const { profile, showLeftDrawer, showPreferencesDialog } = storeToRefs(
+  useAppStore()
+);
 
 async function logout() {
   await firebaseConnector.logout();
@@ -125,12 +133,12 @@ async function logout() {
  * Opens a mail to link.
  */
 async function sendFeedback() {
-  await navigateTo('https://github.com/CharlieDigital/coderev/issues', {
+  await navigateTo("https://github.com/CharlieDigital/coderev/issues", {
     external: true,
     open: {
-      target: '_blank'
-    }
-  })
+      target: "_blank",
+    },
+  });
 }
 </script>
 

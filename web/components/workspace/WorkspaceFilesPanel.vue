@@ -221,9 +221,6 @@ import {
 tabX,
 } from "quasar-extras-svg-icons/tabler-icons";
 import { FieldValue } from "firebase/firestore";
-import { SourceFile } from "../../../shared/viewModels";
-import { Workspace } from "../../../shared/domainModels";
-import { MediaRef } from "../../../shared/models";
 import { tabFilePlus, tabTrash } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { QInput } from "quasar";
 
@@ -641,7 +638,7 @@ async function saveFiles() {
         url: result.url,
         path: result.path,
         type: "document",
-        addedUtc: dayjs.utc().toISOString(),
+        addedUtc: dayjs().utc().toISOString(),
       };
 
       changeset.sources = {
@@ -662,7 +659,7 @@ async function saveFiles() {
 
       for (const modified of modifiedFileUids.value) {
         if (workspace.value.sources[modified]) {
-          workspace.value.sources[modified].markAsRemovedUtc = dayjs
+          workspace.value.sources[modified].markAsRemovedUtc = dayjs()
             .utc()
             .toISOString();
 

@@ -71,7 +71,7 @@
                 <QItemSection>
                   <QItemLabel class="text-h6">{{ c.name }}</QItemLabel>
                   <QItemLabel class="text-body1">{{
-                    dayjs.utc(c.createdAtUtc).fromNow()
+                    dayjs(c.createdAtUtc).utc().fromNow()
                   }}</QItemLabel>
                 </QItemSection>
                 <QItemSection side>
@@ -191,7 +191,7 @@ async function toggleCandidateArchive(isArchived: boolean, uid: string) {
     });
   } else {
     await candidateReviewRepository.updateFields(uid, {
-      archivedAtUtc: dayjs.utc().toISOString(),
+      archivedAtUtc: dayjs().utc().toISOString(),
     });
   }
 }

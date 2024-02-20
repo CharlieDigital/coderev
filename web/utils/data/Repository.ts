@@ -3,8 +3,8 @@ import {
   collection,
   deleteDoc,
   doc,
-  DocumentChangeType,
-  DocumentData,
+  type DocumentChangeType,
+  type DocumentData,
   FieldValue,
   Firestore,
   getDoc,
@@ -15,8 +15,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { Unsubscribe } from "firebase/auth";
-import { Entity, EmbeddedRef } from "#shared/models";
+import type { Unsubscribe } from "firebase/auth";
 import dayjs from "dayjs";
 
 /**
