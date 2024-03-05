@@ -1,5 +1,6 @@
 import { QueryConstraint, orderBy, where } from "firebase/firestore";
 import { defaultWorkspace } from "../workspaceStore";
+import type { CandidateReview } from "../../../shared/domainModels";
 
 export const defaultCandidate: CandidateReview = {
   uid: "default-candidate-review",
@@ -26,6 +27,12 @@ export function useCandidates(workspace: Ref<Workspace>) {
    */
   const candidate: Ref<CandidateReview> =
     ref<CandidateReview>(defaultCandidate);
+
+  /**
+   * These are the workspaces for which the current user performed a candidate
+   * review.
+   */
+  const candidateWorkspaces: Ref<CandidateReview[]>  = ref<CandidateReview[]>([]);
 
   /**
    * The active selection range separate from the selected comment.  The selection
@@ -78,10 +85,10 @@ export function useCandidates(workspace: Ref<Workspace>) {
    * @param workspaceUid When present, the workspace UID.
    */
   async function loadCandidates(
-      candidateUid?: string,
-      email?: string,
-      workspaceUid?: string
-    ) {
+    candidateUid?: string,
+    email?: string,
+    workspaceUid?: string
+  ) {
     if (!workspaceUid && (workspace.value.uid === defaultWorkspace.uid)) {
       return;
     }
@@ -133,6 +140,51 @@ export function useCandidates(workspace: Ref<Workspace>) {
     );
   }
 
+  /**
+   * When present, loads the workspaces for which the user is a candidate. In
+   * other words, the workspaces that the user previously provided a review.
+   * @param email The email address of the currently logged in user.
+   */
+  async function loadCandidateWorkspaces(
+    email: string
+  ) {
+    // Prevent over subscribing.
+    const subscriptionKey = `candidates.${email}`
+
+    if (firebaseSubscriptions.hasSubscription(subscriptionKey)) {
+      return
+    }
+
+    const constraints: QueryConstraint[] = [
+      where("email", "==", email),
+      orderBy("createdAtUtc", "desc")
+    ]
+
+    console.log(`Loading for workspaces for candidate: ${email}`);
+
+    candidateWorkspaces.value.splice(0, candidateWorkspaces.value.length);
+
+    const candidatesSubscription = candidateReviewRepository.subscribe(
+      {
+        added: (newCandidate) => {
+          candidateWorkspaces.value.push(newCandidate);
+        },
+        modified: (modifiedCandidate) => {
+          findAndSplice(candidateWorkspaces.value, modifiedCandidate, true);
+        },
+        removed: (removedCandidate) => {
+          findAndSplice(candidateWorkspaces.value, removedCandidate, false);
+        },
+      },
+      ...constraints
+    );
+
+    firebaseSubscriptions.register(
+      subscriptionKey,
+      candidatesSubscription
+    );
+  }
+
   return {
     candidates,
     candidate,
@@ -140,5 +192,7 @@ export function useCandidates(workspace: Ref<Workspace>) {
     selectedComment,
     ensureCandidate,
     loadCandidates,
+    loadCandidateWorkspaces,
+    candidateWorkspaces
   };
 }

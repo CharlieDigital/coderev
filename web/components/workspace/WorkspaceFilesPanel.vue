@@ -9,20 +9,26 @@
             >
               <QToolbarTitle>Files</QToolbarTitle>
 
-              <QBtnDropdown
+              <QBtn
                 v-show="isEditable  && !isReview"
                 :icon="tabFilePlus"
                 :color="dark ? 'deep-purple-4' : 'accent'"
-                auto-close
                 flat dense>
-                <QList>
+                <QMenu
+                  class="row"
+                  max-width="360px"
+                  anchor="bottom middle"
+                  self="top middle"
+                  auto-close>
                   <QItem v-for="ext in fileExtensions"
+                    class="col col-3"
                     @click="promptNewFile(ext)"
+                    dense
                     clickable>
                     <QItemSection>{{ ext }}</QItemSection>
                   </QItem>
-                </QList>
-              </QBtnDropdown>
+                </QMenu>
+              </QBtn>
 
               <QBtn
                 v-show="isEditable  && !isReview"
@@ -40,7 +46,7 @@
                 :icon="tabDeviceFloppy"
                 :loading="saving"
                 @click="saveFiles"
-                flat
+                unelevated
                 dense
               >
               </QBtn>
@@ -202,6 +208,7 @@
     </template>
 
     <template #after>
+      <!-- The code editor section -->
       <WorkspaceCodeEditor
         :selected-source-file="selectedSourceFile"
         :editable="isEditable"
@@ -236,7 +243,13 @@ You can edit this file to provide instructions to your candidate.
 
 Drag and drop source files to add them on the left.
 
-The following file types are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}`;
+The following file types are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}
+
+\`\`\`js
+// A simple JavaScript block
+const message = "Hello, World";
+\`\`\`
+`;
 
 const readmeName = ".README.md";
 

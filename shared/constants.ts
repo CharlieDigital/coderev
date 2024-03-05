@@ -15,6 +15,8 @@ export const ALLOWED_CODE_FILE_EXTENSIONS = [
   ".html",
   ".js",
   ".ts",
+  ".h",
+  ".hpp",
   ".java",
   ".jl",
   ".json",

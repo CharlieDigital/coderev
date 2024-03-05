@@ -69,7 +69,8 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
   }
 
   /**
-   * Loads the workspaces for the current profile.
+   * Loads the workspaces for the current profile.  These are owned workspaces for
+   * the user meaning that they are collaborators or they created the workspace.
    */
   async function loadWorkspaces() {
     if (workspacesLoaded.value) {

@@ -316,7 +316,7 @@ class WorkspaceRepository extends Repository<Workspace> {
 export const workspaceRepository = new WorkspaceRepository();
 
 /**
- * Repository for working with workspaces
+ * Repository for working with the candidate reviews
  */
 class CandidateReviewRepository extends Repository<CandidateReview> {
   constructor(db?: Firestore) {

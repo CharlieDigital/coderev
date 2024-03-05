@@ -58,6 +58,14 @@
                 dense
                 flat
               />
+              <QBtn
+                size="md"
+                class="q-mt-sm"
+                :icon="tabHome"
+                @click="navigateTo('/home')"
+                dense
+                flat
+              />
             </div>
 
             <div>
@@ -114,6 +122,19 @@
 
             </QCardActions> -->
           </QCard>
+
+          <QItem
+            class="rounded-borders"
+            @click="navigateTo('/home')"
+            clickable
+            >
+            <QItemSection avatar>
+              <QIcon :name="tabHome" />
+            </QItemSection>
+            <QItemSection>
+              <QItemLabel>Home</QItemLabel>
+            </QItemSection>
+          </QItem>
         </QList>
 
         <!-- Bottom dark/light toggle -->
@@ -127,6 +148,7 @@
 import {
   tabArrowLeft,
   tabArrowRight,
+  tabHome,
   tabInfoSquare,
   tabMail,
   tabMoon,

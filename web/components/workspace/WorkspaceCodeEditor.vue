@@ -51,7 +51,11 @@
             name="markdown"
             class="q-ma-none column full-height markdown-html">
             <div class="row full-height">
-              <div class="col offset-sm-1 col-sm-10offset-md-2 col-md-8 offset-lg-3 col-lg-6 full-height" v-html="markdownHtml"></div>
+              <div
+                :class="!editable
+                  ? 'col offset-md-1 col-md-10 offset-lg-2 col-lg-8 full-height'
+                  : 'col offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6 full-height'"
+                v-html="markdownHtml"></div>
             </div>
           </QTabPanel>
         </QTabPanels>
@@ -117,7 +121,15 @@ You can edit this file to provide instructions to your candidate.
 
 Drag and drop source files to add them on the left.
 
-The following file extensions are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}`;
+The following file extensions are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}
+
+You can also use code blocks like this:
+
+\`\`\`js
+// A simple JavaScript block
+const message = "Hello, World";
+\`\`\`
+`;
 
 const { dark } = storeToRefs(useAppStore());
 
@@ -153,6 +165,8 @@ const language = computed(() => {
       return csharp();
     case ".c":
     case ".cpp":
+    case ".h":
+    case ".hpp":
       return cpp();
     case ".java":
       return java();
