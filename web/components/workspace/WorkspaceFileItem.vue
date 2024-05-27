@@ -58,7 +58,9 @@
         />
         <!-- Button to edit file name -->
         <QBtn
-          v-show="selected && allowEdit"
+          v-show="selected
+            && allowEdit
+            && file.name !== readmeName"
           color="deep-purple-4"
           :icon="tabPencil"
           @click="handleStartEditing"
