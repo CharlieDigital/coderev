@@ -3,7 +3,11 @@
     <QHeader>
       <QToolbar :class="[dark ? 'bg-dark text-white' : 'bg-white text-black']">
         <QToolbarTitle>
-          {{ selectedSourceFile ? selectedSourceFile.name : "Select a file" }}
+          {{
+            selectedSourceFile
+              ? selectedSourceFile.name
+              : "Select a file"
+            }}
         </QToolbarTitle>
 
         <QBtn
