@@ -60,63 +60,17 @@
           }">
             <QPage class="column">
               <QList class="col">
-                <QItem
+                <WorkspaceFileItem
                   v-for="file in sourceFiles"
-                  class="q-ma-sm q-px-none rounded-borders"
-                  :focused="file.name === selectedSourceFile?.name"
                   :key="file.name"
-                  @click="handleClickSourceFile(file)"
-                  manual-focus
-                  clickable
-                  dense
-                >
-                  <QItemSection class="q-pr-sm" side>
-                    <QAvatar
-                      :icon="file.ref ? tabFileCheck : tabFileUpload"
-                      :color="
-                        dark
-                          ? file.ref
-                            ? 'deep-purple-4'
-                            : 'grey-4'
-                          : file.ref
-                          ? 'deep-purple-2'
-                          : 'grey-2'
-                      "
-                      :text-color="
-                        dark
-                          ? file.ref
-                            ? 'deep-purple-8'
-                            : 'grey-8'
-                          : file.ref
-                          ? 'deep-purple-6'
-                          : 'grey-6'
-                      "
-                      font-size="0.7em"
-                      rounded
-                      size="md"
-                    />
-                  </QItemSection>
-                  <QItemSection>
-                    <QItemLabel lines="1">{{ file.name }}</QItemLabel>
-                  </QItemSection>
-                  <QItemSection
-                    v-if="
-                      !file.ref &&
-                      file.name !== readmeName &&
-                      file.name === selectedSourceFile?.name
-                    "
-                    side
-                  >
-                    <QBtn
-                      v-if="!Object.values(sourceRefs).some(r => r.title === file.name)"
-                      color="red-8"
-                      :icon="tabTrash"
-                      @click="handleRemoveSourceFile"
-                      dense
-                      flat
-                    />
-                  </QItemSection>
-                </QItem>
+                  :file
+                  :allow-edit="isEditable && !isReview"
+                  :selected="file.name === selectedSourceFile?.name"
+                  :unsaved="!Object.values(sourceRefs).some(r => r.title === file.name)"
+                  @selected="handleClickSourceFile(file)"
+                  @remove="handleRemoveSourceFile()"
+                  @change-name="handleChangeName($event)"
+                />
 
                 <!-- Control for adding a new file -->
                 <QItem
@@ -220,6 +174,7 @@
 
 <script setup lang="ts">
 import {
+  tabPencil,
   tabBulb,
   tabDeviceFloppy,
   tabDragDrop,
@@ -263,9 +218,14 @@ const dayjs = useDayjs();
 
 const { dark } = storeToRefs(useAppStore());
 
-const { workspace, candidate, selectedComment, selection } = storeToRefs(
-  useWorkspaceStore()
-);
+const workspaceStore = useWorkspaceStore()
+
+const {
+  workspace,
+  candidate,
+  selectedComment,
+  selection
+} = storeToRefs(workspaceStore);
 
 const saving = ref(false);
 
@@ -713,6 +673,35 @@ function warn(message: string) {
     timeout: 3000,
     position: "bottom-right",
   });
+}
+
+/**
+ * Handles updating the file display name when the user confirms an edit on the
+ * currently selected file.
+ * @param name The new name of the file.
+ */
+async function handleChangeName(name: string) {
+  if (!selectedSourceFile.value) {
+    return
+  }
+
+  const file = selectedSourceFile.value
+
+  if (file.hash) {
+    // Update the underlying media ref of an existing file.
+    var newNameWithExt = `${name}${file.ext}`
+
+    await workspaceStore.updateFileName(
+      file.hash,
+      newNameWithExt
+    )
+
+    // Update the underlying file
+    workspace.value.sources[file.hash].title = newNameWithExt
+  } else {
+    // Update a new file that hasn't been saved yet.
+    selectedSourceFile.value.name = name
+  }
 }
 </script>
 

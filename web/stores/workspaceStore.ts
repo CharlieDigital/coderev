@@ -20,6 +20,8 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
 
   const workspace = ref<Workspace>({...defaultWorkspace});
 
+  let skipNextUpdate = false
+
   /**
    * Resets the state of the workspace stores.
    */
@@ -97,8 +99,12 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
           workspaces.value.push(newTrip);
         },
         modified: (modifiedWorkspace) => {
-          findAndSplice(workspaces.value, modifiedWorkspace, true);
-          findAndMerge(workspace.value, modifiedWorkspace);
+          if (skipNextUpdate) { // This skips the update for a file rename; we update it locally
+            skipNextUpdate = false
+          } else {
+            findAndSplice(workspaces.value, modifiedWorkspace, true);
+            findAndMerge(workspace.value, modifiedWorkspace);
+          }
         },
         removed: (removedWorkspace) => {
           findAndSplice(workspaces.value, removedWorkspace, false);
@@ -193,6 +199,28 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
     await workspaceRepository.deleteById(uid)
   }
 
+  /**
+   * Updates the name of the file with the given hash for the current workspace.
+   * @param hash The hash of the file to update.
+   * @param newNameWithExt The new name to assign to the file (including the extension)
+   */
+  async function updateFileName(
+    hash: string,
+    newNameWithExt: string
+  ) {
+    console.log(
+      `Updating file with hash: ${hash} with new name ${newNameWithExt}`
+    );
+
+    skipNextUpdate = true
+
+    await workspaceRepository.updateFields(
+      workspace.value.uid, {
+        [`sources.${hash}.title`]: newNameWithExt
+      }
+    )
+  }
+
   return {
     workspace,
     workspaces,
@@ -202,6 +230,7 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
     addSource,
     removeSource,
     deleteWorkspace,
+    updateFileName,
     reset,
     ...useCandidates(workspace)
   };

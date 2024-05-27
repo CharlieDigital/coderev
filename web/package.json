@@ -15,7 +15,7 @@
     "@types/node": "^18.16.19",
     "@types/sanitize-html": "^2.11.0",
     "@types/showdown": "^2.0.6",
-    "nuxt": "^3.10.2",
+    "nuxt": "^3.11.2",
     "nuxt-quasar-ui": "^2.0.7",
     "quasar-extras-svg-icons": "^1.36.0",
     "sass": "^1.71.0",
@@ -74,10 +74,13 @@
     "showdown": "^2.1.0",
     "showdown-highlight": "^3.1.0",
     "thememirror": "^2.0.1",
-    "vue": "^3.4.19",
+    "vue": "^3.4.27",
     "vue-codemirror": "^6.1.1",
     "vue-markdown-render": "^2.0.1",
     "vue-router": "^4.2.5",
     "vue3-smooth-dnd": "^0.0.5"
+  },
+  "resolutions": {
+    "ufo": "1.5.3"
   }
 }

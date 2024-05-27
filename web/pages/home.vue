@@ -67,7 +67,7 @@
                   {{ Object.keys(w.comments).length }} comment(s)
                 </QItemLabel>
                 <QItemLabel
-                  v-show="Object.keys(w.comments).length > 0"
+                  v-if="Object.keys(w.comments).length > 0"
                   caption>
                   {{
                     dayjs(Object.values(w.comments)
