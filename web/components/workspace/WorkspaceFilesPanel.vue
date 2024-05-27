@@ -64,6 +64,7 @@
                   v-for="file in sourceFiles"
                   :key="file.name"
                   :file
+                  :allow-edit="isEditable && !isReview"
                   :selected="file.name === selectedSourceFile?.name"
                   :unsaved="!Object.values(sourceRefs).some(r => r.title === file.name)"
                   @selected="handleClickSourceFile(file)"

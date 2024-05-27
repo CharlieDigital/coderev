@@ -58,7 +58,7 @@
         />
         <!-- Button to edit file name -->
         <QBtn
-          v-show="selected"
+          v-show="selected && allowEdit"
           color="deep-purple-4"
           :icon="tabPencil"
           @click="handleStartEditing"
@@ -120,6 +120,7 @@ import {
 
 const props = defineProps<{
   file: SourceFile,
+  allowEdit: boolean,
   selected?: boolean,
   unsaved?: boolean
 }>()

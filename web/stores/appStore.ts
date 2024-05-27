@@ -24,9 +24,11 @@ export const useAppStore = defineStore("appStore", () => {
 
   const showPreferencesDialog = ref(false)
 
-  const user = ref<User>();
+  const currentUser = ref<User>();
 
   const profile = ref<Profile>({ ...defaultProfile });
+
+  const user = computed(() => currentUser.value)
 
   let profileSubscriptionStarted = false;
 
@@ -42,7 +44,7 @@ export const useAppStore = defineStore("appStore", () => {
    */
   function clearUser() {
     // Clear the user and token expiration time
-    user.value = undefined;
+    currentUser.value = undefined;
     profile.value = { ...defaultProfile };
     profileSubscriptionStarted = false;
   }
@@ -91,7 +93,7 @@ export const useAppStore = defineStore("appStore", () => {
   async function setUser(authUser: User) {
     console.log(` ⚡︎ Setting user: ${authUser.email}`)
 
-    user.value = authUser;
+    currentUser.value = authUser;
 
     // Get the profile by the email of the authenticated user.
     try {
