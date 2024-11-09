@@ -88,11 +88,15 @@
                     }}</QTooltip>
                   </QBtn>
                 </QItemSection>
+                <!-- Copy button -->
                 <QItemSection side>
                   <QBtn
-                    :icon="tabClipboard"
+                    :icon-right="copied && text.includes(c.uid) ? tabCheck : tabClipboard"
+                    :label="copied && text.includes(c.uid) ? 'Copied' : undefined"
+                    :text-color="copied && text.includes(c.uid) ? 'green-6' : undefined"
                     @click.stop="copy(`${baseUrl}/review/${c.uid}`)"
                     flat
+                    no-caps
                     dense
                   >
                     <QTooltip>Copy URL</QTooltip>
@@ -138,6 +142,7 @@ import { deleteField } from "firebase/firestore";
 import {
   tabArchive,
   tabArchiveOff,
+  tabCheck,
   tabClipboard,
   tabUser,
 } from "quasar-extras-svg-icons/tabler-icons";
@@ -153,7 +158,7 @@ const { candidates, workspace } = storeToRefs(workspaceStore);
 
 const showCandidateDialog = ref(false);
 
-const { copy } = useClipboard();
+const { copy, copied, text } = useClipboard();
 
 const showArchived = ref(false);
 
