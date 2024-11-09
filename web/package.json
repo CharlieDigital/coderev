@@ -56,6 +56,8 @@
     "firebase-functions": "6.1.0",
     "lexorank": "^1.0.5",
     "lru-cache": "^10.0.0",
+    "markdown-it": "^14.1.0",
+    "markdown-it-highlightjs": "^4.2.0",
     "nanoid": "^4.0.2",
     "nanoid-dictionary": "^4.3.0",
     "prosemirror-commands": "^1.5.2",
