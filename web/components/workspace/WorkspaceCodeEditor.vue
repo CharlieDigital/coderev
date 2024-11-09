@@ -73,21 +73,21 @@
 import { Codemirror } from "vue-codemirror";
 import { ViewUpdate } from "@codemirror/view";
 import { EditorState, EditorSelection } from "@codemirror/state";
-import { javascript } from "@codemirror/lang-javascript";
-import { csharp } from "@replit/codemirror-lang-csharp";
-import { json } from "@codemirror/lang-json";
+import { javascript, javascriptLanguage } from "@codemirror/lang-javascript";
+import { csharp, csharpLanguage } from "@replit/codemirror-lang-csharp";
+import { json, jsonLanguage } from "@codemirror/lang-json";
 import { markdown } from "@codemirror/lang-markdown";
-import { python } from "@codemirror/lang-python";
-import { cpp } from "@codemirror/lang-cpp";
+import { python, pythonLanguage } from "@codemirror/lang-python";
+import { cpp, cppLanguage } from "@codemirror/lang-cpp";
 import { sql } from "@codemirror/lang-sql";
-import { php } from "@codemirror/lang-php";
-import { rust } from "@codemirror/lang-rust";
-import { html } from "@codemirror/lang-html";
-import { java } from "@codemirror/lang-java";
-import { vue } from "@codemirror/lang-vue";
-import { sass } from "@codemirror/lang-sass";
-import { css } from "@codemirror/lang-css";
-import { xml } from "@codemirror/lang-xml";
+import { php, phpLanguage } from "@codemirror/lang-php";
+import { rust, rustLanguage } from "@codemirror/lang-rust";
+import { html, htmlLanguage } from "@codemirror/lang-html";
+import { java, javaLanguage } from "@codemirror/lang-java";
+import { vue, vueLanguage } from "@codemirror/lang-vue";
+import { sass, sassLanguage } from "@codemirror/lang-sass";
+import { css, cssLanguage } from "@codemirror/lang-css";
+import { xml, xmlLanguage } from "@codemirror/lang-xml";
 import { EditorView } from "codemirror";
 import { StreamLanguage } from '@codemirror/language';
 import { go } from '@codemirror/legacy-modes/mode/go';
@@ -97,9 +97,9 @@ import { swift } from '@codemirror/legacy-modes/mode/swift'
 import { dracula, tomorrow } from "thememirror";
 import { type SourceFile, type SourceSelection } from "../../../shared/viewModels";
 import { tabFileCode, tabMarkdown, tabTextWrap, tabTextWrapDisabled } from "quasar-extras-svg-icons/tabler-icons";
-import showdown from 'showdown'
-import showdownHighlight from 'showdown-highlight'
 import sanitizeHtml from 'sanitize-html'
+import MarkdownIt from "markdown-it";
+import highlightjs from "markdown-it-highlightjs";
 
 useHead({
   link: [{
@@ -185,7 +185,67 @@ const language = computed(() => {
     case ".php":
       return php();
     case ".md":
-      return markdown();
+      return markdown({
+        codeLanguages: (info: string) => {
+          switch (info) {
+            case 'javascript':
+            case 'js':
+            case 'ts':
+            case 'typescript':
+            case 'tsx':
+            case 'jsx':
+              return javascriptLanguage;
+            case "csharp":
+            case "cs":
+              return csharpLanguage;
+            case "c":
+            case "cpp":
+            case "h":
+            case "hpp":
+              return cppLanguage;
+            case "java":
+              return javaLanguage;
+            case "html":
+              return htmlLanguage;
+            case "sql":
+              return sql().language;
+            case "py":
+              return pythonLanguage;
+            case "rs":
+              return rustLanguage;
+            case "php":
+              return phpLanguage;
+            case "json":
+              return jsonLanguage;
+            case "vue":
+              return vueLanguage;
+            case "css":
+            case "scss":
+              return cssLanguage;
+            case "sass":
+              return sassLanguage;
+            case "xml":
+            case "xhtml":
+            case "xsl":
+            case "xslt":
+              return xmlLanguage;
+            case "scala":
+              return StreamLanguage.define(clike({ name: "scala"}))
+            case "kt":
+              return StreamLanguage.define(clike({ name: "kotlin"}))
+            case "dart":
+              return StreamLanguage.define(clike({ name: "dart"}))
+            case "jl":
+              return StreamLanguage.define(julia)
+            case "swift":
+              return StreamLanguage.define(swift)
+            case "go":
+              return StreamLanguage.define(go)
+            default:
+              return null
+          }
+        }
+      });
     case ".ts":
     case ".tsx":
     case ".jsx":
@@ -383,16 +443,11 @@ function handleUpdate(e: ViewUpdate) {
   }
 }
 
-showdown.setFlavor('github')
-
-const converter = new showdown.Converter({
-  extensions: [
-    showdownHighlight({
-      pre: true,
-      auto_detection: true
-    })
-  ]
-})
+const md = MarkdownIt({
+  linkify: true,
+  typographer: true,
+  html: true
+}).use(highlightjs)
 
 /**
  * If the file is a markdown file, toggle the view for the markdown.
@@ -407,7 +462,7 @@ function toggleMarkdownViewer() {
   }
 
   markdownHtml.value = sanitizeHtml(
-    converter.makeHtml(code.value), {
+    md.render(code.value), {
       allowedTags: [
         'a', 'p', 'em', 'strong', 'h1', 'h2', 'h3', 'h4', 'hr', 'pre',
         'table', 'tr', 'td', 'th', 'tbody', 'thead', 'strike',

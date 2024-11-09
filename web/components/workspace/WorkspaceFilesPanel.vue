@@ -14,6 +14,9 @@
                 :icon="tabFilePlus"
                 :color="dark ? 'deep-purple-4' : 'accent'"
                 flat dense>
+                <QTooltip>
+                  Add new file
+                </QTooltip>
                 <QMenu
                   class="row"
                   max-width="360px"
@@ -37,7 +40,11 @@
                 @click="() => open({ accept: ALLOWED_CODE_FILE_EXTENSIONS.join(',') })"
                 flat
                 dense
-              />
+              >
+                <QTooltip>
+                  Upload file
+                </QTooltip>
+              </QBtn>
 
               <QBtn
                 v-show="hasUnsavedChanges && !isReview"
@@ -49,6 +56,9 @@
                 unelevated
                 dense
               >
+                <QTooltip>
+                  Save pending changes
+                </QTooltip>
               </QBtn>
             </QToolbar>
           </QHeader>
