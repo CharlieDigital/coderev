@@ -2,6 +2,8 @@
 
 [Try CodeRev.app for your interviews -- it's free!](https://coderev.app)
 
+https://github.com/user-attachments/assets/fc5e0da1-edcb-472c-ad7b-ec53f5539284
+
 CodeRev is a lightweight tool to help you organize and conduct technical interviews using code reviews rather than leetcode.
 
 ## Rationale
