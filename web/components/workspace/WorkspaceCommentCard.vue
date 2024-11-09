@@ -171,7 +171,19 @@
       </template>
 
       <!-- Replies -->
-      <template v-for="reply in comment.replyComments">
+      <template v-if="collapsed && comment.replyComments.length > 0">
+        <QItem dense>
+          <QItemSection side>
+            <QIcon :name="tabCornerDownRight"/>
+          </QItemSection>
+          <QItemSection>
+            <QItemLabel  class="comment-body">
+              {{ comment.replyComments.length }} {{  comment.replyComments.length === 1 ? 'reply' : 'replies' }}
+            </QItemLabel>
+          </QItemSection>
+        </QItem>
+      </template>
+      <template v-else v-for="reply in comment.replyComments">
         <QSeparator/>
         <QItem>
           <QItemSection side>
@@ -219,6 +231,10 @@ const emits = defineEmits<{
   collapse: [],
   expand: []
 }>()
+
+const collapsed = computed(() => {
+  return props.commentStates[props.comment.rootComment.uid]
+})
 
 const appStore = useAppStore()
 
