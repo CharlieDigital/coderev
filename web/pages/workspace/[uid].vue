@@ -214,6 +214,8 @@ import {
   tabUsersGroup,
   tabX,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { leftMenuProps } from "../../utils/commonProps";
+import { baseUrl } from "../../utils/environment";
 
 definePageMeta({
   layout: "empty",

@@ -116,6 +116,9 @@ import {
   tabMarkdown,
 } from "quasar-extras-svg-icons/tabler-icons";
 import { QBtn, scroll } from "quasar";
+import { btnProps } from "../../utils/commonProps";
+
+const $q = useQuasar();
 
 const { getScrollTarget, setVerticalScrollPosition } = scroll;
 

@@ -195,6 +195,8 @@ tabX,
 import { FieldValue } from "firebase/firestore";
 import { tabFilePlus, tabTrash } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { QInput } from "quasar";
+import { ALLOWED_CODE_FILE_EXTENSIONS } from "../../../shared/constants"
+import { btnProps } from "../../utils/commonProps";
 
 const props = defineProps<{
   sourceRefs: MediaRef[];

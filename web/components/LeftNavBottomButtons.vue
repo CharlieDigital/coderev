@@ -38,6 +38,7 @@
 
 <script setup lang="ts">
 import { tabBrandGithub, tabMoon, tabSun  } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { leftMenuProps } from "../utils/commonProps";
 
 const $q = useQuasar();
 

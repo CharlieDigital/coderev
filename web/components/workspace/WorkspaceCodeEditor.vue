@@ -100,6 +100,7 @@ import { tabFileCode, tabMarkdown, tabTextWrap, tabTextWrapDisabled } from "quas
 import sanitizeHtml from 'sanitize-html'
 import MarkdownIt from "markdown-it";
 import highlightjs from "markdown-it-highlightjs";
+import { btnProps } from "../../utils/commonProps";
 
 useHead({
   link: [{

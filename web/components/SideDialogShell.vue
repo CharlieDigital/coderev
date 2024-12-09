@@ -102,6 +102,8 @@ const emits = defineEmits<{
   attachFile: [file: File],
 }>()
 
+const $q = useQuasar();
+
 const appStore = useAppStore()
 
 const dropZone = ref()
