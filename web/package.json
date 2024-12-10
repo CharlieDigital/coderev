@@ -47,6 +47,7 @@
     "@tiptap/starter-kit": "^2.0.4",
     "@tiptap/vue-3": "^2.0.4",
     "@vueuse/nuxt": "^10.2.1",
+    "clsx": "^2.1.1",
     "codemirror": "^6.0.1",
     "dayjs": "^1.11.9",
     "dayjs-nuxt": "^1.1.2",
@@ -73,11 +74,13 @@
     "qrcode": "^1.5.3",
     "quasar": "^2.17.4",
     "sanitize-html": "^2.11.0",
+    "tailwind-merge": "^2.5.5",
+    "tailwindcss": "^3.4.16",
     "thememirror": "^2.0.1",
-    "vue": "^3.5.13",
+    "vue": "latest",
     "vue-codemirror": "^6.1.1",
     "vue-markdown-render": "^2.0.1",
-    "vue-router": "^4.4.5",
+    "vue-router": "latest",
     "vue3-smooth-dnd": "^0.0.5"
   }
 }

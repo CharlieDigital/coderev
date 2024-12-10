@@ -7,8 +7,8 @@
         <div class="header">
           <h1 class="q-my-none q-py-xl">Code review as interview made easy.</h1>
           <p>
-            CodeRev is a lightweight tool to help you organize and conduct
-            technical interviews using code reviews rather than leetcode.
+            CodeRev is a lightweight tool to help you organize and conduct technical
+            interviews using code reviews rather than leetcode.
           </p>
           <QBtn
             v-bind="btnProps"
@@ -30,14 +30,12 @@
         </h2>
 
         <p>
-          In the age of StackOverflow and ChatGPT, is leetcode really the best
-          way to evaluate technical candidates?
+          In the age of StackOverflow and ChatGPT, is leetcode really the best way to
+          evaluate technical candidates?
         </p>
         <p><em>Was it ever?</em></p>
 
-        <p>
-          Try code review as interview instead!
-        </p>
+        <p>Try code review as interview instead!</p>
 
         <div class="row q-col-gutter-md q-mb-xl q-mt-lg justify-center">
           <div v-for="reason in reasons" class="col-md-4 col-sm-12">
@@ -48,16 +46,21 @@
         </div>
 
         <p>
-          A candidate's ability to read and reason about your existing code can
-          be a better measure of how quickly they can adapt to your team and how
-          you would expect them to contribute to your ongoing efforts. And in most
-          cases, a new hire's first days are focused on reading code.
+          A candidate's ability to read and reason about your existing code can be a
+          better measure of how quickly they can adapt to your team and how you would
+          expect them to contribute to your ongoing efforts. And in most cases, a new
+          hire's first days are focused on reading code.
         </p>
 
         <QBtn
           v-bind="btnProps"
           :icon="tabExternalLink"
-          @click="navigateTo('https://chrlschn.dev/blog/2023/07/interviews-age-of-ai-ditch-leetcode-try-code-reviews-instead/', { external: true,  open: { target: '_blank' }})"
+          @click="
+            navigateTo(
+              'https://chrlschn.dev/blog/2023/07/interviews-age-of-ai-ditch-leetcode-try-code-reviews-instead/',
+              { external: true, open: { target: '_blank' } }
+            )
+          "
           label="Read more"
           class="q-mt-md"
           size="xl"
@@ -88,8 +91,8 @@
             How it works
           </h2>
 
-          <QResponsive :ratio="1400 / 805" class="rounded-borders" >
-            <QCarousel v-model="slide" animated swipeable infinite keep-alive >
+          <QResponsive :ratio="1400 / 805" class="rounded-borders">
+            <QCarousel v-model="slide" animated swipeable infinite keep-alive>
               <template #navigation-icon="{ active, btnProps, onClick }">
                 <q-btn
                   v-if="active"
@@ -167,10 +170,7 @@
           Benefits
         </h2>
 
-        <p>
-          Why use CodeRev? Why not just a GitHub repo or CodeSandbox or
-          Stackblitz?
-        </p>
+        <p>Why use CodeRev? Why not just a GitHub repo or CodeSandbox or Stackblitz?</p>
 
         <div class="row q-col-gutter-md">
           <div v-for="entry in benefits" class="col-md-4 col-12">
@@ -274,14 +274,15 @@
 
 <script setup lang="ts">
 import {
-tabBrandGithub,
+  tabBrandGithub,
   tabBrandMastodon,
   tabCheck,
   tabCircle,
   tabClock,
-tabExternalLink,
+  tabExternalLink,
 } from "quasar-extras-svg-icons/tabler-icons";
 import { tabCircleFilled } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { btnProps } from "../utils/commonProps";
 
 const description =
   "CodeRev is a lightweight tool to help you organize and conduct technical interviews using code reviews rather than leetcode.";
@@ -332,7 +333,8 @@ const screenshots = [
     path: "/screens/coderev-candidates.webp",
   },
   {
-    text: "Candidates review the code in their workspace and provide comments and feedback.",
+    text:
+      "Candidates review the code in their workspace and provide comments and feedback.",
     path: "/screens/coderev-comments.webp",
   },
 ];
@@ -350,9 +352,10 @@ const benefits = [
   },
   {
     title: "Collaborative",
-    text: "Focus on analysis, feedback, and communication; not algorithmic complexity (let GPT do that).",
+    text:
+      "Focus on analysis, feedback, and communication; not algorithmic complexity (let GPT do that).",
     ready: true,
-  }
+  },
 ];
 
 const faqs = {
