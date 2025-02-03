@@ -66,6 +66,7 @@
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from 'nuxt/app';
 import { tabBrandGithub } from "quasar-extras-svg-icons/tabler-icons";
 import {
   tabLogin,

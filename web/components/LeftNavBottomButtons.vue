@@ -37,6 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from 'nuxt/app';
 import { tabBrandGithub, tabMoon, tabSun  } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { leftMenuProps } from "../utils/commonProps";
 

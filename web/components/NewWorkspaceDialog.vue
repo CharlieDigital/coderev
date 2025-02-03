@@ -60,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from 'nuxt/app';
 import { tabHexagon, tabPlus } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { btnProps } from "../utils/commonProps";
 

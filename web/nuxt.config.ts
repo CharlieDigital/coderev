@@ -13,7 +13,8 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts"
   ],
   imports: {
-    dirs: ["../shared/**", "./stores/**", "./utils/data/**"],
+    dirs: ["../shared/**", "./stores/**", "./utils/**"],
+    global: true
   },
   googleFonts: {
     families: {
@@ -22,7 +23,7 @@ export default defineNuxtConfig({
   },
   quasar: {
     // https://nuxt.com/modules/quasar
-    sassVariables: "./quasar-variables.sass",
+    sassVariables: "~/quasar-variables.sass",
     extras: {
       animations: ["fadeInUp", "fadeInDown"],
     },

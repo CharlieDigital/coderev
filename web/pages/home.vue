@@ -148,6 +148,7 @@
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from 'nuxt/app';
 import { tabPlus } from "quasar-extras-svg-icons/tabler-icons";
 import { tabBrandGithub, tabPlayerPlay, tabCheck } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { btnProps } from '../utils/commonProps'

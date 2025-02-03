@@ -104,6 +104,7 @@
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from 'nuxt/app';
 import {
   tabBrandMastodon,
   tabMenu,

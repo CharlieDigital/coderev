@@ -90,8 +90,11 @@
 
 <script setup lang="ts">
 /// <reference types="quasar" />
+import { btnProps } from '../utils/commonProps'
+import { firebaseConnector } from '../utils/data/FirebaseConnector';
+import { navigateTo } from 'nuxt/app';
 import { QInput } from "quasar";
-import { tabLogin, tabUserExclamation, tabUserPlus, tabWand } from "quasar-extras-svg-icons/tabler-icons";
+import { tabLogin, tabUserExclamation, tabUserPlus } from "quasar-extras-svg-icons/tabler-icons";
 import {
   tabBrandGithub,
   tabBrandGoogle,
