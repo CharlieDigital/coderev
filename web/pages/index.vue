@@ -21,6 +21,19 @@
         </div>
       </section>
 
+      <video
+        preload="none"
+        controls
+        name="media"
+        class="rounded-borders shadow-2"
+        style="width: 100%"
+        poster="https://storage.googleapis.com/media.coderev.app/code-rev-intro.webp"
+        title="CodeRev.app 3 minute intro.">
+        <source
+          src="https://storage.googleapis.com/media.coderev.app/code-rev-intro-720p-hb-1000.mp4"
+          type="video/mp4" />
+      </video>
+
       <section class="q-px-md">
         <h2
           class="q-my-none q-pt-lg q-pb-md"

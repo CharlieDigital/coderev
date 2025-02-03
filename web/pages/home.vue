@@ -83,6 +83,25 @@
           </template>
         </QList>
 
+        <div v-if="showVideo" class="q-mt-lg">
+          <QItem class="q-pr-none">
+              <QSpace/>
+              <QBtn v-bind="btnProps" label="Done" color="accent" :icon="tabCheck" @click="showVideo = !showVideo"/>
+          </QItem>
+          <video
+            preload="none"
+            controls
+            name="media"
+            class="rounded-borders shadow-2"
+            style="width: 100%"
+            poster="https://storage.googleapis.com/media.coderev.app/code-rev-intro.webp"
+            title="CodeRev.app 3 minute intro.">
+            <source
+              src="https://storage.googleapis.com/media.coderev.app/code-rev-intro-720p-hb-1000.mp4"
+              type="video/mp4" />
+          </video>
+        </div>
+
         <!-- Feedback banner -->
         <QBanner
           class="q-mt-md"
@@ -91,6 +110,14 @@
           rounded>
           Have feedback, ideas, or ran into an issue?
           <template #action>
+            <QBtn
+              v-bind="btnProps"
+              color="accent"
+              class="q-mr-xs"
+              :icon="showVideo ? tabCheck : tabPlayerPlay"
+              @click="showVideo = !showVideo"
+              dense
+            />
             <QBtn
               v-bind="btnProps"
               label="Feedback"
@@ -122,7 +149,8 @@
 
 <script setup lang="ts">
 import { tabPlus } from "quasar-extras-svg-icons/tabler-icons";
-import { tabBrandGithub } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { tabBrandGithub, tabPlayerPlay, tabCheck } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { btnProps } from '../utils/commonProps'
 
 definePageMeta({
   layout: "app-layout",
@@ -136,6 +164,8 @@ useHeadSafe({
 const dayjs = useDayjs();
 
 const showNewWorkspaceDialog = ref(false);
+
+const showVideo = ref(false);
 
 const workspaceStore = useWorkspaceStore();
 
