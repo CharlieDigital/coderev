@@ -34,6 +34,16 @@ jobs:
       #     channelId: live
       #     projectId: coderev-app
 
+      - name: Build Functions
+        working-directory: functions
+        run: |
+          npm ci --prefer-offline --no-audit --no-progress
+          npm run build
+          if [ $? != 0 ]; then
+            echo "Build failed"
+            exit 1
+          fi
+
       - name: Deploy Hosting and Firebase Rules
         uses: w9jds/firebase-action@v13.23.0
         with:
