@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app";
+import { deleteApp, initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
 import {
@@ -197,6 +197,40 @@ class FirebaseConnector {
    */
   public async createEmailUser(username: string, password: string) {
     await createUserWithEmailAndPassword(this.auth, username, password)
+  }
+
+  /**
+   * Unlike the `createEmailUser` account, this will not log the user into the
+   * generated account.
+   *
+   * https://stackoverflow.com/a/77419918/116051
+   * https://stackoverflow.com/a/38013551/116051
+   *
+   * We use a temporary
+   *
+   * @param username The username supplied
+   * @param password The password supplied
+   */
+  public async provisionGeneratedAccount(username: string, password: string) {
+    // TODO: This maybe could be moved to a backend function?
+    const tempApp = initializeApp(this.firebaseConfig, username);
+    const tempAuth = getAuth(tempApp);
+
+    if (
+      import.meta.env.DEV ||
+      window.location.hostname.toLowerCase() === "localhost"
+    ) {
+      console.log("⮑ Connecting tempAuth to emulator");
+      connectAuthEmulator(tempAuth, "http://localhost:9099", {
+        disableWarnings: true,
+      });
+    }
+
+    await createUserWithEmailAndPassword(tempAuth, username, password);
+    await signOut(tempAuth)
+
+    // There is no deprovisioning of a created app?
+    await deleteApp(tempApp)
   }
 
   /**

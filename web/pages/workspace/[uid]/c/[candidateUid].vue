@@ -1,6 +1,5 @@
 <template>
-  <QSplitter
-    v-model="split">
+  <QSplitter v-model="split">
     <template #before>
       <WorkspaceFilesPanel
         v-if="candidate.uid !== defaultCandidate.uid"
@@ -14,15 +13,16 @@
 </template>
 
 <script setup lang="ts">
+import { defaultCandidate } from "../../../../stores/composables/candidates";
 const route = useRoute();
 
-const { profile } = storeToRefs(useAppStore())
+const { profile } = storeToRefs(useAppStore());
 
 const workspaceStore = useWorkspaceStore();
 
 const { candidate, selection, selectedComment } = storeToRefs(workspaceStore);
 
-const split = ref(75)
+const split = ref(75);
 
 onBeforeMount(async () => {
   const workspaceUid = route.params.uid as string;
@@ -31,7 +31,7 @@ onBeforeMount(async () => {
   await workspaceStore.ensureWorkspace(workspaceUid);
   await workspaceStore.ensureCandidate(candidateUid);
 
-  await workspaceStore.loadCandidates()
+  await workspaceStore.loadCandidates();
 });
 
 const sources = computed(() => {
@@ -48,24 +48,24 @@ const sources = computed(() => {
 
 watchEffect(async () => {
   if (!profile.value || profile.value.uid === defaultProfile.uid) {
-    return
+    return;
   }
 
   // If the candidate loads this URL, they can see a limited workspace that doesn't
   // work correctly.  So if the user is candidate, we'll just redirect to the
   // review
   if (profile.value.email === candidate.value.email) {
-    const target = `/review/${candidate.value.uid}`
-    console.log(`Navigating user to: ${target}`)
-    await navigateTo(target)
+    const target = `/review/${candidate.value.uid}`;
+    console.log(`Navigating user to: ${target}`);
+    await navigateTo(target);
   }
-})
+});
 
 onMounted(() => {
   // Reset the selections
-  selection.value = undefined
-  selectedComment.value = undefined
-})
+  selection.value = undefined;
+  selectedComment.value = undefined;
+});
 </script>
 
 <style scoped>

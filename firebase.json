@@ -3,6 +3,7 @@
     {
       "source": "functions",
       "codebase": "default",
+      "runtime": "nodejs18",
       "ignore": [
         "node_modules",
         ".git",

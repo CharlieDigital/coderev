@@ -119,6 +119,12 @@ export type CandidateReview = {
   email: string;
 
   /**
+   * If the user selects to create an anonymous account, then we want to allow
+   * entry of a label here.
+   */
+  label?: string;
+
+  /**
    * Represents a set of content which every workspace is associated with.  A content
    * set can be associated with multiple workspaces.  For example, a set of documents
    * can be shared by multiple teams in different workspaces.

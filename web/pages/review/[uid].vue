@@ -24,22 +24,11 @@
       </QPageContainer>
 
       <!-- Left drawer which has the nav and description -->
-      <QDrawer
-        v-model="showLeftDrawer"
-        class="column bg-grey-10"
-        :mini="mini"
-        dark
-      >
+      <QDrawer v-model="showLeftDrawer" class="column bg-grey-10" :mini="mini" dark>
         <template #mini>
           <div class="text-center q-py-sm column full-height justify-between">
             <div>
-              <QBtn
-                :icon="tabArrowRight"
-                @click="mini = false"
-                size="md"
-                dense
-                flat
-              />
+              <QBtn :icon="tabArrowRight" @click="mini = false" size="md" dense flat />
               <QBtn
                 size="md"
                 class="q-mt-sm"
@@ -77,13 +66,7 @@
                 dense
                 flat
               />
-              <QBtn
-                size="md"
-                :icon="tabMail"
-                @click="sendFeedback"
-                dense
-                flat
-              />
+              <QBtn size="md" :icon="tabMail" @click="sendFeedback" dense flat />
             </div>
           </div>
         </template>
@@ -110,12 +93,9 @@
                 <QIcon :name="tabUser" />
               </QItemSection>
               <QItemSection>
-                <QItemLabel
-                  class="text-body1"
-                  style="word-break: break-all"
-                  lines="2"
-                  >{{ candidate.email }}</QItemLabel
-                >
+                <QItemLabel class="text-body1" style="word-break: break-all" lines="2">{{
+                  candidate.email
+                }}</QItemLabel>
               </QItemSection>
             </QItem>
             <!-- <QCardActions align="right">
@@ -123,11 +103,7 @@
             </QCardActions> -->
           </QCard>
 
-          <QItem
-            class="rounded-borders"
-            @click="navigateTo('/home')"
-            clickable
-            >
+          <QItem class="rounded-borders" @click="navigateTo('/home')" clickable>
             <QItemSection avatar>
               <QIcon :name="tabHome" />
             </QItemSection>
@@ -155,6 +131,11 @@ import {
   tabSun,
   tabUser,
 } from "quasar-extras-svg-icons/tabler-icons";
+import { leftMenuProps } from "../../utils/commonProps";
+import { navigateTo } from "nuxt/app";
+import { defaultCandidate } from "../../stores/composables/candidates";
+
+const $q = useQuasar();
 
 definePageMeta({
   layout: "empty",
@@ -171,7 +152,7 @@ const { dark } = storeToRefs(appStore);
 
 const { candidate } = storeToRefs(workspaceStore);
 
-const workspaceName = computed(() => candidate.value.workspaceName)
+const workspaceName = computed(() => candidate.value.workspaceName);
 
 useHeadSafe({
   title: workspaceName,

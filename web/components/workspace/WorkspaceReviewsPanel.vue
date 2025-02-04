@@ -17,9 +17,7 @@
             bordered
           >
             <QItem>
-              <QItemSection class="text-h5 text-bold">
-                Candidates
-              </QItemSection>
+              <QItemSection class="text-h5 text-bold"> Candidates </QItemSection>
               <QItemSection side>
                 <QBtn
                   :icon="showArchived ? tabArchive : tabArchiveOff"
@@ -49,9 +47,7 @@
             </QItem>
 
             <!-- Listing of candidates -->
-            <template
-              v-for="c in filteredCandidates"
-              :key="c.uid">
+            <template v-for="c in filteredCandidates" :key="c.uid">
               <QSeparator />
               <QItem
                 :class="[!!c.archivedAtUtc ? 'text-italic archived' : undefined]"
@@ -69,37 +65,45 @@
                   </QAvatar>
                 </QItemSection>
                 <QItemSection>
-                  <QItemLabel class="text-h6">{{ c.name }}</QItemLabel>
+                  <QItemLabel class="text-h6"
+                    >{{ c.name }}
+                    <QIcon
+                      color="grey-6"
+                      :name="
+                        c.email.trim().toLowerCase().endsWith('coderev.app')
+                          ? tabShieldOff
+                          : tabShieldCheck
+                      "
+                    />
+                  </QItemLabel>
                   <QItemLabel class="text-body1">{{
                     dayjs(c.createdAtUtc).utc().fromNow()
                   }}</QItemLabel>
                 </QItemSection>
                 <QItemSection side>
-                  <QBtn
-                    :icon="!!c.archivedAtUtc ? tabArchiveOff : tabArchive"
-                    @click.stop="
-                      toggleCandidateArchive(!!c.archivedAtUtc, c.uid)
+                  <QChip
+                    :label="
+                      copied && text.includes(c.uid)
+                        ? 'Copied'
+                        : `${c.uid.slice(0, 2)}********${c.uid.slice(-6)}`
                     "
-                    flat
-                    dense
-                  >
-                    <QTooltip>{{
-                      !!c.archivedAtUtc ? "Unarchive" : "Archive"
-                    }}</QTooltip>
-                  </QBtn>
+                    :icon="copied && text.includes(c.uid) ? undefined : tabClipboard"
+                    :icon-right="copied && text.includes(c.uid) ? tabCheck : undefined"
+                    :color="copied && text.includes(c.uid) ? 'green-6' : undefined"
+                    :text-color="copied && text.includes(c.uid) ? 'green-1' : undefined"
+                    @click.stop="copy(`${baseUrl}/review/${c.uid}`)"
+                    clickable
+                    style="font-family: monospace"
+                  />
                 </QItemSection>
-                <!-- Copy button -->
                 <QItemSection side>
                   <QBtn
-                    :icon-right="copied && text.includes(c.uid) ? tabCheck : tabClipboard"
-                    :label="copied && text.includes(c.uid) ? 'Copied' : undefined"
-                    :text-color="copied && text.includes(c.uid) ? 'green-6' : undefined"
-                    @click.stop="copy(`${baseUrl}/review/${c.uid}`)"
+                    :icon="!!c.archivedAtUtc ? tabArchiveOff : tabArchive"
+                    @click.stop="toggleCandidateArchive(!!c.archivedAtUtc, c.uid)"
                     flat
-                    no-caps
                     dense
                   >
-                    <QTooltip>Copy URL</QTooltip>
+                    <QTooltip>{{ !!c.archivedAtUtc ? "Unarchive" : "Archive" }}</QTooltip>
                   </QBtn>
                 </QItemSection>
                 <QItemSection side>
@@ -115,15 +119,16 @@
         </div>
         <!-- Right column -->
         <div class="col-3">
-          <QBanner
-            class="tips"
-            :class="[dark ? 'bg-grey-8' : 'bg-grey-4']"
-            rounded
-          >
+          <QBanner class="tips" :class="[dark ? 'bg-grey-8' : 'bg-grey-4']" rounded>
             <p>Create a code review for each candidate.</p>
             <p>
-              Candidates will get their own copies of the workspace to provide
-              their feedback and reviews.
+              Candidates will get their own copies of the workspace to provide their
+              feedback and reviews.
+            </p>
+            <p>
+              <strong>CodeRev does not automatically send emails</strong>
+              (for security and anti-spam reasons). After creating the workspace, copy the
+              candidate workspace URL and send it to them in an email or chat message.
             </p>
           </QBanner>
         </div>
@@ -131,14 +136,47 @@
     </QPage>
 
     <WorkspaceCandidateDialog
-      :visible="showCandidateDialog"
-      @close="showCandidateDialog = false"
+      v-model="showCandidateDialog"
+      @generated-user="handleUserGenerated"
     />
+
+    <QDialog
+      v-model="showGeneratedDetails"
+      position="bottom"
+      :persistent="false"
+      seamless
+    >
+      <QCard style="width: 400px">
+        <QCardSection>
+          <QItem>
+            <QItemSection>
+              <QItemLabel class="text-bold">Last generated user</QItemLabel>
+              <QItemLabel>{{ generatedInfo?.label }}</QItemLabel>
+            </QItemSection>
+            <QItemSection side>
+              <QBtn
+                class="q-mr-sm"
+                :icon="
+                  copied && text === generatedInfo?.details ? tabCheck : tabClipboard
+                "
+                :color="copied && text === generatedInfo?.details ? 'green' : undefined"
+                @click="copy(generatedInfo?.details ?? '(No user info)')"
+                flat
+                dense
+              />
+            </QItemSection>
+            <QItemSection side>
+              <QBtn :icon="tabX" @click="showGeneratedDetails = false" flat dense />
+            </QItemSection>
+          </QItem>
+        </QCardSection>
+      </QCard>
+    </QDialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { navigateTo } from 'nuxt/app';
+import { navigateTo } from "nuxt/app";
 import { deleteField } from "firebase/firestore";
 import {
   tabArchive,
@@ -146,8 +184,11 @@ import {
   tabCheck,
   tabClipboard,
   tabUser,
-} from "quasar-extras-svg-icons/tabler-icons";
-import { tabPlus } from "quasar-extras-svg-icons/tabler-icons-v2";
+  tabPlus,
+  tabShieldCheck,
+  tabShieldOff,
+  tabX,
+} from "quasar-extras-svg-icons/tabler-icons-v2";
 import { baseUrl } from "../../utils/environment";
 import { btnProps } from "../../utils/commonProps";
 
@@ -164,6 +205,10 @@ const showCandidateDialog = ref(false);
 const { copy, copied, text } = useClipboard();
 
 const showArchived = ref(false);
+
+const showGeneratedDetails = ref(false);
+
+const generatedInfo = ref<{ label: string; details: string }>();
 
 onMounted(async () => {
   await workspaceStore.loadCandidates();
@@ -202,6 +247,21 @@ async function toggleCandidateArchive(isArchived: boolean, uid: string) {
       archivedAtUtc: dayjs().utc().toISOString(),
     });
   }
+}
+
+/**
+ * A user was generated; we keep the details here in case the user needs
+ * to copy again.
+ * @param label The label for the user
+ * @param details The details for the user
+ */
+function handleUserGenerated(label: string, details: string) {
+  showGeneratedDetails.value = true;
+
+  generatedInfo.value = {
+    label,
+    details,
+  };
 }
 </script>
 
