@@ -413,12 +413,16 @@ h3 {
 }
 
 p {
-  font-size: 1.4em;
+  font-size: 1.5em;
 }
 
 .slide-caption {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   box-shadow: 2px 2px 12px 2px rgba(0, 0, 0, 0.7);
+}
+
+:deep(.q-chip__content) {
+  font-size: 22px
 }
 </style>

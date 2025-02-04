@@ -207,7 +207,7 @@ async function toggleCandidateArchive(isArchived: boolean, uid: string) {
 
 <style scoped>
 .tips p {
-  font-size: 1.3em;
+  font-size: 1.1em;
 }
 
 :deep(.archived) {

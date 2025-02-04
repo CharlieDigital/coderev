@@ -177,4 +177,8 @@ async function handleSignup() {
 a, a:visited {
   color: #7a5cc0
 }
+
+:deep(.q-btn__content) {
+  font-size: 1.3rem
+}
 </style>
