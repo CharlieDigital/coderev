@@ -1,7 +1,7 @@
 import * as admin from "firebase-admin";
-import { getAuth } from "firebase-admin/auth";
-import { getFirestore } from "firebase-admin/firestore";
-import { getStorage } from "firebase-admin/storage";
+import {getAuth} from "firebase-admin/auth";
+import {getFirestore} from "firebase-admin/firestore";
+import {getStorage} from "firebase-admin/storage";
 
 /**
  * Class which encapsulates common Firebase components.
@@ -12,14 +12,16 @@ class ServerFirebaseConnector {
   private readonly backingStorage;
   private readonly _auth;
 
-
+  /**
+   * Initializes the Firestore connection.
+   */
   constructor() {
     this.app = admin.initializeApp();
     this.firestore = getFirestore(this.app);
     this.backingStorage = getStorage(this.app);
     this._auth = getAuth(this.app);
 
-    this.firestore.settings({ ignoreUndefinedProperties: true });
+    this.firestore.settings({ignoreUndefinedProperties: true});
   }
 
   /**
@@ -27,7 +29,7 @@ class ServerFirebaseConnector {
    */
   public start() {
     console.log("Started!");
-    console.log(`Connected to emulator? ${this.isEmulator}`)
+    console.log(`Connected to emulator? ${this.isEmulator}`);
   }
 
   /**

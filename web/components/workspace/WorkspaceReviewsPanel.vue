@@ -140,6 +140,7 @@
       @generated-user="handleUserGenerated"
     />
 
+    <!-- Bottom dialog that shows the last generated user -->
     <QDialog
       v-model="showGeneratedDetails"
       position="bottom"

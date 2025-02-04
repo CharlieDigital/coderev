@@ -27,9 +27,16 @@ jobs:
           yarn generate
           popd
 
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      # - uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
+      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CODEREV_APP }}'
+      #     channelId: live
+      #     projectId: coderev-app
+
+      - name: Deploy Hosting and Firebase Rules
+        uses: w9jds/firebase-action@v13.23.0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_CODEREV_APP }}'
-          channelId: live
-          projectId: coderev-app
+          args: deploy --only firestore,hosting,functions,storage
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_CREDENTIALS_JSON }}

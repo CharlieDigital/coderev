@@ -1,5 +1,5 @@
-import { generateAccount } from './generateAccount';
-import { firebaseConnector } from './ServerFirebaseConnector';
+import {generateAccount} from "./generateAccount";
+import {firebaseConnector} from "./ServerFirebaseConnector";
 
 console.log("Starting functions...");
 

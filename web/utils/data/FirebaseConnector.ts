@@ -16,7 +16,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
+import { getFunctions, connectFunctionsEmulator, httpsCallable } from "firebase/functions";
 import {
   Firestore,
   connectFirestoreEmulator,
@@ -206,12 +206,15 @@ class FirebaseConnector {
    * https://stackoverflow.com/a/77419918/116051
    * https://stackoverflow.com/a/38013551/116051
    *
-   * We use a temporary
+   * We use a temporary app.
    *
    * @param username The username supplied
    * @param password The password supplied
    */
-  public async provisionGeneratedAccount(username: string, password: string) {
+  public async provisionGeneratedAccount(
+    username: string,
+    password: string
+  ) {
     // TODO: This maybe could be moved to a backend function?
     const tempApp = initializeApp(this.firebaseConfig, username);
     const tempAuth = getAuth(tempApp);
@@ -232,6 +235,39 @@ class FirebaseConnector {
     // There is no deprovisioning of a created app?
     await deleteApp(tempApp)
   }
+
+  /**
+   * Unlike the previous method, this one we will make the call on the server.
+   *
+   * @param workspaceUid The UID of the workspace this account was generated for.
+   * @param username The username supplied
+   * @param password The password supplied
+   * @param displayName The display name for the user
+   * @param currentUserRef The current user reference
+   */
+    public async provisionGeneratedAccountViaFn(
+      workspaceUid: string,
+      username: string,
+      password: string,
+      displayName: string,
+      currentUserRef: EmbeddedRef
+    ) : Promise<GenerateAccountResponse> {
+      const response = await httpsCallable<
+        GenerateAccountRequest, GenerateAccountResponse
+      >(this.functions, "generateAccount")({
+        username,
+        label: displayName,
+        password: password,
+        workspaceUid,
+        createdBy: currentUserRef
+      })
+
+      if (!response.data.succeeded) {
+        console.error(`Failed to generate account;`, response.data.message)
+      }
+
+      return response.data
+    }
 
   /**
    * Performs a sign in with the supplied login name and password

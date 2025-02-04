@@ -170,7 +170,9 @@ const emits = defineEmits<{
 
 const tab = ref<'viaEmail'|'viaGen'>('viaEmail')
 
-const { dark } = storeToRefs(useAppStore());
+const appStore = useAppStore();
+
+const { dark } = storeToRefs(appStore);
 
 const { workspace } = storeToRefs(useWorkspaceStore());
 
@@ -231,9 +233,12 @@ async function addCandidate() {
 
     if (generate) {
       // Create a generated account for the user.
-      await firebaseConnector.provisionGeneratedAccount(
+      await firebaseConnector.provisionGeneratedAccountViaFn(
+        workspace.value.uid,
         generatedEmail.value,
-        generatedPassword.value
+        generatedPassword.value,
+        candidateName.value,
+        appStore.getCurrentUserRef()
       )
     }
 

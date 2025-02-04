@@ -34,9 +34,7 @@
               <QIcon :name="tabArrowLeft" />
             </QItemSection>
             <QItemSection>
-              <QItemLabel class="text-h5 text-weight-bold"
-                >CodeRev.app</QItemLabel
-              >
+              <QItemLabel class="text-h5 text-weight-bold">CodeRev.app</QItemLabel>
             </QItemSection>
           </QItem>
 
@@ -76,8 +74,7 @@
                 <QBtn
                   :icon="tabDeviceFloppy"
                   :disable="
-                    workspaceDetails.name === '' ||
-                    workspaceDetails.description === ''
+                    workspaceDetails.name === '' || workspaceDetails.description === ''
                   "
                   @click="saveChanges"
                   flat
@@ -133,12 +130,9 @@
                 <QIcon :name="tabUser" />
               </QItemSection>
               <QItemSection>
-                <QItemLabel
-                  class="text-body1"
-                  style="word-break: break-all"
-                  lines="2"
-                  >{{ candidate.email }}</QItemLabel
-                >
+                <QItemLabel class="text-body1" style="word-break: break-all" lines="2">{{
+                  candidate.label ?? candidate.email
+                }}</QItemLabel>
               </QItemSection>
             </QItem>
             <template v-else>
@@ -194,14 +188,13 @@
       </QDrawer>
     </QLayout>
 
-    <WorkspaceTeamDialog
-      :visible="showTeamDialog"
-      @close="showTeamDialog = false"
-    />
+    <WorkspaceTeamDialog :visible="showTeamDialog" @close="showTeamDialog = false" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { navigateTo } from "nuxt/app";
+import { defaultWorkspace } from "../../stores/workspaceStore";
 import {
   tabArrowLeft,
   tabArrowUpLeft,
@@ -249,7 +242,7 @@ const workspaceDetails = reactive({
   description: "",
 });
 
-const workspaceName = computed(() => workspace.value.name)
+const workspaceName = computed(() => workspace.value.name);
 
 useHeadSafe({
   title: workspaceName,
@@ -282,11 +275,11 @@ onBeforeMount(async () => {
 
 watchEffect(() => {
   if (workspace.value && Object.keys(workspace.value.sources).length > 0) {
-    tab.value = "reviews"
+    tab.value = "reviews";
   } else {
-    tab.value = "files"
+    tab.value = "files";
   }
-})
+});
 
 async function saveChanges() {
   if (!workspace.value) {

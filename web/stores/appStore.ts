@@ -106,14 +106,14 @@ export const useAppStore = defineStore("appStore", () => {
           )?.[0] ?? undefined;
 
         if (!userProfile) {
-          const name = authUser.displayName ?? `User ${authUser.uid}`
+          const name = authUser.displayName ?? authUser.email ?? `User ${authUser.uid}`
 
           console.log(`  ⮑ Creating profile for user: ${authUser.email}`)
 
           userProfile = {
             uid: authUser.uid,
             name: name,
-            email: authUser.email ?? `user.${authUser.uid}@example.com`,
+            email: authUser.email ?? `user.${authUser.uid}@coderev.app`,
             createdAtUtc: dayjs().utc().toISOString(),
             createdBy: {
               uid: authUser.uid,
