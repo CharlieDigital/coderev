@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <QPage
-      class="q-pb-xl offset-xl-3 offset-md-2 col-xl-6 col-md-8 col-sm-12 text-center"
+      class="q-pb-xl offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12 text-center"
     >
       <section class="q-pb-xl">
         <div class="header">
@@ -411,6 +411,8 @@ const faqs = {
     "Many roles such as a senior engineering manager or technical architect are more biased towards reading and evaluating code rather than writing code.  This is also the case for roles like technical support or QA who may be tracing code, but not writing code.  And in reality, we all use external resources when we typically code -- whether StackOverflow, GitHub Copilot, ChatGPT, or Reddit forums -- especially when we are dealing with algorithmically complex problems.  Coding exercises artificially create a high-stress interaction that doesn't reflect how we build and ship software in real life.",
   "How is CodeRev.app free?":
     "It's designed to use mostly static resources and easily fits within the free tier of Google Firebase.  It uses Firestore minimally and primarily stores source files in Storage which has a 1GB/day free limit.  In short, CodeRev.app has been intentionally designed to be free for as long as possible.",
+  "What features of CodeRev.app are privacy focused?":
+    "CodeRev.app allows teams and candidates to use an account with a generated identifiers rather than their actual email address.  Deletions are permanent; there's no soft deletion here!  There's no ads and minimal tracking (only Google Analytics to keep an eye on traffic). Of course, it's also open source so you can see exactly how the data is used (or not used, in this case!).",
   "What's the stack?":
     "Nuxt3 (Vue.js) + Quasar Framework + Google Cloud Firebase.  Productive, fast, and more or less free.",
   "Can you add [...]?": "Send me an email or DM and let me know!",
