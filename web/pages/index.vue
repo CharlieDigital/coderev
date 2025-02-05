@@ -3,12 +3,12 @@
     <QPage
       class="q-pb-xl offset-xl-3 offset-md-2 col-xl-6 col-md-8 col-sm-12 text-center"
     >
-      <section class="q-pb-xl q-px-md">
+      <section class="q-pb-xl">
         <div class="header">
           <h1 class="q-my-none q-py-xl">Code review as interview made easy.</h1>
-          <p>
-            CodeRev is a lightweight tool to help you organize and conduct technical
-            interviews using code reviews rather than leetcode.
+          <p style="text-align: center">
+            CodeRev is a <em>lightweight</em> tool to help you organize and conduct
+            technical interviews using code reviews rather than leetcode.
           </p>
           <QBtn
             v-bind="btnProps"
@@ -18,6 +18,21 @@
             size="xl"
             color="accent"
           />
+          <QBtn
+            v-bind="btnProps"
+            :icon="tabBrandGithub"
+            @click="
+              navigateTo('https://github.com/CharlieDigital/coderev', {
+                external: true,
+                open: { target: '_blank' },
+              })
+            "
+            label="View repo"
+            class="q-mt-md q-ml-md"
+            size="xl"
+            :color="dark ? 'grey-6' : 'accent'"
+            outline
+          />
         </div>
       </section>
 
@@ -25,16 +40,18 @@
         preload="none"
         controls
         name="media"
-        class="rounded-borders shadow-2"
+        class="rounded-borders shadow-2 q-mt-lg"
         style="width: 100%"
         poster="https://storage.googleapis.com/media.coderev.app/code-rev-intro.webp"
-        title="CodeRev.app 3 minute intro.">
+        title="CodeRev.app 3 minute intro."
+      >
         <source
           src="https://storage.googleapis.com/media.coderev.app/code-rev-intro-720p-hb-1000.mp4"
-          type="video/mp4" />
+          type="video/mp4"
+        />
       </video>
 
-      <section class="q-px-md">
+      <section class="q-px-md q-mt-lg">
         <h2
           class="q-my-none q-pt-lg q-pb-md"
           :class="[dark ? 'text-deep-purple-3' : 'text-accent']"
@@ -43,17 +60,24 @@
         </h2>
 
         <p>
-          In the age of StackOverflow and ChatGPT, is leetcode really the best way to
-          evaluate technical candidates?
+          AI coding assistants like Copilot, Cursor, Aiden, and so on can help teams
+          improve productivity and are quickly becoming mainstream tools.
         </p>
-        <p><em>Was it ever?</em></p>
+        <p>
+          But it also means that you may want to explicitly evaluate candidates for how
+          well they can <em>read</em> code and identify issues with performance, security,
+          and quality in AI generated code (or your existing code).
+        </p>
 
-        <p>Try code review as interview instead!</p>
+        <p>
+          CodeRev helps teams quickly and easily incorporate code reviews into the
+          interview process.
+        </p>
 
         <div class="row q-col-gutter-md q-mb-xl q-mt-lg justify-center">
           <div v-for="reason in reasons" class="col-md-4 col-sm-12">
             <QCard class="fit justify-between column" :bordered="dark">
-              <QCardSection class="text-h6">{{ reason }}</QCardSection>
+              <QCardSection class="text-h6" v-html="reason"></QCardSection>
             </QCard>
           </div>
         </div>
@@ -74,7 +98,7 @@
               { external: true, open: { target: '_blank' } }
             )
           "
-          label="Read more"
+          label="Read more..."
           class="q-mt-md"
           size="xl"
           color="accent"
@@ -219,10 +243,12 @@
           FAQ
         </h2>
 
-        <template v-for="faq in Object.entries(faqs)">
-          <h3>{{ faq[0] }}</h3>
-          <p v-html="faq[1]"></p>
-        </template>
+        <div class="text-left">
+          <template v-for="faq in Object.entries(faqs)">
+            <h3 class="q-pt-md">{{ faq[0] }}</h3>
+            <p v-html="faq[1]"></p>
+          </template>
+        </div>
       </section>
 
       <section class="q-my-lg">
@@ -237,7 +263,7 @@
           "
           clickable
         >
-          <QAvatar>
+          <QAvatar size="lg">
             <img src="/chrlschn.jpg" title="Charles Chen" alt="Charles Chen" />
           </QAvatar>
           Charles Chen
@@ -254,7 +280,7 @@
           "
           clickable
         >
-          <QAvatar class="bg-accent" text-color="white" font-size="0.9em">
+          <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="lg">
             <QIcon :name="tabBrandMastodon" />
           </QAvatar>
           @chrlschn
@@ -271,7 +297,7 @@
           "
           clickable
         >
-          <QAvatar class="bg-accent" text-color="white" font-size="0.9em">
+          <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="lg">
             <QIcon :name="tabBrandGithub" />
           </QAvatar>
           coderev
@@ -286,7 +312,7 @@
 </template>
 
 <script setup lang="ts">
-import { navigateTo } from 'nuxt/app';
+import { navigateTo } from "nuxt/app";
 import {
   tabBrandGithub,
   tabBrandMastodon,
@@ -331,6 +357,8 @@ const reasons = [
   "Hard to game with generative AI and studying leetcode challenges.",
   "Learn more about your candidates in less time with less stress.",
   "Evaluate for technical roles biased towards reading vs writing code (manager, support).",
+  "Measure how well candidates can evaluate AI generated code for quality.",
+  "Tools should be low friction, easy to set up, lightweight, and <em>fast</em>.",
 ];
 
 const screenshots = [
@@ -377,10 +405,12 @@ const faqs = {
     "I went through an interview where the process involved reviewing a snippet of code and really enjoyed the experience.  I thought it would be great if there was a dedicated tool for this.",
   "Why not just CodeSandbox or Stackblitz?":
     "Those tools serve a different purpose in an interview process. This tool is meant to help understand how a candidate would interact and communicate in a real-world, day-to-day responsibility of providing feedback to a teammate.",
-  "Does this replace coding exercises?":
+  "Do code reviews replace coding exercises?":
     "It can if you want it to!  But think of it as another tool you can use to help better gauge your candidates.",
-  "How is this better than actual coding?":
+  "How is using code reviews for interviews better than actual coding?":
     "Many roles such as a senior engineering manager or technical architect are more biased towards reading and evaluating code rather than writing code.  This is also the case for roles like technical support or QA who may be tracing code, but not writing code.  And in reality, we all use external resources when we typically code -- whether StackOverflow, GitHub Copilot, ChatGPT, or Reddit forums -- especially when we are dealing with algorithmically complex problems.  Coding exercises artificially create a high-stress interaction that doesn't reflect how we build and ship software in real life.",
+  "How is CodeRev.app free?":
+    "It's designed to use mostly static resources and easily fits within the free tier of Google Firebase.  It uses Firestore minimally and primarily stores source files in Storage which has a 1GB/day free limit.  In short, CodeRev.app has been intentionally designed to be free for as long as possible.",
   "What's the stack?":
     "Nuxt3 (Vue.js) + Quasar Framework + Google Cloud Firebase.  Productive, fast, and more or less free.",
   "Can you add [...]?": "Send me an email or DM and let me know!",
@@ -393,9 +423,9 @@ const dark = computed(() => $q.dark.isActive);
 
 <style scoped>
 .header h1 {
-  font-size: 4em;
+  font-size: 6em;
   font-weight: 500;
-  line-height: 1.2em;
+  line-height: 1em;
 }
 
 .header p {
@@ -414,6 +444,7 @@ h3 {
 
 p {
   font-size: 1.5em;
+  text-align: left;
 }
 
 .slide-caption {
@@ -423,6 +454,6 @@ p {
 }
 
 :deep(.q-chip__content) {
-  font-size: 22px
+  font-size: 22px;
 }
 </style>
