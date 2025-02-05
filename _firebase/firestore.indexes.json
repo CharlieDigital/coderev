@@ -34,6 +34,11 @@
       "indexes": []
     },
     {
+      "collectionGroup": "workspaces",
+      "fieldPath": "ratings",
+      "indexes": []
+    },
+    {
       "collectionGroup": "candidates",
       "fieldPath": "sources",
       "indexes": []

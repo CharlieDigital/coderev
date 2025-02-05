@@ -10,19 +10,29 @@
       <WorkspaceComments />
     </template>
   </QSplitter>
+
+  <WorkspaceRatingDialog
+    :saving="savingRating"
+    :existing-rating="existingRating"
+    @save-rating="handleSaveRating"
+  />
 </template>
 
 <script setup lang="ts">
 import { defaultCandidate } from "../../../../stores/composables/candidates";
 const route = useRoute();
 
-const { profile } = storeToRefs(useAppStore());
+const appStore = useAppStore();
+
+const { profile } = storeToRefs(appStore);
 
 const workspaceStore = useWorkspaceStore();
 
-const { candidate, selection, selectedComment } = storeToRefs(workspaceStore);
+const { candidate, selection, selectedComment, workspace } = storeToRefs(workspaceStore);
 
 const split = ref(75);
+
+const savingRating = ref(false);
 
 onBeforeMount(async () => {
   const workspaceUid = route.params.uid as string;
@@ -46,6 +56,15 @@ const sources = computed(() => {
   });
 });
 
+/**
+ * Compute the existing rating for this candidate and current user
+ */
+const existingRating = computed(() => {
+  const key = `${candidate.value.uid}__${profile.value.uid}`;
+
+  return workspace.value.ratings?.[key];
+});
+
 watchEffect(async () => {
   if (!profile.value || profile.value.uid === defaultProfile.uid) {
     return;
@@ -66,6 +85,30 @@ onMounted(() => {
   selection.value = undefined;
   selectedComment.value = undefined;
 });
+
+/**
+ * Handles saving the rating for the candidate.
+ * @param rating The rating that the user assigned.
+ */
+async function handleSaveRating(rating: Partial<Rating>) {
+  const author = appStore.getCurrentUserRef();
+
+  rating.author = author;
+
+  try {
+    savingRating.value = true;
+
+    if (typeof rating.clarity === "undefined") delete rating.clarity;
+    if (typeof rating.thoroughness === "undefined") delete rating.thoroughness;
+    if (typeof rating.depth === "undefined") delete rating.depth;
+
+    await workspaceRepository.updateFields(workspace.value.uid, {
+      [`ratings.${candidate.value.uid}__${author.uid}`]: rating,
+    });
+  } finally {
+    savingRating.value = false;
+  }
+}
 </script>
 
 <style scoped>

@@ -148,8 +148,12 @@
             <QCardActions align="right">
               <QBtn
                 :icon="tabArrowUpLeft"
+                color="white"
+                label="Back"
                 @click="navigateTo(`/workspace/${workspace.uid}`)"
-                flat
+                unelevated
+                outline
+                no-caps
               />
               <template v-if="editCandidate">
                 <QBtn :icon="tabX" @click="editCandidate = false" flat />

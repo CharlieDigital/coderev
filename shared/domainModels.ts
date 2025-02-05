@@ -27,6 +27,37 @@ export type CollaboratorRef = EmbeddedRef & {
 };
 
 /**
+ * An embedded type on the workspace that represents ratings and notes for a given
+ * candidate.
+ */
+export type Rating = {
+  /**
+   * A numeric score of the candidate's submission
+   */
+  overall: number,
+  /**
+   * How deep the candidate's submissions were
+   */
+  depth?: number,
+  /**
+   * How clearly the candidate communicated
+   */
+  clarity?: number,
+  /**
+   * How thorough the candidate was overall
+   */
+  thoroughness?: number,
+  /**
+   * Comments entered by a user creating the rating.
+   */
+  comments: string,
+  /**
+   * The author of the rating including the `addedUtc`
+   */
+  author: EmbeddedRef
+}
+
+/**
  * Defines a workspace which contains a set of notes.
  */
 export type Workspace = {
@@ -43,17 +74,17 @@ export type Workspace = {
   collaborators: Record<string, CollaboratorRef>;
 
   /**
-   * When present, this value is an invite code that allows any user with a link
-   * to join the trip.  This can simplify sending out individual invites.
-   */
-  inviteCode?: string;
-
-  /**
    * Represents a set of content which every workspace is associated with.  A content
    * set can be associated with multiple workspaces.  For example, a set of documents
    * can be shared by multiple teams in different workspaces.
    */
   sources: Record<string, MediaRef>;
+
+  /**
+   * A record which holds the ratings for a given candidate.  The key is the
+   * candidate UID and there can be an array of ratings.
+   */
+  ratings?: Record<string, Rating>;
 } & Entity & Archivable;
 
 /**

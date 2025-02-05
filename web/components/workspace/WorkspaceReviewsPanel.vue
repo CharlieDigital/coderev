@@ -15,6 +15,7 @@
             class="rounded-borders"
             :class="[dark ? 'bg-grey-10' : 'bg-grey-1']"
             bordered
+            separator
           >
             <QItem>
               <QItemSection class="text-h5 text-bold"> Candidates </QItemSection>
@@ -47,74 +48,82 @@
             </QItem>
 
             <!-- Listing of candidates -->
-            <template v-for="c in filteredCandidates" :key="c.uid">
-              <QSeparator />
-              <QItem
-                :class="[!!c.archivedAtUtc ? 'text-italic archived' : undefined]"
-                @click="navigateTo(`/workspace/${workspace.uid}/c/${c.uid}`)"
-                clickable
-              >
-                <QItemSection avatar>
-                  <QAvatar>
-                    <QIcon :name="tabUser" size="md" />
-                    <QBadge
-                      color="accent"
-                      :label="Object.keys(c.comments).length"
-                      floating
-                    />
-                  </QAvatar>
-                </QItemSection>
-                <QItemSection>
-                  <QItemLabel class="text-h6"
-                    >{{ c.name }}
-                    <QIcon
-                      color="grey-6"
-                      :name="
-                        c.email.trim().toLowerCase().endsWith('coderev.app')
-                          ? tabShieldOff
-                          : tabShieldCheck
-                      "
-                    />
-                  </QItemLabel>
-                  <QItemLabel class="text-body1">{{
-                    dayjs(c.createdAtUtc).utc().fromNow()
-                  }}</QItemLabel>
-                </QItemSection>
-                <QItemSection side>
-                  <QChip
-                    :label="
-                      copied && text.includes(c.uid)
-                        ? 'Copied'
-                        : `${c.uid.slice(0, 2)}********${c.uid.slice(-6)}`
+            <QItem
+              v-for="c in filteredCandidates"
+              :key="c.uid"
+              :class="[!!c.archivedAtUtc ? 'text-italic archived' : undefined]"
+              @click="navigateTo(`/workspace/${workspace.uid}/c/${c.uid}`)"
+              clickable
+            >
+              <QItemSection avatar>
+                <QAvatar>
+                  <QIcon :name="tabUser" size="md" />
+                  <QBadge
+                    color="accent"
+                    :label="Object.keys(c.comments).length"
+                    floating
+                  />
+                </QAvatar>
+              </QItemSection>
+              <QItemSection>
+                <QItemLabel class="text-h6"
+                  >{{ c.name }}
+                  <QIcon
+                    color="grey-6"
+                    :name="
+                      c.email.trim().toLowerCase().endsWith('coderev.app')
+                        ? tabShieldOff
+                        : tabShieldCheck
                     "
-                    :icon="copied && text.includes(c.uid) ? undefined : tabClipboard"
-                    :icon-right="copied && text.includes(c.uid) ? tabCheck : undefined"
-                    :color="copied && text.includes(c.uid) ? 'green-6' : undefined"
-                    :text-color="copied && text.includes(c.uid) ? 'green-1' : undefined"
-                    @click.stop="copy(`${baseUrl}/review/${c.uid}`)"
-                    clickable
-                    style="font-family: monospace"
                   />
-                </QItemSection>
-                <QItemSection side>
-                  <QBtn
-                    :icon="!!c.archivedAtUtc ? tabArchiveOff : tabArchive"
-                    @click.stop="toggleCandidateArchive(!!c.archivedAtUtc, c.uid)"
-                    flat
-                    dense
-                  >
-                    <QTooltip>{{ !!c.archivedAtUtc ? "Unarchive" : "Archive" }}</QTooltip>
-                  </QBtn>
-                </QItemSection>
-                <QItemSection side>
-                  <DeleteConfirmButton
-                    message="Are you sure you want to delete this candidate?"
-                    @delete="handleCandidateDelete(c.uid)"
-                    dense
-                  />
-                </QItemSection>
-              </QItem>
-            </template>
+                </QItemLabel>
+                <QItemLabel class="text-body1">{{
+                  dayjs(c.createdAtUtc).utc().fromNow()
+                }}</QItemLabel>
+              </QItemSection>
+              <QItemSection v-if="ratings[c.uid]" side>
+                <QChip
+                  :icon="tabMessages"
+                  :label="ratings[c.uid].length"
+                  @click.stop="handleShowRatings(c, ratings[c.uid])"
+                  outline
+                  clickable
+                />
+              </QItemSection>
+              <QItemSection side>
+                <QChip
+                  :label="
+                    copied && text.includes(c.uid)
+                      ? 'Copied'
+                      : `${c.uid.slice(0, 2)}********${c.uid.slice(-6)}`
+                  "
+                  :icon="copied && text.includes(c.uid) ? undefined : tabClipboard"
+                  :icon-right="copied && text.includes(c.uid) ? tabCheck : undefined"
+                  :color="copied && text.includes(c.uid) ? 'green-6' : undefined"
+                  :text-color="copied && text.includes(c.uid) ? 'green-1' : undefined"
+                  @click.stop="copy(`${baseUrl}/review/${c.uid}`)"
+                  clickable
+                  style="font-family: monospace"
+                />
+              </QItemSection>
+              <QItemSection side>
+                <QBtn
+                  :icon="!!c.archivedAtUtc ? tabArchiveOff : tabArchive"
+                  @click.stop="toggleCandidateArchive(!!c.archivedAtUtc, c.uid)"
+                  flat
+                  dense
+                >
+                  <QTooltip>{{ !!c.archivedAtUtc ? "Unarchive" : "Archive" }}</QTooltip>
+                </QBtn>
+              </QItemSection>
+              <QItemSection side>
+                <DeleteConfirmButton
+                  message="Are you sure you want to delete this candidate?"
+                  @delete="handleCandidateDelete(c.uid)"
+                  dense
+                />
+              </QItemSection>
+            </QItem>
           </QList>
         </div>
         <!-- Right column -->
@@ -135,9 +144,17 @@
       </div>
     </QPage>
 
+    <!-- Dialog to add a new candidate -->
     <WorkspaceCandidateDialog
       v-model="showCandidateDialog"
       @generated-user="handleUserGenerated"
+    />
+
+    <!-- Dialog to view a candidate's ratings -->
+    <WorkspaceCandidateRatingsDialog
+      v-model="showRatingsDialog"
+      :candidate="selectedCandidate"
+      :ratings="selectedRatings"
     />
 
     <!-- Bottom dialog that shows the last generated user -->
@@ -189,6 +206,8 @@ import {
   tabShieldCheck,
   tabShieldOff,
   tabX,
+  tabStar,
+  tabMessages,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { baseUrl } from "../../utils/environment";
 import { btnProps } from "../../utils/commonProps";
@@ -209,6 +228,12 @@ const showArchived = ref(false);
 
 const showGeneratedDetails = ref(false);
 
+const selectedRatings = ref<Rating[]>();
+
+const selectedCandidate = ref<CandidateReview>();
+
+const showRatingsDialog = ref(false);
+
 const generatedInfo = ref<{ label: string; details: string }>();
 
 onMounted(async () => {
@@ -225,6 +250,21 @@ const filteredCandidates = computed(() => {
 
 const isWorkspaceEmpty = computed(
   () => Object.keys(workspace.value.sources).length === 0
+);
+
+const ratings = computed(() =>
+  Object.entries(workspace.value.ratings ?? {}).reduce((acc, entry) => {
+    const [key, rating] = entry;
+    const [candidateId, reviewerId] = key.split("__");
+
+    if (!acc[candidateId]) {
+      acc[candidateId] = [];
+    }
+
+    acc[candidateId].push(rating);
+
+    return acc;
+  }, {} as Record<string, Rating[]>)
 );
 
 /**
@@ -263,6 +303,17 @@ function handleUserGenerated(label: string, details: string) {
     label,
     details,
   };
+}
+
+/**
+ *
+ * @param candidate
+ * @param candidateRatings
+ */
+function handleShowRatings(candidate: CandidateReview, candidateRatings: Rating[]) {
+  selectedRatings.value = candidateRatings;
+  selectedCandidate.value = candidate;
+  showRatingsDialog.value = true;
 }
 </script>
 
