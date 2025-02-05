@@ -253,7 +253,7 @@ const props = defineProps<{
   ratings?: Rating[];
 }>();
 
-const progressProps = {
+const progressProps = computed(() => ({
   min: 0,
   max: 5,
   step: 0.5,
@@ -261,9 +261,10 @@ const progressProps = {
   readonly: true,
   label: true,
   dense: true,
-  color: "accent",
-  style: "width: 120px",
-};
+  color: dark.value ? "deep-purple-3" : "accent",
+  size: "md",
+  rounded: true,
+}));
 
 type Entry = {
   total: number;

@@ -26,12 +26,131 @@
       </QPageContainer>
 
       <!-- Left drawer which has the nav and description -->
-      <QDrawer v-model="showLeftDrawer" class="column bg-grey-10" dark>
+      <QDrawer v-model="showLeftDrawer" class="column bg-grey-10" :mini dark>
+        <template #mini>
+          <div class="text-center q-py-sm column full-height justify-between">
+            <div>
+              <QBtn
+                class="q-my-md"
+                :icon="tabHomeUp"
+                @click="navigateTo('/home')"
+                size="md"
+                dense
+                flat
+              />
+              <QBtn
+                class="q-mb-md"
+                :icon="tabInfoCircle"
+                @click="mini = !mini"
+                size="md"
+                dense
+                flat
+              >
+                <QTooltip self="center left" anchor="center right">
+                  {{ workspace.name }}
+                </QTooltip>
+              </QBtn>
+              <QBtn
+                class="q-mb-md"
+                :class="{
+                  'bg-grey-8': tab === 'files' && !route.fullPath.includes('/c/'),
+                }"
+                :icon="tabFiles"
+                @click="navigateTab('files')"
+                size="md"
+                flat
+                dense
+              >
+                <QTooltip self="center left" anchor="center right">
+                  Workspace files
+                </QTooltip>
+              </QBtn>
+              <QBtn
+                class="q-mb-md"
+                :class="{
+                  'bg-grey-8': tab === 'reviews' && !route.fullPath.includes('/c/'),
+                }"
+                :icon="tabFilePencil"
+                @click="navigateTab('reviews')"
+                size="md"
+                flat
+                dense
+              >
+                <QTooltip self="center left" anchor="center right">
+                  Candidate list
+                </QTooltip>
+              </QBtn>
+              <template v-if="route.fullPath.includes('/c/')">
+                <QBtn
+                  class="q-mb-md"
+                  :class="{
+                    'bg-grey-8': route.fullPath.includes('/c/'),
+                  }"
+                  :icon="tabUser"
+                  @click="mini = !mini"
+                  size="md"
+                  dense
+                  flat
+                >
+                  <QTooltip self="center left" anchor="center right">
+                    Candidate: {{ candidate.label ?? candidate.email }}
+                  </QTooltip>
+                </QBtn>
+                <QBtn
+                  :icon="tabArrowUpLeft"
+                  @click="navigateTo(`/workspace/${workspace.uid}`)"
+                  size="md"
+                  dense
+                  flat
+                >
+                  <QTooltip self="center left" anchor="center right">
+                    Back to candidates
+                  </QTooltip>
+                </QBtn>
+              </template>
+            </div>
+
+            <div>
+              <QBtn
+                size="md"
+                class="q-mb-md"
+                :icon="tabArrowBarToRight"
+                @click="mini = !mini"
+                dense
+                flat
+              />
+              <QBtn
+                size="md"
+                class="q-mb-md"
+                :icon="dark ? tabMoon : tabSun"
+                @click="$q.dark.toggle()"
+                dense
+                flat
+              />
+              <QBtn
+                size="md"
+                class="q-mb-md"
+                :icon="tabBrandGithub"
+                @click="
+                  navigateTo('https://github.com/CharlieDigital/coderev/issues', {
+                    external: true,
+                    open: {
+                      target: '_blank',
+                    },
+                  })
+                "
+                dense
+                flat
+              />
+            </div>
+          </div>
+        </template>
+
         <QList class="q-gutter-md q-px-sm q-pt-md col">
           <!-- Nav back to the home route -->
           <QItem v-bind="leftMenuProps" @click="navigateTo('/home')" clickable>
             <QItemSection avatar>
-              <QIcon :name="tabArrowLeft" />
+              <QIcon :name="tabHomeUp" />
             </QItemSection>
             <QItemSection>
               <QItemLabel class="text-h5 text-weight-bold">CodeRev.app</QItemLabel>
@@ -188,7 +307,7 @@
         </QList>
 
         <!-- Bottom dark/light toggle -->
-        <LeftNavBottomButtons />
+        <LeftNavBottomButtons @toggle="mini = !mini" />
       </QDrawer>
     </QLayout>
 
@@ -210,6 +329,12 @@ import {
   tabPencil,
   tabUsersGroup,
   tabX,
+  tabHomeUp,
+  tabMoon,
+  tabSun,
+  tabBrandGithub,
+  tabArrowBarToRight,
+  tabInfoCircle,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { leftMenuProps } from "../../utils/commonProps";
 import { baseUrl } from "../../utils/environment";
@@ -218,6 +343,8 @@ definePageMeta({
   layout: "empty",
   middleware: ["auth"],
 });
+
+const $q = useQuasar();
 
 const route = useRoute();
 
@@ -232,6 +359,8 @@ const { showLeftDrawer, dark } = storeToRefs(appStore);
 const { copy } = useClipboard();
 
 const tab = ref("files");
+
+const mini = useLocalStorage("workspace-left-nav-mini", false);
 
 const showTeamDialog = ref(false);
 

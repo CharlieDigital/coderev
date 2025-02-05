@@ -7,7 +7,13 @@
     @close="visible = false"
   >
     <!-- Tabs -->
-    <QTabs v-model="tab" active-color="accent" dense narrow-indicator no-caps>
+    <QTabs
+      v-model="tab"
+      :active-color="dark ? undefined : 'accent'"
+      dense
+      narrow-indicator
+      no-caps
+    >
       <QTab
         name="viaEmail"
         label="Require email"
