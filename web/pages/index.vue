@@ -51,6 +51,30 @@
         />
       </video>
 
+      <section class="q-px-md">
+        <h2
+          class="q-my-none q-pt-xl q-pb-md"
+          :class="[dark ? 'text-deep-purple-3' : 'text-accent']"
+        >
+          Is it "free" or is it <em>free</em>?
+        </h2>
+
+        <p>
+          <strong>Yes, completely free.</strong> There's no flow to capture a payment
+          option, it's ad free, and you can always clone the repo and deploy your own if
+          you want! No gotchas, no upsells, no trial period. Just absolutely free software
+          because I strongly belive that this can help create a better interview process
+          and payment should not be a reason not to use it!
+        </p>
+
+        <p>It's been designed to minimize operating costs for as long as possible.</p>
+
+        <p>
+          If your organization is using CodeRev.app and you'd like to support it, reach
+          out and let me know if I can add your logo to help spread the word!
+        </p>
+      </section>
+
       <section class="q-px-md q-mt-lg">
         <h2
           class="q-my-none q-pt-lg q-pb-md"
@@ -273,6 +297,23 @@
           size="lg"
           :color="dark ? 'grey-8' : undefined"
           @click="
+            navigateTo('https://bsky.app/profile/chrlschn.bsky.social', {
+              external: true,
+              open: { target: '_blank' },
+            })
+          "
+          clickable
+        >
+          <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="lg">
+            <QIcon :name="tabButterfly" />
+          </QAvatar>
+          @chrlschn
+        </QChip>
+
+        <QChip
+          size="lg"
+          :color="dark ? 'grey-8' : undefined"
+          @click="
             navigateTo('https://mastodon.social/@chrlschn', {
               external: true,
               open: { target: '_blank' },
@@ -284,23 +325,6 @@
             <QIcon :name="tabBrandMastodon" />
           </QAvatar>
           @chrlschn
-        </QChip>
-
-        <QChip
-          size="lg"
-          :color="dark ? 'grey-8' : undefined"
-          @click="
-            navigateTo('https://github.com/CharlieDigital/coderev', {
-              external: true,
-              open: { target: '_blank' },
-            })
-          "
-          clickable
-        >
-          <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="lg">
-            <QIcon :name="tabBrandGithub" />
-          </QAvatar>
-          coderev
         </QChip>
       </section>
     </QPage>
@@ -321,7 +345,7 @@ import {
   tabClock,
   tabExternalLink,
 } from "quasar-extras-svg-icons/tabler-icons";
-import { tabCircleFilled } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { tabButterfly, tabCircleFilled } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { btnProps } from "../utils/commonProps";
 
 const description =

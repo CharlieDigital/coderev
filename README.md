@@ -76,7 +76,7 @@ firebase deploy
 firebase deploy --only hosting
 ```
 
-> 💡 Note: Functions isn't necessary; I started the project thinking I may need it, but you can ignore it and remove it.  You won't be charged for it either way if you deploy it with functions.
+There is also a GitHub Action which manages automatic deployment of all assets.
 
 ## Using Functions Framework
 
@@ -124,6 +124,3 @@ From the console, run:
 ```
 gcloud storage buckets update gs://source.coderev.app --cors-file=cors.json
 ```
-
-
-
