@@ -61,13 +61,11 @@
 
         <p>
           <strong>Yes, completely free.</strong> There's no flow to capture a payment
-          option, it's ad free, and you can always clone the repo and deploy your own if
-          you want! No gotchas, no upsells, no trial period. Just absolutely free software
-          because I strongly belive that this can help create a better interview process
-          and payment should not be a reason not to use it!
+          option, it's ad-free, and you can always clone the repo and deploy your own if
+          you want! No gotchas, no up-sells, no trial period. Just absolutely free
+          software because I strongly believe that this can help create a better interview
+          process and payment should not be a reason not to use it!
         </p>
-
-        <p>It's been designed to minimize operating costs for as long as possible.</p>
 
         <p>
           If your organization is using CodeRev.app and you'd like to support it, reach
@@ -276,6 +274,7 @@
       </section>
 
       <section class="q-my-lg">
+        <QSeparator spaced="xl" />
         <QChip
           size="lg"
           :color="dark ? 'grey-8' : undefined"
@@ -434,7 +433,7 @@ const faqs = {
   "How is using code reviews for interviews better than actual coding?":
     "Many roles such as a senior engineering manager or technical architect are more biased towards reading and evaluating code rather than writing code.  This is also the case for roles like technical support or QA who may be tracing code, but not writing code.  And in reality, we all use external resources when we typically code -- whether StackOverflow, GitHub Copilot, ChatGPT, or Reddit forums -- especially when we are dealing with algorithmically complex problems.  Coding exercises artificially create a high-stress interaction that doesn't reflect how we build and ship software in real life.",
   "How is CodeRev.app free?":
-    "It's designed to use mostly static resources and easily fits within the free tier of Google Firebase.  It uses Firestore minimally and primarily stores source files in Storage which has a 1GB/day free limit.  In short, CodeRev.app has been intentionally designed to be free for as long as possible.",
+    "It's designed to use mostly static resources and easily fits within the free tier of Google Firebase.  It uses Firestore minimally and primarily stores source files in Storage which has a 1GB/day free limit.  In short, CodeRev.app has been intentionally designed to be free for as long as possible.  The only hard cost is the domain name renewal.",
   "What features of CodeRev.app are privacy focused?":
     "CodeRev.app allows teams and candidates to use an account with a generated identifiers rather than their actual email address.  Deletions are permanent; there's no soft deletion here!  There's no ads and minimal tracking (only Google Analytics to keep an eye on traffic). Of course, it's also open source so you can see exactly how the data is used (or not used, in this case!).",
   "What's the stack?":
