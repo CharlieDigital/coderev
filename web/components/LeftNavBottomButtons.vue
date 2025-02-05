@@ -1,6 +1,12 @@
 <template>
   <QList class="col-shrink q-my-md">
-    <QItem v-bind="leftMenuProps" @click="emits('toggle')" manual-focus clickable>
+    <QItem
+      v-if="showToggle"
+      v-bind="leftMenuProps"
+      @click="emits('toggle')"
+      manual-focus
+      clickable
+    >
       <QItemSection avatar>
         <QIcon :name="tablerIconsV2.tabArrowBarToLeft" />
       </QItemSection>
@@ -49,6 +55,10 @@ import * as tablerIconsV2 from "quasar-extras-svg-icons/tabler-icons-v2";
 import { leftMenuProps } from "../utils/commonProps";
 
 const $q = useQuasar();
+
+const props = defineProps<{
+  showToggle?: boolean;
+}>();
 
 const emits = defineEmits<{
   toggle: [];

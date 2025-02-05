@@ -40,7 +40,7 @@
               />
               <QBtn
                 class="q-mb-md"
-                :icon="tabInfoCircle"
+                :icon="tabInfoSquareRounded"
                 @click="mini = !mini"
                 size="md"
                 dense
@@ -307,7 +307,7 @@
         </QList>
 
         <!-- Bottom dark/light toggle -->
-        <LeftNavBottomButtons @toggle="mini = !mini" />
+        <LeftNavBottomButtons @toggle="mini = !mini" :show-toggle="true" />
       </QDrawer>
     </QLayout>
 
@@ -335,6 +335,8 @@ import {
   tabBrandGithub,
   tabArrowBarToRight,
   tabInfoCircle,
+  tabInfoSquare,
+  tabInfoSquareRounded,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { leftMenuProps } from "../../utils/commonProps";
 import { baseUrl } from "../../utils/environment";
