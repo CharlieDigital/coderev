@@ -18,13 +18,16 @@ if (
   $q.dark.toggle();
 }
 
-watch(() => $q.dark.isActive, (isDark) => {
-  if (isDark) {
-    userThemeMode.value = 'dark'
-  } else {
-    userThemeMode.value = 'light'
+watch(
+  () => $q.dark.isActive,
+  (isDark) => {
+    if (isDark) {
+      userThemeMode.value = "dark";
+    } else {
+      userThemeMode.value = "light";
+    }
   }
-})
+);
 </script>
 
 <style>
@@ -33,7 +36,7 @@ body * {
 }
 
 strong {
-  font-weight: bold
+  font-weight: bold;
 }
 
 .page-enter-active,
@@ -57,10 +60,6 @@ strong {
 </style>
 
 <style lang="scss">
-body {
-  background-color: $primary;
-}
-
 .q-dialog__backdrop,
 .q-inner-loading {
   backdrop-filter: blur(3px);
