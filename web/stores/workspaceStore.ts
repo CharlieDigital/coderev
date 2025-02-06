@@ -110,8 +110,7 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
           findAndSplice(workspaces.value, removedWorkspace, false);
         },
       },
-      where(`collaborators.${profile.uid}`, "!=", ""),
-      orderBy('name')
+      where(`collaborators.${profile.uid}`, "!=", "")
     );
 
     firebaseSubscriptions.register(
