@@ -71,8 +71,6 @@ const emits = defineEmits<{
   fileSelected: [fileId: string];
 }>();
 
-const filteredOptions = ref<SourceFile[]>(props.files);
-
 const selectedFile = ref<SourceFile>();
 
 const inputSearchTerm = ref("");
@@ -91,7 +89,9 @@ watch(
   { flush: "post" }
 );
 
-const { results: fuseFileResults } = useFuse(inputSearchTerm, filteredOptions, {
+const reactiveFiles = computed(() => props.files);
+
+const { results: fuseFileResults } = useFuse(inputSearchTerm, reactiveFiles, {
   fuseOptions: {
     isCaseSensitive: false,
     minMatchCharLength: 1,
