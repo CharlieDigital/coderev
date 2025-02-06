@@ -206,7 +206,6 @@ import {
   tabShieldCheck,
   tabShieldOff,
   tabX,
-  tabStar,
   tabMessages,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { baseUrl } from "../../utils/environment";

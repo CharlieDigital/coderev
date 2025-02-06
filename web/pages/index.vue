@@ -1,48 +1,47 @@
 <template>
-  <div class="row">
-    <QPage
-      class="q-pb-xl offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12 text-center"
-      :padding="$q.screen.lt.sm"
+  <QPage class="q-pb-xl text-center row" :padding="$q.screen.lt.sm">
+    <section
+      class="q-pb-xl offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12"
     >
-      <section class="q-pb-xl">
-        <div class="header">
-          <h1 class="q-my-none q-py-xl">Code review as interview made easy.</h1>
-          <p style="text-align: center">
-            CodeRev is a <em>lightweight</em> tool to help you organize and conduct
-            technical interviews using code reviews rather than leetcode.
-          </p>
-          <QBtn
-            v-bind="btnProps"
-            to="/login"
-            label="Get started (it's free!)"
-            class="q-mt-md"
-            size="xl"
-            color="accent"
-          />
-          <QBtn
-            v-bind="btnProps"
-            :icon="tabBrandGithub"
-            @click="
-              navigateTo('https://github.com/CharlieDigital/coderev', {
-                external: true,
-                open: { target: '_blank' },
-              })
-            "
-            label="View repo"
-            class="q-mt-md q-ml-md"
-            size="xl"
-            :color="dark ? 'grey-6' : 'accent'"
-            outline
-          />
-        </div>
-      </section>
+      <div class="header">
+        <h1 class="q-my-none q-py-xl">Code review as interview made easy.</h1>
+        <p style="text-align: center">
+          CodeRev is a <em>lightweight</em> tool to help you organize and conduct
+          technical interviews using code reviews rather than leetcode.
+        </p>
+        <QBtn
+          v-bind="btnProps"
+          to="/login"
+          label="Get started (it's free!)"
+          class="q-mt-md"
+          size="xl"
+          color="accent"
+        />
+        <QBtn
+          v-bind="btnProps"
+          :icon="tabBrandGithub"
+          @click="
+            navigateTo('https://github.com/CharlieDigital/coderev', {
+              external: true,
+              open: { target: '_blank' },
+            })
+          "
+          label="View repo"
+          class="q-mt-md q-ml-md"
+          size="xl"
+          :color="dark ? 'grey-6' : 'accent'"
+          outline
+        />
+      </div>
+    </section>
 
+    <div class="q-mt-lg offset-xl-2 offset-md-1 col-xl-8 col-md-10 col-sm-12">
       <video
         preload="none"
         controls
         name="media"
-        class="rounded-borders shadow-2 q-mt-lg"
         style="width: 100%"
+        class="rounded-borders shadow-2"
         poster="https://storage.googleapis.com/media.coderev.app/code-rev-intro.webp"
         title="CodeRev.app 3 minute intro."
       >
@@ -51,19 +50,24 @@
           type="video/mp4"
         />
       </video>
+    </div>
 
+    <div
+      class="offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12"
+    >
       <section class="q-px-md">
         <h2
           class="q-my-none q-pt-xl q-pb-md"
           :class="[dark ? 'text-deep-purple-3' : 'text-accent']"
         >
-          Is it free or "free"?
+          Is it free or <em>"free"</em>?
         </h2>
 
         <p>
-          <strong>Yes, completely free.</strong> CodeRev is ad-free, has no payment
-          capture flow, and doesn't trade your data. Feel <em>free</em> to clone the repo
-          and deploy your own!
+          <strong>Yes, completely free.</strong> CodeRev is ad-free, has no up-sells, no
+          pro plan, no premium subscriptions, no limitations, has no payment capture flow,
+          and doesn't trade your data. Feel <em>free</em> to clone the repo and deploy
+          your own!
         </p>
       </section>
 
@@ -320,12 +324,12 @@
           @chrlschn
         </QChip>
       </section>
-    </QPage>
+    </div>
+  </QPage>
 
-    <ClientOnly>
-      <AnalyticsWrapper />
-    </ClientOnly>
-  </div>
+  <ClientOnly>
+    <AnalyticsWrapper />
+  </ClientOnly>
 </template>
 
 <script setup lang="ts">

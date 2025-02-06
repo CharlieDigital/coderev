@@ -37,12 +37,8 @@
                   <QIcon :name="tabUser" />
                 </QItemSection>
                 <QItemSection>
-                  <QItemLabel class="text-body1 text-bold">{{
-                    profile.name
-                  }}</QItemLabel>
-                  <QItemLabel class="text-caption">{{
-                    profile.email
-                  }}</QItemLabel>
+                  <QItemLabel class="text-body1 text-bold">{{ profile.name }}</QItemLabel>
+                  <QItemLabel class="text-caption">{{ profile.email }}</QItemLabel>
                 </QItemSection>
               </QItem>
 
@@ -89,8 +85,7 @@
       </QToolbar>
     </QHeader>
 
-    <QDrawer v-model="showLeftDrawer" id="top-level-drawer" side="left">
-    </QDrawer>
+    <QDrawer v-model="showLeftDrawer" id="top-level-drawer" side="left"> </QDrawer>
 
     <QPageContainer
       :class="{
@@ -104,7 +99,7 @@
 </template>
 
 <script setup lang="ts">
-import { navigateTo } from 'nuxt/app';
+import { navigateTo } from "nuxt/app";
 import {
   tabBrandMastodon,
   tabMenu,
@@ -122,9 +117,7 @@ const $q = useQuasar();
 
 const dark = computed(() => $q.dark.isActive);
 
-const { profile, showLeftDrawer, showPreferencesDialog } = storeToRefs(
-  useAppStore()
-);
+const { profile, showLeftDrawer, showPreferencesDialog } = storeToRefs(useAppStore());
 
 async function logout() {
   await firebaseConnector.logout();
