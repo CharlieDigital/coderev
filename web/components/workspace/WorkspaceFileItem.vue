@@ -33,7 +33,15 @@
         font-size="0.7em"
         rounded
         size="md"
-      />
+      >
+        <QBadge
+          v-if="file.commentCount && file.commentCount > 0"
+          color="accent"
+          :label="file.commentCount"
+          transparent
+          floating
+        />
+      </QAvatar>
     </QItemSection>
     <!-- The file display name or actual name -->
     <QItemSection>
@@ -44,12 +52,7 @@
       <div>
         <!-- Button to delete file -->
         <QBtn
-          v-show="
-            !file.ref &&
-            file.name !== readmeName &&
-            selected &&
-            unsaved
-          "
+          v-show="!file.ref && file.name !== readmeName && selected && unsaved"
           color="red-8"
           :icon="tabTrash"
           @click="emits('remove')"
@@ -58,23 +61,19 @@
         />
         <!-- Button to edit file name -->
         <QBtn
-          v-show="selected
-            && allowEdit
-            && file.name !== readmeName"
+          v-show="selected && allowEdit && file.name !== readmeName"
           color="deep-purple-4"
           :icon="tabPencil"
           @click="handleStartEditing"
           dense
           flat
-          />
+        />
       </div>
     </QItemSection>
   </QItem>
 
   <!-- Control for editing a file name -->
-  <QItem
-    v-else
-    class="q-ma-sm q-px-none">
+  <QItem v-else class="q-ma-sm q-px-none">
     <QItemSection>
       <QInput
         ref="existingFileName"
@@ -86,13 +85,10 @@
         stack-label
         outlined
         autofocus
-        dense>
+        dense
+      >
         <template #after>
-          <QBtn
-            :icon="tabX"
-            @click="handleCancelEdit"
-            flat
-            dense/>
+          <QBtn :icon="tabX" @click="handleCancelEdit" flat dense />
         </template>
 
         <template #append>
@@ -101,61 +97,64 @@
             :disable="(editedFileName?.trim().length ?? 0) === 0"
             @click="handleConfirmEditFileName"
             flat
-            dense/>
+            dense
+          />
         </template>
       </QInput>
     </QItemSection>
   </QItem>
-
 </template>
 
 <script setup lang="ts">
-import type { SourceFile } from '../../../shared/viewModels';
+import type { SourceFile } from "../../../shared/viewModels";
 
 import {
   tabPencil,
   tabFileCheck,
   tabFileUpload,
   tabTrash,
-  tabX
+  tabX,
 } from "quasar-extras-svg-icons/tabler-icons";
 
 const props = defineProps<{
-  file: SourceFile,
-  allowEdit: boolean,
-  selected?: boolean,
-  unsaved?: boolean
-}>()
+  file: SourceFile;
+  allowEdit: boolean;
+  selected?: boolean;
+  unsaved?: boolean;
+}>();
 
 const emits = defineEmits<{
-  selected: [],
-  remove: [],
-  changeName: [string]
-}>()
+  selected: [];
+  remove: [];
+  changeName: [string];
+}>();
 
 const readmeName = ".README.md";
 
 const { dark } = storeToRefs(useAppStore());
 
-const editedFileName = ref<string|undefined>()
+const editedFileName = ref<string | undefined>();
 
-const editing = ref(false)
+const editing = ref(false);
 
 /**
  * When the selected file changes, we cancel out any edits
  */
- watch(() => props.selected, (currentlySelected) => {
-  if (!currentlySelected) {
-    handleCancelEdit()
+watch(
+  () => props.selected,
+  (currentlySelected) => {
+    if (!currentlySelected) {
+      handleCancelEdit();
+    }
   }
-})
+);
 
 /**
  * Start editing by copying over the name of the file as default.
  */
 function handleStartEditing() {
-  editedFileName.value = props.file.name.substring(0, props.file.name.lastIndexOf('.'))
-  editing.value = true
+  editedFileName.value = props.file.name.substring(0, props.file.name.lastIndexOf("."));
+  editing.value = true;
 }
 
 /**
@@ -164,19 +163,19 @@ function handleStartEditing() {
  */
 async function handleConfirmEditFileName() {
   if (!editedFileName.value || (editedFileName.value?.length ?? 0) === 0) {
-    return
+    return;
   }
 
-  await emits('changeName', editedFileName.value)
+  await emits("changeName", editedFileName.value);
 
-  handleCancelEdit()
+  handleCancelEdit();
 }
 
 /**
  * User cancels the edit or changes the selected item.
  */
 function handleCancelEdit() {
-  editing.value = false
-  editedFileName.value = ''
+  editing.value = false;
+  editedFileName.value = "";
 }
 </script>

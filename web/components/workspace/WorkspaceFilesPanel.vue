@@ -4,46 +4,45 @@
       <div class="fit" ref="dropZone">
         <QLayout view="lHh lpr lFf" container>
           <QHeader>
-            <QToolbar
-              :class="[dark ? 'bg-dark text-white' : 'bg-grey-2 text-black']"
-            >
+            <QToolbar :class="[dark ? 'bg-dark text-white' : 'bg-grey-2 text-black']">
               <QToolbarTitle>Files</QToolbarTitle>
 
               <QBtn
-                v-show="isEditable  && !isReview"
+                v-show="isEditable && !isReview"
                 :icon="tabFilePlus"
                 :color="dark ? 'deep-purple-4' : 'accent'"
-                flat dense>
-                <QTooltip>
-                  Add new file
-                </QTooltip>
+                flat
+                dense
+              >
+                <QTooltip> Add new file </QTooltip>
                 <QMenu
                   class="row"
                   max-width="360px"
                   anchor="bottom middle"
                   self="top middle"
-                  auto-close>
-                  <QItem v-for="ext in fileExtensions"
+                  auto-close
+                >
+                  <QItem
+                    v-for="ext in fileExtensions"
                     class="col col-3"
                     @click="promptNewFile(ext)"
                     dense
-                    clickable>
+                    clickable
+                  >
                     <QItemSection>{{ ext }}</QItemSection>
                   </QItem>
                 </QMenu>
               </QBtn>
 
               <QBtn
-                v-show="isEditable  && !isReview"
+                v-show="isEditable && !isReview"
                 :color="dark ? 'deep-purple-4' : 'accent'"
                 :icon="tabFileUpload"
                 @click="() => open({ accept: ALLOWED_CODE_FILE_EXTENSIONS.join(',') })"
                 flat
                 dense
               >
-                <QTooltip>
-                  Upload file
-                </QTooltip>
+                <QTooltip> Upload file </QTooltip>
               </QBtn>
 
               <QBtn
@@ -56,36 +55,36 @@
                 unelevated
                 dense
               >
-                <QTooltip>
-                  Save pending changes
-                </QTooltip>
+                <QTooltip> Save pending changes </QTooltip>
               </QBtn>
             </QToolbar>
           </QHeader>
 
           <QPageContainer
             :class="{
-            'bg-dark text-white': dark,
-            'bg-grey-2 text-black': !dark,
-          }">
+              'bg-dark text-white': dark,
+              'bg-grey-2 text-black': !dark,
+            }"
+          >
             <QPage class="column">
               <QList class="col">
+                <!--
+                  This is the listing of the source files for this workspace
+                -->
                 <WorkspaceFileItem
                   v-for="file in sourceFiles"
                   :key="file.name"
                   :file
                   :allow-edit="isEditable && !isReview"
                   :selected="file.name === selectedSourceFile?.name"
-                  :unsaved="!Object.values(sourceRefs).some(r => r.title === file.name)"
+                  :unsaved="!Object.values(sourceRefs).some((r) => r.title === file.name)"
                   @selected="handleClickSourceFile(file)"
                   @remove="handleRemoveSourceFile()"
                   @change-name="handleChangeName($event)"
                 />
 
                 <!-- Control for adding a new file -->
-                <QItem
-                  v-if="newFileExt !== ''"
-                  class="q-ma-sm q-px-none">
+                <QItem v-if="newFileExt !== ''" class="q-ma-sm q-px-none">
                   <QItemSection>
                     <QInput
                       ref="newFileInput"
@@ -96,13 +95,10 @@
                       @keyup.enter="confirmNewFile"
                       stack-label
                       outlined
-                      dense>
+                      dense
+                    >
                       <template #after>
-                        <QBtn
-                          :icon="tabX"
-                          @click="cancelNewFile"
-                          flat
-                          dense/>
+                        <QBtn :icon="tabX" @click="cancelNewFile" flat dense />
                       </template>
 
                       <template #append>
@@ -111,7 +107,8 @@
                           :disable="newFileName.trim().length === 0"
                           @click="confirmNewFile"
                           flat
-                          dense/>
+                          dense
+                        />
                       </template>
                     </QInput>
                   </QItemSection>
@@ -134,7 +131,7 @@
               <QBanner
                 v-if="isEditable && !isReview"
                 class="col-shrink q-ma-sm"
-                :class="[dark ? 'bg-grey-9' : 'bg-grey-3']"
+                :class="[dark ? 'bg-grey-9' : 'bg-grey-4']"
                 rounded
               >
                 <template #avatar>
@@ -143,8 +140,22 @@
                   </QAvatar>
                 </template>
                 Editing and saving a file will only affect new candidate workspaces.
-                Existing candidate workspaces reference the original file when it
-                was created.
+                Existing candidate workspaces reference the original file when it was
+                created.
+              </QBanner>
+
+              <QBanner
+                v-if="!isEditable || isReview"
+                class="col-shrink q-ma-sm"
+                :class="[dark ? 'bg-grey-9' : 'bg-grey-4']"
+                rounded
+              >
+                <template #avatar>
+                  <QAvatar>
+                    <QIcon :name="tabBulb" />
+                  </QAvatar>
+                </template>
+                Use {{ $q.platform.is.mac ? "CMD⌘+P" : "ALT+P" }} to navigate files.
               </QBanner>
               <!-- Save button -->
               <QItem class="col-shrink q-px-sm" v-if="hasUnsavedChanges">
@@ -180,29 +191,35 @@
       />
     </template>
   </QSplitter>
+
+  <WorkspaceFileSelectorDialog
+    v-model="showFileSelector"
+    :files="sourceFiles"
+    @file-selected="handleFileSelected"
+  />
 </template>
 
 <script setup lang="ts">
 import {
-  tabPencil,
   tabBulb,
   tabDeviceFloppy,
   tabDragDrop,
   tabFileCheck,
   tabFileUpload,
-tabX,
+  tabX,
 } from "quasar-extras-svg-icons/tabler-icons";
 import { FieldValue } from "firebase/firestore";
-import { tabFilePlus, tabTrash } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { tabFilePlus } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { QInput } from "quasar";
-import { ALLOWED_CODE_FILE_EXTENSIONS } from "../../../shared/constants"
+import { ALLOWED_CODE_FILE_EXTENSIONS } from "../../../shared/constants";
 import { btnProps } from "../../utils/commonProps";
+import { palette } from "~/composables/useCommandPalette";
 
 const props = defineProps<{
   sourceRefs: MediaRef[];
 }>();
 
-const newFileInput = ref<QInput>()
+const newFileInput = ref<QInput>();
 
 const defaultText = `This is the instruction file.
 
@@ -230,21 +247,16 @@ const dayjs = useDayjs();
 
 const { dark } = storeToRefs(useAppStore());
 
-const workspaceStore = useWorkspaceStore()
+const workspaceStore = useWorkspaceStore();
 
-const {
-  workspace,
-  candidate,
-  selectedComment,
-  selection
-} = storeToRefs(workspaceStore);
+const { workspace, candidate, selectedComment, selection } = storeToRefs(workspaceStore);
 
 const saving = ref(false);
 
 // When this value is set, the user is adding a new file.
-const newFileExt = ref("")
+const newFileExt = ref("");
 
-const newFileName = ref("")
+const newFileName = ref("");
 
 const selectedSourceFile = ref<SourceFile>();
 
@@ -260,7 +272,11 @@ const { isOverDropZone } = useDropZone(dropZone, handleDrop);
 
 const { open, onChange } = useFileDialog();
 
-onMounted(() => {});
+const { showFileSelector } = palette;
+
+onBeforeUnmount(() => {
+  showFileSelector.value = false;
+});
 
 /**
  * Not editable if we are viewing it in the candidate view.
@@ -271,7 +287,7 @@ const isEditable = computed(() => !route.fullPath.includes("/c/"));
 /**
  * In review mode; a candidate is reviewing the code and providing feedback.
  */
-const isReview = computed(() => route.fullPath.includes('/review/'))
+const isReview = computed(() => route.fullPath.includes("/review/"));
 
 /**
  * A computed map of the source files from the media refs for this candidate review.
@@ -279,15 +295,27 @@ const isReview = computed(() => route.fullPath.includes('/review/'))
 const sourceFiles = computed(() => {
   const sources: SourceFile[] = [];
 
+  // Get an aggregation of comment counts by file hash.
+  var commentsByFile = Object.values(candidate.value.comments).reduce((acc, comment) => {
+    if (comment.contextType !== "source") {
+      return acc;
+    }
+
+    if (!acc[comment.contextUid]) {
+      acc[comment.contextUid] = [comment];
+    } else {
+      acc[comment.contextUid].push(comment);
+    }
+
+    return acc;
+  }, {} as Record<string, ReviewComment[]>);
+
   // For each reference to a storage file, we'll create a source file which is a
   // view model projection of the actual file in storage.
   for (const entry of Object.entries(props.sourceRefs ?? {})) {
     const mediaRef = entry[1];
 
-    if (
-      modifiedFileUids.value.includes(mediaRef.uid) ||
-      !!mediaRef.markAsRemovedUtc
-    ) {
+    if (modifiedFileUids.value.includes(mediaRef.uid) || !!mediaRef.markAsRemovedUtc) {
       continue; // This file has been modified so we're not going to show it.
     }
 
@@ -297,6 +325,7 @@ const sourceFiles = computed(() => {
       text: "", // Lazy load the text
       hash: mediaRef.uid, // UID is a SHA-1 hash.
       ref: mediaRef,
+      commentCount: commentsByFile[mediaRef.uid]?.length,
     });
   }
 
@@ -323,9 +352,7 @@ const sourceFiles = computed(() => {
 });
 
 const fileExtensions = computed(() => {
-  return ALLOWED_CODE_FILE_EXTENSIONS
-    .filter((ext) => ext.trim().length > 0)
-    .sort();
+  return ALLOWED_CODE_FILE_EXTENSIONS.filter((ext) => ext.trim().length > 0).sort();
 });
 
 /**
@@ -345,25 +372,29 @@ onChange((files) => {
 /**
  * Watch changes on the refs; if there are no files, we'll add the default README
  */
-watch(() => props.sourceRefs, (refs) => {
-  console.log(`Workspace UID: ${workspace.value.uid}`)
+watch(
+  () => props.sourceRefs,
+  (refs) => {
+    console.log(`Workspace UID: ${workspace.value.uid}`);
 
-  if (workspace.value.uid === defaultWorkspace.uid) {
-    return
-  }
+    if (workspace.value.uid === defaultWorkspace.uid) {
+      return;
+    }
 
-  if (refs && refs.length === 0 && unsavedSourceFiles.value.length === 0) {
-    console.log("Source refs changed; adding README.md to empty workspace.")
-    unsavedSourceFiles.value.push({
-      ext: ".md",
-      name: readmeName,
-      text: defaultText
-    })
+    if (refs && refs.length === 0 && unsavedSourceFiles.value.length === 0) {
+      console.log("Source refs changed; adding README.md to empty workspace.");
+      unsavedSourceFiles.value.push({
+        ext: ".md",
+        name: readmeName,
+        text: defaultText,
+      });
+    }
+  },
+  {
+    flush: "sync", // We want this to execute synchronously
+    immediate: true, // If we don't add immediate, hot reload may not trigger this.
   }
-}, {
-  flush: 'sync', // We want this to execute synchronously
-  immediate: true // If we don't add immediate, hot reload may not trigger this.
-})
+);
 
 /**
  * When the selected comment changes, we may need to update the selected file. If
@@ -399,20 +430,17 @@ watch(candidate, (c) => {
  * Prompts the user for input name for a new file.
  */
 function promptNewFile(ext: string) {
-  newFileExt.value = ext
+  newFileExt.value = ext;
 
-  window.setTimeout(
-    () => newFileInput.value?.focus(),
-    25
-  )
+  window.setTimeout(() => newFileInput.value?.focus(), 25);
 }
 
 /**
  * User cancels adding a new file
  */
 function cancelNewFile() {
-  newFileExt.value = ""
-  newFileName.value = ""
+  newFileExt.value = "";
+  newFileName.value = "";
 }
 
 /**
@@ -431,9 +459,9 @@ function confirmNewFile() {
 
   unsavedSourceFiles.value.push(file);
 
-  selectedSourceFile.value = file
+  selectedSourceFile.value = file;
 
-  cancelNewFile()
+  cancelNewFile();
 }
 
 /**
@@ -468,10 +496,7 @@ function handleDrop(files: File[] | null) {
     const reader = new FileReader();
 
     reader.addEventListener("load", (event) => {
-      const f = addSourceFile(
-        file.name,
-        (event.target?.result as string) ?? ""
-      );
+      const f = addSourceFile(file.name, (event.target?.result as string) ?? "");
 
       if (i === files.length - 1) {
         selectedSourceFile.value = f;
@@ -496,7 +521,9 @@ function handleClickSourceFile(file: SourceFile) {
     toLine: 1,
   };
 
-  console.log(`Selected source file: ${selection.value.sourceUid} ${selection.value.sourceName}`)
+  console.log(
+    `Selected source file: ${selection.value.sourceUid} ${selection.value.sourceName}`
+  );
 
   selectedSourceFile.value = file;
   selectedComment.value = undefined;
@@ -531,29 +558,26 @@ function addSourceFile(name: string, text: string) {
  */
 function handleEditSourceFile() {
   if (!selectedSourceFile.value || !selectedSourceFile.value.ref) {
-    console.log("  ⮑ Source file doesn't have a ref")
+    console.log("  ⮑ Source file doesn't have a ref");
     return;
   }
 
   // The file is already unsaved.
-  if (
-    unsavedSourceFiles.value.some(
-      (f) => f.name === selectedSourceFile.value?.name
-    )
-  ) {
-    console.log("  ⮑ Source file is in the unsaved files")
+  if (unsavedSourceFiles.value.some((f) => f.name === selectedSourceFile.value?.name)) {
+    console.log("  ⮑ Source file is in the unsaved files");
     return;
   }
 
   // We need to remove the file from the workspace sources record since
   // sourceFiles is a computed projection from that record.
   const entry = Object.entries(workspace.value.sources).find(
-    (e) => e[1].title === selectedSourceFile.value?.name
-      && !e[1].markAsRemovedUtc
+    (e) => e[1].title === selectedSourceFile.value?.name && !e[1].markAsRemovedUtc
   );
 
   if (!entry) {
-    console.log(`  ⮑ There's no source file with the name: ${selectedSourceFile.value.name}`)
+    console.log(
+      `  ⮑ There's no source file with the name: ${selectedSourceFile.value.name}`
+    );
     return;
   }
 
@@ -640,15 +664,15 @@ async function saveFiles() {
     if (Object.keys(changeset.sources ?? {}).length > 0) {
       // Mark the workspace sources as deleted on save.  Don't delete the backing
       // file since there may be references to it.  (TODO: optimize this)
-      console.log("Modified: " + JSON.stringify(modifiedFileUids.value, null, 2))
+      console.log("Modified: " + JSON.stringify(modifiedFileUids.value, null, 2));
 
       for (const modified of modifiedFileUids.value) {
         if (workspace.value.sources[modified]) {
-          workspace.value.sources[modified].markAsRemovedUtc = dayjs()
-            .utc()
-            .toISOString();
+          workspace.value.sources[
+            modified
+          ].markAsRemovedUtc = dayjs().utc().toISOString();
 
-          console.log(`❌ Marked file ${modified} as removed.`)
+          console.log(`❌ Marked file ${modified} as removed.`);
         }
       }
 
@@ -694,25 +718,34 @@ function warn(message: string) {
  */
 async function handleChangeName(name: string) {
   if (!selectedSourceFile.value) {
-    return
+    return;
   }
 
-  const file = selectedSourceFile.value
+  const file = selectedSourceFile.value;
 
   if (file.hash) {
     // Update the underlying media ref of an existing file.
-    var newNameWithExt = `${name}${file.ext}`
+    var newNameWithExt = `${name}${file.ext}`;
 
-    await workspaceStore.updateFileName(
-      file.hash,
-      newNameWithExt
-    )
+    await workspaceStore.updateFileName(file.hash, newNameWithExt);
 
     // Update the underlying file
-    workspace.value.sources[file.hash].title = newNameWithExt
+    workspace.value.sources[file.hash].title = newNameWithExt;
   } else {
     // Update a new file that hasn't been saved yet.
-    selectedSourceFile.value.name = name
+    selectedSourceFile.value.name = name;
+  }
+}
+
+/**
+ * Handles the event when a file is selected from the popup command dialog.
+ * @param fileId The hash or the name of the file
+ */
+function handleFileSelected(fileId: string) {
+  const target = sourceFiles.value.find((f) => f.hash === fileId || f.name === fileId);
+
+  if (target) {
+    handleClickSourceFile(target);
   }
 }
 </script>

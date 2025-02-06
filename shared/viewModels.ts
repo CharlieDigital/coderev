@@ -36,6 +36,11 @@ export type SourceFile = {
    * yet.
    */
   ref?: MediaRef
+
+  /**
+   * The number of top-level comments for this file.
+   */
+  commentCount?: number
 }
 
 /**
