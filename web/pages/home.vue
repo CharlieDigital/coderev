@@ -17,6 +17,12 @@
                 @click="showArchived = !showArchived"
                 flat
               >
+                <QBadge
+                  v-show="filteredWorkspaces.length !== workspaces.length"
+                  color="accent"
+                  :label="workspaces.length - filteredWorkspaces.length"
+                  floating
+                />
                 <QTooltip>
                   {{ showArchived ? "Showing archived" : "Hiding archived" }}
                 </QTooltip>

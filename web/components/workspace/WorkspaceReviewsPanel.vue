@@ -25,6 +25,12 @@
                   @click="showArchived = !showArchived"
                   flat
                 >
+                  <QBadge
+                    v-show="filteredCandidates.length !== candidates.length"
+                    color="accent"
+                    :label="candidates.length - filteredCandidates.length"
+                    floating
+                  />
                   <QTooltip>
                     {{ showArchived ? "Showing archived" : "Hiding archived" }}
                   </QTooltip>
