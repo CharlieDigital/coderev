@@ -2,6 +2,7 @@
   <div class="row">
     <QPage
       class="q-pb-xl offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12 text-center"
+      :padding="$q.screen.lt.sm"
     >
       <section class="q-pb-xl">
         <div class="header">
@@ -56,20 +57,13 @@
           class="q-my-none q-pt-xl q-pb-md"
           :class="[dark ? 'text-deep-purple-3' : 'text-accent']"
         >
-          Is it "free" or is it <em>free</em>?
+          Is it free or "free"?
         </h2>
 
         <p>
-          <strong>Yes, completely free.</strong> There's no flow to capture a payment
-          option, it's ad-free, and you can always clone the repo and deploy your own if
-          you want! No gotchas, no up-sells, no trial period. Just absolutely free
-          software because I strongly believe that this can help create a better interview
-          process and payment should not be a reason not to use it!
-        </p>
-
-        <p>
-          If your organization is using CodeRev.app and you'd like to support it, reach
-          out and let me know if I can add your logo to help spread the word!
+          <strong>Yes, completely free.</strong> CodeRev is ad-free, has no payment
+          capture flow, and doesn't trade your data. Feel <em>free</em> to clone the repo
+          and deploy your own!
         </p>
       </section>
 
@@ -86,14 +80,14 @@
           improve productivity and are quickly becoming mainstream tools.
         </p>
         <p>
-          But it also means that you may want to explicitly evaluate candidates for how
-          well they can <em>read</em> code and identify issues with performance, security,
-          and quality in AI generated code (or your existing code).
+          But this also means that teams may want to explicitly evaluate candidates for
+          how well they <em>read</em> code and identify issues with performance, security,
+          and quality in AI generated code (or a team's existing code).
         </p>
 
         <p>
-          CodeRev helps teams quickly and easily incorporate code reviews into the
-          interview process.
+          CodeRev makes it easy and frictionless for teams to incorporate code reviews
+          into the interview process.
         </p>
 
         <div class="row q-col-gutter-md q-mb-xl q-mt-lg justify-center">
@@ -105,10 +99,10 @@
         </div>
 
         <p>
-          A candidate's ability to read and reason about your existing code can be a
-          better measure of how quickly they can adapt to your team and how you would
-          expect them to contribute to your ongoing efforts. And in most cases, a new
-          hire's first days are focused on reading code.
+          A candidate's ability to read and reason about existing code can be a better
+          measure of how quickly they can adapt to a team and how a team would expect them
+          to contribute to ongoing efforts. And in most cases, a new hire's first days are
+          focused on reading code.
         </p>
 
         <QBtn
@@ -448,7 +442,7 @@ const dark = computed(() => $q.dark.isActive);
 
 <style scoped>
 .header h1 {
-  font-size: 6em;
+  font-size: 4.8em;
   font-weight: 500;
   line-height: 1em;
 }

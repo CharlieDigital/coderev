@@ -15,6 +15,9 @@ export const defaultProfile: Profile = {
   },
 };
 
+/**
+ * Store for application level state.
+ */
 export const useAppStore = defineStore("appStore", () => {
   const dayjs = useDayjs();
 
@@ -146,9 +149,7 @@ export const useAppStore = defineStore("appStore", () => {
 
   /**
    * This subscription listens for server side updates of the the
-   * profile.  For example, if the user completes a payment flow or
-   * if the user connects their OAuth credentials.  We can pick up
-   * back end changes with this.
+   * profile.
    */
   function startSubscription() {
     if (!profile.value || profileSubscriptionStarted) {

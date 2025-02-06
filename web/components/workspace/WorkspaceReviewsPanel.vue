@@ -224,7 +224,7 @@ const showCandidateDialog = ref(false);
 
 const { copy, copied, text } = useClipboard();
 
-const showArchived = ref(false);
+const showArchived = useLocalStorage("show-archived-candidates", false);
 
 const showGeneratedDetails = ref(false);
 

@@ -150,9 +150,9 @@ class FirebaseConnector {
     console.log(` 🔐 Setting user`);
 
     appStore.setUser(user).then(() => {
-      console.log(` 🔐 Current location: ${window.location.href}`);
+      console.log(` 🔐 Current location: ${window.location.href}; baseUrl: ${baseUrl}`);
 
-      if (window.location.href === baseUrl) {
+      if (window.location.href.replace(/\/$/gi, '') === baseUrl) {
         return;
       }
 

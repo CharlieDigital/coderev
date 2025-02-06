@@ -1,4 +1,4 @@
-export const STORAGE_PREFIX = "tt_";
+export const STORAGE_PREFIX = "cr_";
 
 export const SCHEMA_VERSION = "v0";
 

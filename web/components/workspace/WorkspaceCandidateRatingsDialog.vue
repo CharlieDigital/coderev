@@ -7,10 +7,20 @@
     @close="visible = false"
   >
     <!-- Overall -->
-    <QCard v-if="(ratings?.length ?? 0) > 1" class="q-mb-sm" bordered flat>
+    <QCard
+      v-if="(ratings?.length ?? 0) > 1"
+      class="q-mb-sm"
+      :class="dark ? 'bg-grey-10' : 'bg-grey-2'"
+      bordered
+      flat
+    >
       <QItem>
         <QItemSection>
-          <QItemLabel class="text-bold">Overall Rating</QItemLabel>
+          <QItemLabel class="text-bold"
+            >Candidate:
+            {{ candidate?.label ?? candidate?.email ?? candidate?.name }}</QItemLabel
+          >
+          <QItemLabel caption>Overall Rating</QItemLabel>
         </QItemSection>
       </QItem>
       <QSeparator />
