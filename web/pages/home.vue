@@ -39,7 +39,6 @@
           -->
           <QItem
             v-for="w in filteredWorkspaces"
-            :key="w.uid"
             @click="navigateTo(`/workspace/${w.uid}`)"
             clickable
           >

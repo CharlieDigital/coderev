@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { deleteField, where } from "firebase/firestore";
+import { deleteField, orderBy, where } from "firebase/firestore";
 import { sourceStorage } from "../utils/data/Storage";
 import { useCandidates } from "./composables/candidates";
 
@@ -110,7 +110,8 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
           findAndSplice(workspaces.value, removedWorkspace, false);
         },
       },
-      where(`collaborators.${profile.uid}`, "!=", "")
+      where(`collaborators.${profile.uid}`, "!=", ""),
+      orderBy('name')
     );
 
     firebaseSubscriptions.register(

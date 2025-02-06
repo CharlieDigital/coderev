@@ -50,7 +50,6 @@
             <!-- Listing of candidates -->
             <QItem
               v-for="c in filteredCandidates"
-              :key="c.uid"
               :class="[!!c.archivedAtUtc ? 'text-italic archived' : undefined]"
               @click="navigateTo(`/workspace/${workspace.uid}/c/${c.uid}`)"
               clickable
