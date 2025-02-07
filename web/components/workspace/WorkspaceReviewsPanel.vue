@@ -272,10 +272,22 @@ const ratings = computed(() =>
 );
 
 /**
- * Handles deletion of the candidate
+ * Handles deletion of the candidate; removes any ratings for this candidate from
+ * the workspace.
  */
 async function handleCandidateDelete(uid: string) {
   await candidateReviewRepository.deleteById(uid);
+
+  // We also need to remove the comments from the workspace with this candidate UID
+  let workspaceUpdate: EntityUpdate<Workspace> = {};
+
+  for (const key of Object.keys(workspace.value.ratings ?? {})) {
+    if (key.startsWith(uid)) {
+      workspaceUpdate = { ...workspaceUpdate, [`ratings.${key}`]: deleteField() };
+    }
+  }
+
+  await workspaceRepository.updateFields(workspace.value.uid, workspaceUpdate);
 }
 
 /**

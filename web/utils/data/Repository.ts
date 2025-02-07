@@ -19,6 +19,11 @@ import type { Unsubscribe } from "firebase/auth";
 import dayjs from "dayjs";
 
 /**
+ * Type used to represent an entity update that allows for deletion
+ */
+export type EntityUpdate<T extends Entity> ={ [P in keyof T]?: T[P] | undefined | FieldValue }
+
+/**
  * Replaces an entity in a collection with a new one that has been updated.
  * @param collection The collection to splice
  * @param entity The entity that needs to be spliced out
@@ -169,7 +174,7 @@ export abstract class Repository<T extends Entity> {
    */
   public async updateFields(
     uid: string,
-    entity: { [P in keyof T]?: T[P] | undefined | FieldValue }
+    entity: EntityUpdate<T>
   ) {
     const { profile } = useAppStore();
 

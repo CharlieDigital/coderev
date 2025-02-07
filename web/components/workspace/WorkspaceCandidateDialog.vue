@@ -1,7 +1,7 @@
 <template>
   <SideDialogShell
     position="right"
-    title="Add candidate review"
+    title="Add candidate"
     :icon="tabUserCode"
     :visible="visible"
     @close="visible = false"

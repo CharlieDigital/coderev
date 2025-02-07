@@ -70,7 +70,7 @@
                 :class="{
                   'bg-grey-8': tab === 'reviews' && !route.fullPath.includes('/c/'),
                 }"
-                :icon="tabFilePencil"
+                :icon="tabUsers"
                 @click="navigateTab('reviews')"
                 size="md"
                 flat
@@ -86,7 +86,7 @@
                   :class="{
                     'bg-grey-8': route.fullPath.includes('/c/'),
                   }"
-                  :icon="tabUser"
+                  :icon="tabUserEdit"
                   @click="mini = !mini"
                   size="md"
                   dense
@@ -94,17 +94,6 @@
                 >
                   <QTooltip self="center left" anchor="center right">
                     Candidate: {{ candidate.label ?? candidate.email }}
-                  </QTooltip>
-                </QBtn>
-                <QBtn
-                  :icon="tabArrowUpLeft"
-                  @click="navigateTo(`/workspace/${workspace.uid}`)"
-                  size="md"
-                  dense
-                  flat
-                >
-                  <QTooltip self="center left" anchor="center right">
-                    Back to candidates
                   </QTooltip>
                 </QBtn>
               </template>
@@ -235,7 +224,7 @@
             clickable
           >
             <QItemSection avatar>
-              <QIcon :name="tabFilePencil" />
+              <QIcon :name="tabUsers" />
             </QItemSection>
             <QItemSection>
               <QItemLabel class="text-h6">Reviews</QItemLabel>
@@ -246,7 +235,7 @@
           <QCard v-if="route.fullPath.includes('/c/')" class="bg-grey-9">
             <QItem v-if="!editCandidate" v-bind="leftMenuProps">
               <QItemSection style="justify-content: start" avatar>
-                <QIcon :name="tabUser" />
+                <QIcon :name="tabUserEdit" />
               </QItemSection>
               <QItemSection>
                 <QItemLabel class="text-body1" style="word-break: break-all" lines="2">{{
@@ -265,15 +254,6 @@
               />
             </template>
             <QCardActions align="right">
-              <QBtn
-                :icon="tabArrowUpLeft"
-                color="white"
-                label="Back"
-                @click="navigateTo(`/workspace/${workspace.uid}`)"
-                unelevated
-                outline
-                no-caps
-              />
               <template v-if="editCandidate">
                 <QBtn :icon="tabX" @click="editCandidate = false" flat />
                 <QBtn
@@ -290,11 +270,12 @@
                 flat
               />
               <QBtn
-                :icon="tabClipboard"
+                :icon="copied ? tabCheck : tabClipboard"
+                :color="copied ? 'light-green' : undefined"
                 @click="copy(`${baseUrl}/review/${candidate.uid}`)"
                 flat
               >
-                <QTooltip>Copy URL</QTooltip>
+                <QTooltip>{{ copied ? "Copied to clipboard!" : "Copy URL" }}</QTooltip>
               </QBtn>
               <DeleteConfirmButton
                 message="Are you sure you want to delete this candidate?"
@@ -319,12 +300,8 @@
 import { navigateTo } from "nuxt/app";
 import { defaultWorkspace } from "../../stores/workspaceStore";
 import {
-  tabArrowLeft,
-  tabArrowUpLeft,
   tabClipboard,
-  tabUser,
   tabDeviceFloppy,
-  tabFilePencil,
   tabFiles,
   tabPencil,
   tabUsersGroup,
@@ -334,9 +311,10 @@ import {
   tabSun,
   tabBrandGithub,
   tabArrowBarToRight,
-  tabInfoCircle,
-  tabInfoSquare,
   tabInfoSquareRounded,
+  tabUsers,
+  tabUserEdit,
+  tabCheck,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { leftMenuProps } from "../../utils/commonProps";
 import { baseUrl } from "../../utils/environment";
@@ -358,7 +336,7 @@ const appStore = useAppStore();
 
 const { showLeftDrawer, dark } = storeToRefs(appStore);
 
-const { copy } = useClipboard();
+const { copy, copied, text } = useClipboard();
 
 const tab = ref("files");
 

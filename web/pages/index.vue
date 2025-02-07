@@ -139,6 +139,7 @@
         -->
       </section>
 
+      <!--
       <section class="row q-px-md">
         <div class="col-12">
           <h2
@@ -217,6 +218,29 @@
             />
           </div>
         </div>
+      </section>
+      -->
+      <section class="q-px-md">
+        <h2
+          class="q-my-none q-pt-xl q-pb-md"
+          :class="[dark ? 'text-deep-purple-3' : 'text-accent']"
+        >
+          3 Features in 60 seconds
+        </h2>
+        <video
+          preload="none"
+          controls
+          name="media"
+          style="width: 100%"
+          class="rounded-borders shadow-2"
+          poster="https://storage.googleapis.com/media.coderev.app/coderev-features.webp"
+          title="CodeRev.app 3 minute intro."
+        >
+          <source
+            src="https://storage.googleapis.com/media.coderev.app/code-rev-palette-720p.mp4"
+            type="video/mp4"
+          />
+        </video>
       </section>
 
       <section class="q-px-md">
