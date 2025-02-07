@@ -152,7 +152,7 @@ class FirebaseConnector {
     appStore.setUser(user).then(() => {
       console.log(` 🔐 Current location: ${window.location.href}; baseUrl: ${baseUrl}`);
 
-      if (window.location.href.replace(/\/$/gi, '') === baseUrl) {
+      if (window.location.href.replace(/\/$/gi, '') === baseUrl || window.location.href.includes('/blog')) {
         return;
       }
 

@@ -10,8 +10,17 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "dayjs-nuxt",
     "@vueuse/nuxt",
-    "@nuxtjs/google-fonts"
+    "@nuxtjs/google-fonts",
+    '@nuxtjs/robots',
+    '@nuxtjs/sitemap',
+    '@nuxt/content',
   ],
+  sitemap: {
+    include: ['/', '/blog', '/blog/**']
+  },
+  robots: {
+    disallow: ['/login', '/home', '/privacy', '/terms'],
+  },
   imports: {
     dirs: ["../shared/**", "./stores/**", "./utils/**"],
     global: true
@@ -49,6 +58,11 @@ export default defineNuxtConfig({
     ],
     defaultLocale: "en",
     defaultTimezone: "America/New_York",
+  },
+  nitro: {
+    prerender: {
+      routes: ['/sitemap.xml']
+    }
   },
   routeRules: {
     // https://nuxt.com/docs/guide/concepts/rendering#hybrid-rendering

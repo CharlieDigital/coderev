@@ -15,7 +15,7 @@
         }"
       >
         <QToolbarTitle
-          class="text-h4 text-weight-medium cursor-pointer"
+          class="text-h5 text-weight-medium cursor-pointer"
           @click="navigateTo('/')"
         >
           CodeRev.app

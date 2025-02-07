@@ -1,5 +1,5 @@
 <template>
-  <QPage class="q-pb-xl text-center row" :padding="$q.screen.lt.sm">
+  <div class="row text-center">
     <section
       class="q-pb-xl offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12"
     >
@@ -294,79 +294,18 @@
           </template>
         </div>
       </section>
-
-      <section class="q-my-lg">
-        <QSeparator spaced="xl" />
-        <QChip
-          size="lg"
-          :color="dark ? 'grey-8' : undefined"
-          @click="
-            navigateTo('https://chrlschn.dev', {
-              external: true,
-              open: { target: '_blank' },
-            })
-          "
-          clickable
-        >
-          <QAvatar size="lg">
-            <img src="/chrlschn.jpg" title="Charles Chen" alt="Charles Chen" />
-          </QAvatar>
-          Charles Chen
-        </QChip>
-
-        <QChip
-          size="lg"
-          :color="dark ? 'grey-8' : undefined"
-          @click="
-            navigateTo('https://bsky.app/profile/chrlschn.bsky.social', {
-              external: true,
-              open: { target: '_blank' },
-            })
-          "
-          clickable
-        >
-          <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="lg">
-            <QIcon :name="tabButterfly" />
-          </QAvatar>
-          @chrlschn
-        </QChip>
-
-        <QChip
-          size="lg"
-          :color="dark ? 'grey-8' : undefined"
-          @click="
-            navigateTo('https://mastodon.social/@chrlschn', {
-              external: true,
-              open: { target: '_blank' },
-            })
-          "
-          clickable
-        >
-          <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="lg">
-            <QIcon :name="tabBrandMastodon" />
-          </QAvatar>
-          @chrlschn
-        </QChip>
-      </section>
     </div>
-  </QPage>
-
-  <ClientOnly>
-    <AnalyticsWrapper />
-  </ClientOnly>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { navigateTo } from "nuxt/app";
 import {
   tabBrandGithub,
-  tabBrandMastodon,
   tabCheck,
-  tabCircle,
   tabClock,
   tabExternalLink,
 } from "quasar-extras-svg-icons/tabler-icons";
-import { tabButterfly, tabCircleFilled } from "quasar-extras-svg-icons/tabler-icons-v2";
 import { btnProps } from "../utils/commonProps";
 
 const description =
