@@ -30,7 +30,7 @@ useSeoMeta({
 
 <style scoped>
 :deep(h1) {
-  font-size: 3em;
+  font-size: 40px;
   margin: 18px 0px;
   line-height: 1.1em;
 }
@@ -47,7 +47,7 @@ useSeoMeta({
 
 :deep(.post-desc) {
   display: block;
-  font-size: 1.4em;
+  font-size: 22px;
   opacity: 0.7;
   padding: 18px 0px;
   margin: 32px 0px;
@@ -57,7 +57,7 @@ useSeoMeta({
 
 :deep(p),
 :deep(li) {
-  font-size: 1.2em;
+  font-size: 16px;
 }
 
 :deep(li) {
@@ -72,8 +72,8 @@ useSeoMeta({
   border: none;
 }
 
-:deep(blockquote) {
-  font-size: 2.4em;
+:deep(blockquote) p {
+  font-size: 28px !important;
   line-height: 1.4em;
   opacity: 0.6;
   padding: 0px 2%;
@@ -85,7 +85,7 @@ useSeoMeta({
 
   /* Firefox */
   float: left;
-  font-size: 3rem;
+  font-size: 48px;
   padding: 8px 8px 0px 0px;
 
   /* Chrome and Safari */
