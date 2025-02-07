@@ -1,5 +1,5 @@
 ---
-date: 2025-02-08
+date: 2025-02-07
 author: Charles Chen
 description: AI's increasing competency at complex tasks like coding creates a boon for teams that want to harness AI to boost productivity.  However, many teams haven't stopped to rethink their technical candidate screening and qualification process to account for these rapid changes.
 ---
