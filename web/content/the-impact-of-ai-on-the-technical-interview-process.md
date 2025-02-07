@@ -4,13 +4,13 @@ author: Charles Chen
 description: AI's increasing competency at complex tasks like coding creates a boon for teams that want to harness AI to boost productivity.  However, many teams haven't stopped to rethink their technical candidate screening and qualification process to account for these rapid changes.
 ---
 
-# The Impact of AI on Technical Interview Design
+# The Impact of AI on the Technical Interview Process
 
 [{{ $doc.author }}]{.post-author} - [{{ $doc.date }}]{.post-date}
 
 [{{ $doc.description }}]{.post-desc}
 
-At the end of 2024, the startup I had joined was slowly winding down in an *acqui-hire*.  As a part of this process, the entire engineering team would need to go through a round of technical interviews as a part of the leveling process.
+At the end of 2024, the startup I had joined was slowly winding down in an acqui-hire.  As a part of this process, the entire engineering team would need to go through a round of technical interviews as a part of the leveling process.
 
 To prepare for this, the team was told to prepare by studying leetcode and system design as these were known to be a part of the process for several of the potential acquiring companies.
 
@@ -39,13 +39,13 @@ To distill it, you can probably think about it in 10 steps:
 
 Watching the videos, it was pretty clear that this is the basic formula with only minor variations by domain.  Why? Given the typical 60-90 minute session, how deep can you actually go with a topic as complex as system design?  Not very.  So the compromise is that the design remains at a high level and thus ***any backend API will pretty much look like bullets 4-10***.
 
-While the coding challenges themselves are not nearly as scripted as the system design interview, if you spend enough time working on them you will get a sense for the general classes of solution patterns and I think that doing this correct classification is probably the most important step in most cases when working on leetcode challenges.
+While the coding challenges themselves are not nearly as scripted as the system design interview, if you spend enough time working on them you will get a sense for the general classes of solution patterns and I think that doing this correct classification step is probably the most important one in most cases when working on leetcode challenges.
 
 Indeed, with a few weeks of practice, interviews with several large, public companies were a relative breeze (particularly system design!).
 
 ---
 
-These processes seem to perpetuate in a vacuum as if ignoring how rapidly AI is changing the field of software engineering with advancements month-over-month if not seemingly weekly!  While AI may not (yet) be the right tool to build whole systems, it is already quite competent in both autocompletion as well as generation of standalone units of code and can solve N-Queens hundreds of times faster than I could!
+These processes seem to perpetuate in a vacuum as if ignoring how rapidly AI is changing the field of software engineering with advancements month-over-month if not seemingly weekly!  While AI may not *(yet)* be the right tool to build whole systems, it is already quite competent in both autocompletion as well as generation of standalone units of code and can solve N-Queens hundreds of times faster than I could!
 
 > This last month is the first time that an LLM could "one shot" their second round assessment.
 
@@ -53,15 +53,15 @@ In a discussion with one of the senior hiring managers, the topic of AI came up 
 
 Given this reality, the question is: ***now what?***
 
-Is the right answer to design a more complex set of assessments?  *To what end?*
+Is the right answer to simply design a more complex set of assessments?  To make it even more *Rube Goldberg*? *To what end?*
 
-Throughout this whole process interviewing with a handful of companies, it was surprising that not once was a code review incorporated into the process.  Yet code reviews are one of the most practical first-day and day-to-day skills -- **especially** for senior engineers.
+Throughout this whole process interviewing with a handful of companies, it was surprising that not once was a code review incorporated into the process.  Yet code reviews are one of the most practical first-day and day-to-day skills -- **especially** for evaluating senior engineers.
 
 Code reviews seem to have several benefits that address several challenges in the interview process.
 
-For starters, code reviews naturally focus more on communication and collaboration rather than deep thought as is the case with coding challenges.  Coding challenges are ironically a *terrible* vehicle for evaluating how well a candidate thinks via communication because it is so unnatural to talk while coding.
+For starters, code reviews naturally focus more on communication and collaboration more naturally than coding challenges which bias more towards deep focus.  Coding challenges are ironically a *terrible* vehicle for evaluating how well a candidate thinks via communication because it is so unnatural to talk while coding.
 
-Code reviews also have the benefit that it allows for more measuring both more depth and breadth.  For example, a code review of a small React app, an API, and a database schema can easily identify a candidate's strength bias in the stack while still allowing measurement of the depth of their knowledge.
+Code reviews also have the benefit that it allows for measuring both more depth and breadth in one pass.  For example, a code review of a small React app, an API, and a database schema can easily identify a candidate's strength bias in the stack while still allowing measurement of the depth of their knowledge.
 
 - Incorporate some obvious bugs in the React app and some not so obvious ones.
 - Leave off some validation in the API or exclude exception handling entirely.
@@ -71,10 +71,12 @@ The variations are endless yet practical; a reflection of real day-to-day skills
 
 Perhaps more importantly, as the field of software engineering inevitably shifts to increased and widespread adoption of AI powered tools in building software, it would seem that a key skill to actively screen for is proficiency in reading and evaluating code along the vectors of correctness, security, performance, best practices, and so on.
 
+It is indeed true that the ability to read and evaluate code is not the same as the ability to write and organize code, but in this emerging age of AI generated code, *does this distinction carry the same weight*?
+
 ---
 
-As AI continues to progress and advance, it seems inevitable that engineering teams will need to adjust their processes to with an understanding that the shift in how engineers build is already underway.
+As AI continues to progress and advance, it seems inevitable that engineering teams will need to adjust their technical screening processes with an understanding that the shift in how engineers build software is already well underway.
 
-AI's increasing competency at coding means that rather than selecting purely for the ability to solve complex coding puzzles and algorithmic challenges, teams should consider how well the human shepherds are at evaluating the quality of that output.
+AI's increasing competency at coding means that rather than selecting purely for the ability to solve complex coding puzzles and algorithmic challenges, more teams should start to consider how well the human shepherds are at evaluating the quality of that voluminous output.
 
 Rather than entirely shifting away from existing processes, teams should start to consider incorporating code reviews as a key step in the candidate selection process to identify those with a proficiency to effectively evaluating code.
