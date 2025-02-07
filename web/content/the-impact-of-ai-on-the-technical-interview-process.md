@@ -55,11 +55,11 @@ Given this reality, the question is: ***now what?***
 
 Is the right answer to simply design a more complex set of assessments?  To make it even more *Rube Goldberg*? *To what end?*
 
-Throughout this whole process interviewing with a handful of companies, it was surprising that not once was a code review incorporated into the process.  Yet code reviews are one of the most practical first-day and day-to-day skills -- **especially** for evaluating senior engineers.
+Throughout this whole process of interviewing with a handful of companies, it was surprising that not once was a code review incorporated into the process.  Yet proficiency at code reviews (or reading and evaluating code in general) is one of the most practical first-day and day-to-day skills -- **especially** for evaluating senior engineers.
 
 Code reviews seem to have several benefits that address several challenges in the interview process.
 
-For starters, code reviews naturally focus more on communication and collaboration more naturally than coding challenges which bias more towards deep focus.  Coding challenges are ironically a *terrible* vehicle for evaluating how well a candidate thinks via communication because it is so unnatural to talk while coding.
+For starters, code reviews focus more on communication and collaboration more naturally than coding challenges which bias more towards deep focus.  Coding challenges are ironically a *terrible* vehicle for evaluating how well a candidate thinks via communication because it is so unnatural to talk while coding.
 
 Code reviews also have the benefit that it allows for measuring both more depth and breadth in one pass.  For example, a code review of a small React app, an API, and a database schema can easily identify a candidate's strength bias in the stack while still allowing measurement of the depth of their knowledge.
 
