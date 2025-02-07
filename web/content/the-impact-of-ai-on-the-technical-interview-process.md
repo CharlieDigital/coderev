@@ -14,7 +14,7 @@ At the end of 2024, the startup I had joined was slowly winding down in an acqui
 
 To prepare for this, the team was told to prepare by studying leetcode and system design as these were known to be a part of the process for several of the potential acquiring companies.
 
-Candidates that have been through this process are surely familiar with Gayle McDowell's *Cracking the Coding Interview* which goes thorough strategies, tips, and refreshers for many experienced engineers who may be far removed from these types of algorithmic brain teasers.
+Candidates that have been through this process are surely familiar with Gayle McDowell's *Cracking the Coding Interview* which provides thorough strategies, tips, and refreshers for many experienced engineers who may be far removed from these types of algorithmic brain teasers.
 
 Other common resources include leetcode.com, hackerrank.com, [IGotAnOffer on YT](https://www.youtube.com/@IGotAnOffer-Engineering) and a host of other similar services that facilitate this cat-and-mouse game of simply "teaching the test".
 
