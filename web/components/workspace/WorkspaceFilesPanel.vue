@@ -155,7 +155,7 @@
                     <QIcon :name="tabBulb" />
                   </QAvatar>
                 </template>
-                Use {{ $q.platform.is.mac ? "CMD⌘+P" : "ALT+P" }} to navigate files.
+                Use {{ $q.platform.is.mac ? "CMD⌘+P" : "CTRL+P" }} to navigate files.
               </QBanner>
               <!-- Save button -->
               <QItem class="col-shrink q-px-sm" v-if="hasUnsavedChanges">
