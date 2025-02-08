@@ -8,6 +8,7 @@
   >
     <QHeader
       class="header row"
+      :height-hint="115"
       :class="{
         'bg-dark text-white': dark,
         'bg-white text-black': !dark,
@@ -23,8 +24,18 @@
 
         <QBtn
           title="Toggle dark mode"
+          class="gt-sm"
+          size="lg"
           :icon="dark ? tabMoon : tabSun"
-          :size="$q.screen.gt.sm ? 'lg' : 'md'"
+          @click="$q.dark.toggle()"
+          dense
+          flat
+        />
+
+        <QBtn
+          title="Toggle dark mode"
+          class="lt-md"
+          :icon="dark ? tabMoon : tabSun"
           @click="$q.dark.toggle()"
           dense
           flat
@@ -32,8 +43,23 @@
 
         <QBtn
           title="GitHub"
+          size="lg"
+          class="gt-sm"
           :icon="tabBrandGithub"
-          :size="$q.screen.gt.sm ? 'lg' : 'md'"
+          @click="
+            navigateTo('https://github.com/CharlieDigital/coderev', {
+              external: true,
+              open: { target: '_blank' },
+            })
+          "
+          dense
+          flat
+        />
+
+        <QBtn
+          title="GitHub"
+          class="lt-md"
+          :icon="tabBrandGithub"
           @click="
             navigateTo('https://github.com/CharlieDigital/coderev', {
               external: true,
@@ -48,9 +74,19 @@
           v-if="!$route.fullPath.includes('login')"
           title="Login"
           color="brand"
-          class="q-ml-sm"
-          :label="$q.screen.gt.sm ? 'Login' : undefined"
-          :size="$q.screen.gt.sm ? 'lg' : 'md'"
+          class="gt-sm q-ml-sm"
+          label="Login"
+          size="lg"
+          :icon="tabLogin"
+          to="/login"
+          unelevated
+          no-caps
+        />
+        <QBtn
+          v-if="!$route.fullPath.includes('login')"
+          title="Login"
+          color="brand"
+          class="q-ml-sm lt-md"
           :icon="tabLogin"
           to="/login"
           unelevated
@@ -66,13 +102,14 @@
     </QHeader>
 
     <QPageContainer :class="[dark ? 'bg-dark' : 'bg-white']">
-      <QPage class="" :padding="$q.screen.lt.sm">
+      <QPage class="" padding>
         <NuxtPage />
       </QPage>
     </QPageContainer>
 
     <QFooter
       class="text-center q-py-sm"
+      :height-hint="53"
       :class="[dark ? 'bg-grey-19' : 'bg-white']"
       reveal
       bordered
@@ -152,11 +189,15 @@ const dark = computed(() => $q.dark.isActive);
 
 const isPost = computed(() => $route.path.startsWith("/blog/"));
 
-watch($route, (route) => {
-  if (isPost.value) {
-    tab.value = "post";
-  }
-});
+watch(
+  $route,
+  (route) => {
+    if (isPost.value) {
+      tab.value = "post";
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <style scoped>
