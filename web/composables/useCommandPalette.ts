@@ -1,3 +1,7 @@
+import { Platform } from "quasar"
+
+const modifier = Platform.is.mac ? "Meta" : "Control";
+
 /**
  * Composable for the command palette
  */
@@ -9,7 +13,7 @@ function useCommandPalette() {
       return;
     }
 
-    if (e.key === "p" && e.getModifierState("Meta")) {
+    if (e.key === "p" && e.getModifierState(modifier)) {
       e.preventDefault();
       showFileSelector.value = !showFileSelector.value;
     }
