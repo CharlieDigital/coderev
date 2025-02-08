@@ -73,7 +73,7 @@ useSeoMeta({
 }
 
 :deep(blockquote) p {
-  font-size: 28px !important;
+  font-size: 36px !important;
   line-height: 1.4em;
   opacity: 0.6;
   padding: 0px 2%;

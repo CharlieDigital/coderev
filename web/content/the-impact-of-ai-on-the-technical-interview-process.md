@@ -55,6 +55,8 @@ In a discussion with one of the senior hiring managers, the topic of AI came up 
 
 Given this reality, the question is: ***now what?***
 
+It's not primarily a matter of cheating *per se*, but one of relevancy.  When off-the-shelf, every-day AI tools can perform a given task and perform it exceedingly fast and exceedingly well, what is the value in measuring a human against it?
+
 Is the right answer to simply design a more complex set of assessments? To find the superhuman coders that can outperform an LLM coding assistant? To make it *even more Rube Goldberg*? *To what end?*
 
 Throughout this whole process of interviewing with a handful of companies, it was surprising that not once was a code review incorporated into the process.  Yet proficiency at code reviews (or reading and evaluating code in general) is one of the most practical first-day and day-to-day skills -- **especially** for evaluating senior engineers.

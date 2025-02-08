@@ -27,7 +27,7 @@ export default defineNuxtConfig({
   },
   googleFonts: {
     families: {
-      "M PLUS Rounded 1c": [300, 400, 500, 700]
+      "M PLUS 2": [300, 400, 500, 700]
     }
   },
   quasar: {
