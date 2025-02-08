@@ -6,11 +6,15 @@
 </template>
 
 <script setup lang="ts">
-const slug = useRoute().params.slug;
+const $route = useRoute();
 
-const { data: post } = await useAsyncData(() =>
+const slug = computed(() => $route.params.slug);
+
+console.log(`Current slug: ${slug.value}`);
+
+const { data: post } = await useAsyncData((slug.value as string) ?? "post", () =>
   queryCollection("blog")
-    .path(`/blog/${slug as string}`)
+    .path(`/blog/${slug.value as string}`)
     .first()
 );
 
@@ -74,6 +78,7 @@ useSeoMeta({
 
 :deep(blockquote) p {
   font-size: 36px !important;
+  font-style: italic;
   line-height: 1.4em;
   opacity: 0.6;
   padding: 0px 2%;

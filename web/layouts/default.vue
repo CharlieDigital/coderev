@@ -8,7 +8,7 @@
   >
     <QHeader
       class="header row"
-      :height-hint="115"
+      :height-hint="98"
       :class="{
         'bg-dark text-white': dark,
         'bg-white text-black': !dark,
@@ -24,17 +24,6 @@
 
         <QBtn
           title="Toggle dark mode"
-          class="gt-sm"
-          size="lg"
-          :icon="dark ? tabMoon : tabSun"
-          @click="$q.dark.toggle()"
-          dense
-          flat
-        />
-
-        <QBtn
-          title="Toggle dark mode"
-          class="lt-md"
           :icon="dark ? tabMoon : tabSun"
           @click="$q.dark.toggle()"
           dense
@@ -43,8 +32,6 @@
 
         <QBtn
           title="GitHub"
-          size="lg"
-          class="gt-sm"
           :icon="tabBrandGithub"
           @click="
             navigateTo('https://github.com/CharlieDigital/coderev', {
@@ -56,20 +43,7 @@
           flat
         />
 
-        <QBtn
-          title="GitHub"
-          class="lt-md"
-          :icon="tabBrandGithub"
-          @click="
-            navigateTo('https://github.com/CharlieDigital/coderev', {
-              external: true,
-              open: { target: '_blank' },
-            })
-          "
-          dense
-          flat
-        />
-
+        <!--
         <QBtn
           v-if="!$route.fullPath.includes('login')"
           title="Login"
@@ -92,12 +66,29 @@
           unelevated
           no-caps
         />
+        -->
       </QToolbar>
 
-      <QTabs v-model="tab" class="col-12">
-        <QRouteTab label="Home" name="home" no-caps to="/" />
-        <QRouteTab label="Blog" name="blog" no-caps to="/blog" exact />
-        <QTab v-if="isPost" label="Post" name="post" no-caps />
+      <QTabs v-model="tab" class="col-12" inline-label>
+        <QRouteTab label="Home" name="home" class="rounded-borders" no-caps to="/" />
+        <QRouteTab
+          label="Blog"
+          name="blog"
+          class="rounded-borders"
+          no-caps
+          to="/blog"
+          exact
+        />
+        <QTab v-if="isPost" label="Post" name="post" class="rounded-borders" no-caps />
+        <QRouteTab
+          label="Login"
+          name="login"
+          class="rounded-borders"
+          to="/login"
+          :icon="tabLogin2"
+          no-caps
+          exact
+        />
       </QTabs>
     </QHeader>
 
@@ -174,7 +165,7 @@ import { tabBrandGithub } from "quasar-extras-svg-icons/tabler-icons";
 import {
   tabBrandMastodon,
   tabButterfly,
-  tabLogin,
+  tabLogin2,
   tabMoon,
   tabSun,
 } from "quasar-extras-svg-icons/tabler-icons-v2";
@@ -183,11 +174,28 @@ const $q = useQuasar();
 
 const $route = useRoute();
 
-const tab = ref<"home" | "blog" | "post">("home");
+const tab = ref<"home" | "blog" | "post" | "login">("home");
 
 const dark = computed(() => $q.dark.isActive);
 
 const isPost = computed(() => $route.path.startsWith("/blog/"));
+
+useHeadSafe({
+  link: [
+    {
+      rel: "preconnect",
+      href: "https://firebase.googleapis.com",
+    },
+    {
+      rel: "preconnect",
+      href: "https://storage.googleapis.com",
+    },
+    {
+      rel: "preconnect",
+      href: "https://storage.cloud.google.com",
+    },
+  ],
+});
 
 watch(
   $route,

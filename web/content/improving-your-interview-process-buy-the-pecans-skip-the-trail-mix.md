@@ -5,9 +5,9 @@ description: Interview processes have become increasingly long and convoluted.  
 ogImage: /images/candidate-fail.png
 ---
 
-# Buy the Pecans; Skip the Trail Mix
+# Improving Your Interview Process: Buy the Pecans; Skip the Trail Mix
 
-[{{ $doc.author }}]{.post-author} - [{{ $doc.date }}]{.post-date}
+[{{ $doc.author }}]{.post-author } - [{{ $doc.date }}]{.post-date}
 
 [{{ $doc.description }}]{.post-desc}
 
@@ -31,9 +31,13 @@ End-to-end, this process can span over a week!
 
 In the end, for the reviewer, there are clearly only a few key points in the submission that receive more scrutiny and provide the key insights.  Data access code is typically one of the key areas of focus for a backend system as would be API input validation and exception handling.  The rest of the scaffolding to implement a functioning project?  It's largely chaff like the exposition in the recipe and the peanuts in the trail mix; filler added to bulk the mix (well, unless you like the peanuts!).
 
-Would it not be much more efficient to simply focus on the key points that matter and skip the rest?
+> Consider just reviewing some AI generated code in the first place
 
-::quasar-image{src="/images/candidate-fail.png" max-height="500"}
+With the quality and capability of AI code generation improving rapidly, what value is there remaining in the take home project if the immediate next session is to review the code with the candidate anyways?
+
+Would it not be much more efficient to simply focus on the key points that matter and skip the rest?  Or even consider just reviewing some AI generated code in the first place?
+
+::quasar-image{src="/images/candidate-fail.png" max-height="500px"}
 Overly drawn out and complex processes can be a self-inflicted fail.
 ::
 

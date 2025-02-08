@@ -8,7 +8,6 @@
         <QItem
           v-for="post in posts"
           class="rounded-borders q-pa-md"
-          :key="post.id"
           @click="navigateTo(post.path)"
           clickable
         >
@@ -37,6 +36,10 @@
 
 <script setup lang="ts">
 import { navigateTo } from "#app";
+
+useHeadSafe({
+  title: "CodeRev.app | Blog Posts",
+});
 
 const $q = useQuasar();
 

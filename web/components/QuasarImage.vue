@@ -1,10 +1,6 @@
 <template>
   <figure class="q-py-md">
-    <QImg
-      :src
-      :style="{ maxHeight: maxHeight ? maxHeight + 'px' : undefined }"
-      fit="scale-down"
-    />
+    <QImg :src :style="{ maxHeight: maxHeight }" fit="scale-down" />
     <figcaption class="text-caption text-center text-italic text-grey-6">
       <slot />
     </figcaption>
@@ -14,7 +10,7 @@
 <script setup lang="ts">
 defineProps<{
   src: string;
-  maxHeight?: number;
+  maxHeight?: string;
 }>();
 </script>
 
