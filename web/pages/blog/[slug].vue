@@ -20,11 +20,11 @@ useSeoMeta({
   ogTitle: post.value?.title,
   ogDescription: post.value?.description,
   ogUrl: `${baseUrl}/blog/${slug}`,
-  ogImage: `${baseUrl}/coderev-og.png`,
+  ogImage: `${baseUrl}/${post.value?.ogImage?.replace("/", "") ?? "coderev-og.png"}`,
   twitterTitle: post.value?.title,
   twitterDescription: post.value?.description,
   twitterCard: "summary_large_image",
-  twitterImage: `${baseUrl}/coderev-og.png`,
+  twitterImage: `${baseUrl}/${post.value?.ogImage?.replace("/", "") ?? "coderev-og.png"}`,
 });
 </script>
 

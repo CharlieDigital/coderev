@@ -4,9 +4,10 @@
       v-if="$route.path.endsWith('/blog')"
       class="q-pb-xl q-pt-lg offset-xl-3 offset-md-2 offset-sm-1 col-xl-6 col-md-8 col-sm-10 col-xs-12"
     >
-      <QList separator>
+      <QList>
         <QItem
           v-for="post in posts"
+          class="rounded-borders q-pa-md"
           :key="post.id"
           @click="navigateTo(post.path)"
           clickable
@@ -51,6 +52,7 @@ const { data: posts } = await useAsyncData("blog", () => queryCollection("blog")
   text-decoration: none;
 }
 
+.post-title a,
 .post-title a:visited {
   color: var(--q-accent);
 }

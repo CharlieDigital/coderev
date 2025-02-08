@@ -12,6 +12,7 @@ export default defineContentConfig({
       schema: z.object({
         author: z.string(),
         date: z.string(),
+        ogImage: z.string().optional()
       })
     }))
   }

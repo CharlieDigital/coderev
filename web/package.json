@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "@nuxtjs/google-fonts": "^3.2.0",
+    "@shikijs/langs": "^2.3.2",
     "@types/markdown-it-highlightjs": "^3.3.4",
     "@types/nanoid-dictionary": "^4.2.0",
     "@types/node": "^18.16.19",

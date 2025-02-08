@@ -112,12 +112,7 @@
         <QBtn
           v-bind="btnProps"
           :icon="tabExternalLink"
-          @click="
-            navigateTo(
-              'https://chrlschn.dev/blog/2023/07/interviews-age-of-ai-ditch-leetcode-try-code-reviews-instead/',
-              { external: true, open: { target: '_blank' } }
-            )
-          "
+          @click="navigateTo('/blog')"
           label="Read more..."
           class="q-mt-md"
           size="xl"

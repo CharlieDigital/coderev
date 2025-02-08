@@ -29,7 +29,7 @@
     ],
     "headers": [
       {
-        "source": "**/*.@(woff2|webp|jpg)",
+        "source": "**/*.@(woff2|webp|jpg|png)",
         "headers": [
           {
             "key": "Cache-Control",
