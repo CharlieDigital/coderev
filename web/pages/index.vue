@@ -13,7 +13,7 @@
           v-bind="btnProps"
           to="/login"
           label="Get started (it's free!)"
-          class="q-mt-md"
+          class="q-mt-xl"
           size="xl"
           color="accent"
         />
@@ -27,7 +27,7 @@
             })
           "
           label="View repo"
-          class="q-mt-md q-ml-md"
+          class="q-mt-xl q-ml-md"
           size="xl"
           :color="dark ? 'grey-6' : 'accent'"
           outline

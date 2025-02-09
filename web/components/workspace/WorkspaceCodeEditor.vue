@@ -3,37 +3,29 @@
     <QHeader>
       <QToolbar :class="[dark ? 'bg-dark text-white' : 'bg-white text-black']">
         <QToolbarTitle>
-          {{
-            selectedSourceFile
-              ? selectedSourceFile.name
-              : "Select a file"
-            }}
+          {{ selectedSourceFile ? selectedSourceFile.name : "Select a file" }}
         </QToolbarTitle>
 
         <QBtn
           v-show="selectedSourceFile?.name.endsWith('.md')"
           v-bind="btnProps"
           :icon="tab === 'markdown' ? tabFileCode : tabMarkdown"
-          :label="tab === 'markdown' ? 'View markdown' :  'View doc'"
+          :label="tab === 'markdown' ? 'View markdown' : 'View doc'"
           @click="toggleMarkdownViewer"
-          flat/>
+          flat
+        />
 
         <QBtn
           v-bind="btnProps"
           :icon="lineWrap ? tabTextWrap : tabTextWrapDisabled"
           @click="lineWrap = !lineWrap"
-          flat/>
+          flat
+        />
       </QToolbar>
     </QHeader>
     <QPageContainer>
-      <QPage
-        :class="dark ? '' : 'bg-white'"
-        class="row">
-        <QTabPanels
-          v-model="tab"
-          class="column full-width"
-          keep-alive
-          animated>
+      <QPage :class="dark ? '' : 'bg-white'" class="row">
+        <QTabPanels v-model="tab" class="column full-width" keep-alive animated>
           <!-- Default panel that shows code -->
           <QTabPanel name="code" class="q-pa-none">
             <Codemirror
@@ -51,15 +43,16 @@
           </QTabPanel>
 
           <!-- Panel that shows markdown -->
-          <QTabPanel
-            name="markdown"
-            class="q-ma-none column full-height markdown-html">
+          <QTabPanel name="markdown" class="q-ma-none column full-height markdown-html">
             <div class="row full-height">
               <div
-                :class="!editable
-                  ? 'col offset-md-1 col-md-10 offset-lg-2 col-lg-8 full-height'
-                  : 'col offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6 full-height'"
-                v-html="markdownHtml"></div>
+                :class="
+                  !editable
+                    ? 'col offset-md-1 col-md-10 offset-lg-2 col-lg-8 full-height'
+                    : 'col offset-sm-1 col-sm-10 offset-md-2 col-md-8 offset-lg-3 col-lg-6 full-height'
+                "
+                v-html="markdownHtml"
+              ></div>
             </div>
           </QTabPanel>
         </QTabPanels>
@@ -120,15 +113,15 @@ const emits = defineEmits<{
 
 const $q = useQuasar();
 
-const defaultText = `This is the instruction file.
+const defaultText = `👋🏼 This is the instruction file.
 
-You can edit this file to provide instructions to your candidate.
+✏️ You can edit this file to provide instructions to your candidate.
 
-Drag and drop source files to add them on the left.
+👈 Drag and drop source files to add them on the left.
 
-The following file extensions are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}
+💡 The following file extensions are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}
 
-You can also use code blocks like this:
+😎 You can also use code blocks like this:
 
 \`\`\`js
 // A simple JavaScript block
@@ -491,7 +484,7 @@ const debouncedSourceSelect = useDebounceFn((s: SourceSelection) => {
 
 <style scoped>
 :deep(.cm-content) {
-  font-family: Menlo, Monaco, Lucida Console, monospace
+  font-family: Menlo, Monaco, Lucida Console, monospace;
 }
 
 :deep(code.hljs) {
@@ -505,7 +498,7 @@ const debouncedSourceSelect = useDebounceFn((s: SourceSelection) => {
 }
 
 :deep(.markdown-html) h2 {
-  font-size: 2.0rem;
+  font-size: 2rem;
   line-height: 2.2rem;
   font-weight: 500;
 }

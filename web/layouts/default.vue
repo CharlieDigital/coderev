@@ -32,6 +32,7 @@
 
         <QBtn
           title="GitHub"
+          class="q-ml-sm"
           :icon="tabBrandGithub"
           @click="
             navigateTo('https://github.com/CharlieDigital/coderev', {
@@ -133,10 +134,10 @@
         "
         clickable
       >
-        <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="sm">
+        <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="xs">
           <QIcon :name="tabButterfly" />
         </QAvatar>
-        @chrlschn
+        chrlschn
       </QChip>
 
       <QChip
@@ -150,10 +151,10 @@
         "
         clickable
       >
-        <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="sm">
+        <QAvatar class="bg-accent" text-color="white" font-size="0.9em" size="xs">
           <QIcon :name="tabBrandMastodon" />
         </QAvatar>
-        @chrlschn
+        chrlschn
       </QChip>
     </QFooter>
   </QLayout>

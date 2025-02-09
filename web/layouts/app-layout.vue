@@ -22,14 +22,14 @@
         </QToolbarTitle>
 
         <QBtn
-          size="lg"
+          size="md"
           :icon="dark ? tabMoon : tabSun"
           @click="$q.dark.toggle()"
           dense
           flat
         />
 
-        <QBtn :icon="tabMenu" size="lg" class="q-ml-sm" unelevated>
+        <QBtn :icon="tabMenu" size="md" class="q-ml-sm" unelevated dense>
           <QMenu anchor="bottom right" self="top right" auto-close>
             <QList>
               <QItem>
