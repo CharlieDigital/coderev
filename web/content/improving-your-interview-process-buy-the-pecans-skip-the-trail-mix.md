@@ -1,5 +1,5 @@
 ---
-date: 2025-02-08
+date: 2025-01-27
 author: Charles Chen
 description: Interview processes have become increasingly long and convoluted.  Is it possible to short circuit the extraneous effort and condense the process without sacrificing on selection for quality and talent?
 ogImage: /images/candidate-fail.png

@@ -39,6 +39,26 @@ useSeoMeta({
   line-height: 1.1em;
 }
 
+:deep(h2) {
+  font-size: 24px;
+  margin: 36px 0px 12px 0px;
+  line-height: 1.1em;
+  position: relative;
+}
+
+:deep(h2) a {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+:deep(h2):hover a::before {
+  position: absolute;
+  content: "#";
+  display: block;
+  margin-left: -24px;
+}
+
 :deep(.post-author),
 :deep(.post-date) {
   font-style: italic;
