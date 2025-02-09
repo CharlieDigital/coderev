@@ -9,29 +9,31 @@
           CodeRev is a <em>lightweight</em> tool to help you organize and conduct
           technical interviews using code reviews rather than leetcode.
         </p>
-        <QBtn
-          v-bind="btnProps"
-          to="/login"
-          label="Get started (it's free!)"
-          class="q-mt-xl"
-          size="xl"
-          color="accent"
-        />
-        <QBtn
-          v-bind="btnProps"
-          :icon="tabBrandGithub"
-          @click="
-            navigateTo('https://github.com/CharlieDigital/coderev', {
-              external: true,
-              open: { target: '_blank' },
-            })
-          "
-          label="View repo"
-          class="q-mt-xl q-ml-md"
-          size="xl"
-          :color="dark ? 'grey-6' : 'accent'"
-          outline
-        />
+        <div class="q-mt-xl">
+          <QBtn
+            v-bind="btnProps"
+            to="/login"
+            label="Get started (it's free!)"
+            class="q-mt-sm"
+            size="xl"
+            color="accent"
+          />
+          <QBtn
+            v-bind="btnProps"
+            :icon="tabBrandGithub"
+            @click="
+              navigateTo('https://github.com/CharlieDigital/coderev', {
+                external: true,
+                open: { target: '_blank' },
+              })
+            "
+            label="View repo"
+            class="q-mt-sm q-ml-md"
+            size="xl"
+            :color="dark ? 'grey-6' : 'accent'"
+            outline
+          />
+        </div>
       </div>
     </section>
 

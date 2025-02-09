@@ -30,6 +30,31 @@
       class="q-pb-xl q-pt-lg offset-xl-4 offset-md-3 offset-sm-2 col-xl-4 col-md-6 col-sm-8 col-xs-12"
     >
       <NuxtPage />
+
+      <QSeparator spaced="xl" />
+
+      <h6 class="q-my-lg text-center">Read more</h6>
+
+      <QList>
+        <QItem
+          v-for="post in posts?.filter((p) => p.path !== $route.path).slice(0, 2)"
+          class="rounded-borders q-pa-sm"
+          @click="navigateTo(post.path)"
+          clickable
+        >
+          <QItemSection>
+            <QItemLabel class="text-h6 text-bold post-title">
+              <NuxtLink :to="post.path">{{ post.title }}</NuxtLink>
+            </QItemLabel>
+            <QItemLabel class="q-pb-sm text-italic" caption>
+              {{ post.author }} - {{ post.date }}
+            </QItemLabel>
+            <QItemLabel>
+              {{ post.description }}
+            </QItemLabel>
+          </QItemSection>
+        </QItem>
+      </QList>
     </section>
   </div>
 </template>

@@ -221,13 +221,15 @@ const props = defineProps<{
 
 const newFileInput = ref<QInput>();
 
-const defaultText = `This is the instruction file.
+const defaultText = `👋🏼 This is the instruction file.
 
-You can edit this file to provide instructions to your candidate.
+✏️ You can edit this file to provide instructions to your candidate.
 
-Drag and drop source files to add them on the left.
+👈 Drag and drop source files to add them on the left.
 
-The following file types are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}
+💡 The following file extensions are supported: ${ALLOWED_CODE_FILE_EXTENSIONS.join(", ")}
+
+😎 You can also use code blocks like this:
 
 \`\`\`js
 // A simple JavaScript block

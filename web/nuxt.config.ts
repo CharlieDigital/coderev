@@ -87,8 +87,8 @@ export default defineNuxtConfig({
   routeRules: {
     // https://nuxt.com/docs/guide/concepts/rendering#hybrid-rendering
     "/": { prerender: true },
-    "/blog": { ssr: false },
-    "/blog/**": { ssr: false },
+    "/blog": { prerender: true },
+    "/blog/**": { prerender: true },
     "/terms": { prerender: true },
     "/privacy": { prerender: true },
     "/login": { ssr: false },
