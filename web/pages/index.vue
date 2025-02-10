@@ -306,9 +306,18 @@ import {
 import { btnProps } from "../utils/commonProps";
 
 const description =
-  "CodeRev is a lightweight tool to help you organize and conduct technical interviews using code reviews rather than leetcode.";
+  "CodeRev is a lightweight, free and open source tool to help you organize and conduct technical interviews using code reviews rather than leetcode.";
 
-const title = "CodeRev.app - Code Review as Interview";
+const title = "CodeRev.app - Code Review as Interview - Free and Open Source";
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://coderev.app",
+    },
+  ],
+});
 
 useHeadSafe({
   title: title,

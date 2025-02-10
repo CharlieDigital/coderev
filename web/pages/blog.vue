@@ -55,6 +55,14 @@
           </QItemSection>
         </QItem>
       </QList>
+
+      <QSeparator spaced="xl" />
+
+      <p class="q-mt-lg text-grey-7" style="font-size: 16px">
+        <strong>CodeRev.app</strong> is a lightweight, free and open source tool to help
+        you organize and conduct technical interviews using code reviews rather than
+        leetcode.
+      </p>
     </section>
   </div>
 </template>
@@ -64,6 +72,15 @@ import { navigateTo } from "#app";
 
 useHeadSafe({
   title: "CodeRev.app | Blog Posts",
+});
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: "https://coderev.app/blog",
+    },
+  ],
 });
 
 const $q = useQuasar();

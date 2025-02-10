@@ -181,7 +181,7 @@ const dark = computed(() => $q.dark.isActive);
 
 const isPost = computed(() => $route.path.startsWith("/blog/"));
 
-useHeadSafe({
+useHead({
   link: [
     {
       rel: "preconnect",

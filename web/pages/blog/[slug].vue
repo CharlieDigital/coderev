@@ -18,6 +18,15 @@ const { data: post } = await useAsyncData((slug.value as string) ?? "post", () =
     .first()
 );
 
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: `https://coderev.app/blog/${slug.value}`,
+    },
+  ],
+});
+
 useSeoMeta({
   title: post.value?.title,
   description: post.value?.description,
