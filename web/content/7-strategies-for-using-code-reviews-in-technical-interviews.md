@@ -12,7 +12,7 @@ description: Ready to incorporate code reviews into your candidate selection pro
 
 When using code reviews as an interview tool, think of it like creating a sandbox or playground for the interviewer and candidate to explore.
 
-Like burying treasures buried in the sand, the objective is to create multiple points of interest which can allow a candidate to express both their breadth and depth as you explore together.
+Like burying treasures in the sand, the objective is to create multiple points of interest which can allow a candidate to express both their breadth and depth as you explore together.  Unlike leetcode based interviews which can feel more binary in outcome, a well-designed code review can allow for better stratification of candidates by providing a greater range of responses.
 
 Try to keep it interesting by mixing and matching these 7 different strategies in your code review!
 

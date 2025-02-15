@@ -6,7 +6,7 @@
     >
       <QList>
         <QItem
-          v-for="post in posts"
+          v-for="post in sortedPosts"
           class="rounded-borders q-pa-md"
           @click="navigateTo(post.path)"
           clickable
@@ -88,6 +88,14 @@ const $q = useQuasar();
 const $route = useRoute();
 
 console.log($route.path);
+
+const sortedPosts = computed(() => {
+  return posts.value?.sort((a, b) => {
+    if (a.date > b.date) return -1;
+    if (a.date < b.date) return 1;
+    return 0;
+  });
+});
 
 const { data: posts } = await useAsyncData("blog", () => queryCollection("blog").all());
 </script>
