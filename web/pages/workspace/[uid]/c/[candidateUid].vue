@@ -5,17 +5,17 @@
         v-if="candidate.uid !== defaultCandidate.uid"
         :source-refs="sources"
       />
+
+      <WorkspaceRatingDialog
+        :saving="savingRating"
+        :existing-rating="existingRating"
+        @save-rating="handleSaveRating"
+      />
     </template>
     <template #after>
       <WorkspaceComments />
     </template>
   </QSplitter>
-
-  <WorkspaceRatingDialog
-    :saving="savingRating"
-    :existing-rating="existingRating"
-    @save-rating="handleSaveRating"
-  />
 </template>
 
 <script setup lang="ts">

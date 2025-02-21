@@ -6,9 +6,15 @@
 </template>
 
 <script setup lang="ts">
+const $q = useQuasar();
+
 const $route = useRoute();
 
 const slug = computed(() => $route.params.slug);
+
+// const codeBg = computed(() => ($q.dark.isActive ? "#282a36" : "#f3f3f3"));
+
+const codeBg = computed(() => "#282a36");
 
 console.log(`Current slug: ${slug.value}`);
 
@@ -126,5 +132,27 @@ useSeoMeta({
   -webkit-initial-letter: 2;
   initial-letter: 2;
   padding-right: 8px;
+}
+
+:deep(.shiki) {
+  background-color: v-bind(codeBg);
+  border-radius: 8px;
+  padding: 12px 0px;
+  border: 1px solid #454545;
+}
+
+:deep(code) {
+  counter-reset: step;
+  counter-increment: step 0;
+}
+
+:deep(code) .line::before {
+  content: counter(step);
+  counter-increment: step;
+  width: 1rem;
+  margin-right: 1.5rem;
+  display: inline-block;
+  text-align: right;
+  color: rgba(169, 180, 184, 0.7);
 }
 </style>

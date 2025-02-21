@@ -1,6 +1,6 @@
 import { Platform } from "quasar"
 
-const modifier = Platform.is.mac ? "Meta" : "Control";
+export const modifier = Platform.is.mac ? "Meta" : "Control";
 
 /**
  * Composable for the command palette

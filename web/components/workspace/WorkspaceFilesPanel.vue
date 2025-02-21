@@ -251,7 +251,13 @@ const { dark } = storeToRefs(useAppStore());
 
 const workspaceStore = useWorkspaceStore();
 
-const { workspace, candidate, selectedComment, selection } = storeToRefs(workspaceStore);
+const {
+  workspace,
+  candidate,
+  selectedSourceFile,
+  selectedComment,
+  selection,
+} = storeToRefs(workspaceStore);
 
 const saving = ref(false);
 
@@ -259,8 +265,6 @@ const saving = ref(false);
 const newFileExt = ref("");
 
 const newFileName = ref("");
-
-const selectedSourceFile = ref<SourceFile>();
 
 // Tracks the unsaved file contents.
 const unsavedSourceFiles = ref<SourceFile[]>([]);

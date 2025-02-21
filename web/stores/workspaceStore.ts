@@ -20,6 +20,8 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
 
   const workspace = ref<Workspace>({...defaultWorkspace});
 
+  const selectedSourceFile = ref<SourceFile>();
+
   let skipNextUpdate = false
 
   /**
@@ -231,6 +233,7 @@ export const useWorkspaceStore = defineStore("useWorkspaceStore", () => {
     removeSource,
     deleteWorkspace,
     updateFileName,
+    selectedSourceFile,
     reset,
     ...useCandidates(workspace)
   };

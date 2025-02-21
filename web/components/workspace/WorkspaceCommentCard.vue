@@ -2,20 +2,22 @@
   <div style="padding-left: 2px; padding-right: 2px">
     <QCard
       class="rounded-borders cursor-pointer"
-      :class="
-        selectedComment?.uid === comment.rootComment.uid
-          ? dark
-            ? 'bg-purple-10'
-            : 'bg-purple-10 text-white'
-          : undefined
-      "
-      :bordered="dark"
+      :style="{
+        border: `1px solid ${borderColor}`,
+      }"
+      :bordered="dark || !!selectedComment"
       @click="showComment(comment.rootComment)"
     >
       <QCardSection
-        class="q-pt-none"
+        class="q-pt-none relative"
         :class="[commentStates[comment.rootComment.uid] ? 'q-pb-none' : undefined]"
       >
+        <div
+          v-show="isSelectedComment"
+          class="absolute"
+          style="top: 8px; left: 6px; width: 5px; height: 16px; border-radius: 4px"
+          :style="{ background: borderColor }"
+        ></div>
         <QItem class="q-pa-none">
           <QItemSection class="text-caption">
             <QItemLabel lines="1">
@@ -42,7 +44,8 @@
           <QItemSection
             v-if="profile.uid === comment.rootComment.author.uid"
             style="padding-left: 4px !important"
-            side>
+            side
+          >
             <QBtn size="sm" :icon="tabDots" @click.stop rounded flat dense>
               <QMenu anchor="top right" self="top right" auto-close>
                 <QList>
@@ -70,13 +73,11 @@
               </QMenu>
             </QBtn>
           </QItemSection>
-          <QItemSection
-            style="padding-left: 4px !important"
-            side>
+          <QItemSection style="padding-left: 4px !important" side>
             <QBtn
               size="sm"
               :icon="
-              commentStates[comment.rootComment.uid] ? tabChevronDown : tabChevronUp
+                commentStates[comment.rootComment.uid] ? tabChevronDown : tabChevronUp
               "
               @click.stop="handleToggleCollapse"
               rounded
@@ -98,13 +99,7 @@
                 outlined
               />
               <div class="text-right q-my-xs">
-                <QBtn
-                  :icon="tabX"
-                  @click.stop="editCommentUid = ''"
-                  rounded
-                  dense
-                  flat
-                />
+                <QBtn :icon="tabX" @click.stop="editCommentUid = ''" rounded dense flat />
                 <QBtn
                   :icon="tabDeviceFloppy"
                   :disable="
@@ -123,9 +118,11 @@
               <VueMarkdown :source="comment.rootComment.text"></VueMarkdown>
             </QItemLabel>
             <QItemLabel class="text-caption">
-                <span class="text-bold">{{ comment.rootComment.author.name }}</span>
-                &mdash;
-                <span>{{ $dayjs(comment.rootComment.author.addedUtc).utc().fromNow() }}</span>
+              <span class="text-bold">{{ comment.rootComment.author.name }}</span>
+              &mdash;
+              <span>{{
+                $dayjs(comment.rootComment.author.addedUtc).utc().fromNow()
+              }}</span>
             </QItemLabel>
           </div>
         </QSlideTransition>
@@ -133,7 +130,7 @@
 
       <!-- User is adding a reply -->
       <template v-if="startingReply">
-        <QSeparator/>
+        <QSeparator />
         <QItem dense>
           <QItemSection>
             <QItemLabel class="text-caption">Add reply</QItemLabel>
@@ -151,13 +148,7 @@
         </QItem>
         <div class="q-mr-md">
           <div class="text-right q-my-xs">
-            <QBtn
-              :icon="tabX"
-              @click.stop="startingReply = false"
-              rounded
-              dense
-              flat
-            />
+            <QBtn :icon="tabX" @click.stop="startingReply = false" rounded dense flat />
             <QBtn
               :icon="tabDeviceFloppy"
               :disable="replyText.trim().length === 0"
@@ -174,34 +165,34 @@
       <template v-if="collapsed && comment.replyComments.length > 0">
         <QItem dense>
           <QItemSection side>
-            <QIcon :name="tabCornerDownRight"/>
+            <QIcon :name="tabCornerDownRight" />
           </QItemSection>
           <QItemSection>
-            <QItemLabel  class="comment-body">
-              {{ comment.replyComments.length }} {{  comment.replyComments.length === 1 ? 'reply' : 'replies' }}
+            <QItemLabel class="comment-body">
+              {{ comment.replyComments.length }}
+              {{ comment.replyComments.length === 1 ? "reply" : "replies" }}
             </QItemLabel>
           </QItemSection>
         </QItem>
       </template>
       <template v-else v-for="reply in comment.replyComments">
-        <QSeparator/>
+        <QSeparator />
         <QItem>
           <QItemSection side>
-            <QIcon :name="tabCornerDownRight"/>
+            <QIcon :name="tabCornerDownRight" />
           </QItemSection>
           <QItemSection>
-            <QItemLabel  class="comment-body">
+            <QItemLabel class="comment-body">
               <VueMarkdown :source="reply.text"></VueMarkdown>
             </QItemLabel>
             <QItemLabel class="text-caption">
-                <span class="text-bold">{{ reply.author.name }}</span>
-                &mdash;
-                <span>{{ $dayjs(reply.author.addedUtc).utc().fromNow() }}</span>
+              <span class="text-bold">{{ reply.author.name }}</span>
+              &mdash;
+              <span>{{ $dayjs(reply.author.addedUtc).utc().fromNow() }}</span>
             </QItemLabel>
           </QItemSection>
         </QItem>
       </template>
-
     </QCard>
   </div>
 </template>
@@ -217,46 +208,64 @@ import {
   tabX,
 } from "quasar-extras-svg-icons/tabler-icons";
 import VueMarkdown from "vue-markdown-render";
-import { deleteField } from 'firebase/firestore';
-import type { ReviewComment } from '../../../shared/domainModels';
+import { deleteField } from "firebase/firestore";
+import type { ReviewComment } from "../../../shared/domainModels";
 import type { CommentChain } from "../../../shared/viewModels";
-import { tabArrowBack, tabArrowDownRight, tabArrowForward, tabCornerDownRight } from "quasar-extras-svg-icons/tabler-icons-v2";
+import { tabCornerDownRight } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const props = defineProps<{
-  comment: CommentChain,
-  commentStates: Record<string, boolean>
-}>()
+  comment: CommentChain;
+  commentStates: Record<string, boolean>;
+}>();
 
 const emits = defineEmits<{
-  collapse: [],
-  expand: []
-}>()
+  collapse: [];
+  expand: [];
+}>();
 
 const collapsed = computed(() => {
-  return props.commentStates[props.comment.rootComment.uid]
-})
+  return props.commentStates[props.comment.rootComment.uid];
+});
 
-const appStore = useAppStore()
+const appStore = useAppStore();
 
 const { dark, profile } = storeToRefs(appStore);
 
 const workspaceStore = useWorkspaceStore();
 
-const { candidate, selection, selectedComment } = storeToRefs(workspaceStore);
+const { candidate, selection, selectedComment, selectedSourceFile } = storeToRefs(
+  workspaceStore
+);
 
-const editCommentText = ref("")
+const editCommentText = ref("");
 
-const editCommentUid = ref("")
+const editCommentUid = ref("");
 
-const startingReply = ref(false)
+const startingReply = ref(false);
 
-const replyText = ref('')
+const replyText = ref("");
+
+const isSelectedComment = computed(
+  () => selectedComment.value?.uid === props.comment.rootComment.uid
+);
+
+const fromSelectedSourceFile = computed(
+  () => selectedSourceFile.value?.ref?.uid === props.comment.rootComment.contextUid
+);
+
+const borderColor = computed(() => {
+  if (fromSelectedSourceFile.value) {
+    return "#7e57c2";
+  }
+
+  return dark.value ? "#494949" : "#ffffff";
+});
 
 /**
  * Renders a source range.
  * @param range The array of line numbers
  */
- function renderSourceRange(range?: number[]) {
+function renderSourceRange(range?: number[]) {
   if (!range || range.length === 0) {
     return "";
   }
@@ -281,9 +290,9 @@ function resolveSourceName(uid: string) {
  */
 function handleToggleCollapse() {
   if (props.commentStates[props.comment.rootComment.uid]) {
-    emits("expand")
+    emits("expand");
   } else {
-    emits("collapse")
+    emits("collapse");
   }
 }
 
@@ -291,10 +300,10 @@ function handleToggleCollapse() {
  * Shows the file and line selection represented by the comment in the source files.
  * @param comment The comment to show in the source files.
  */
- function showComment(comment: ReviewComment) {
+function showComment(comment: ReviewComment) {
   selectedComment.value = comment;
 
-  emits("expand")
+  emits("expand");
 
   if (!comment.sourceRange || comment.sourceRange.length === 0) {
     return;
@@ -307,9 +316,7 @@ function handleToggleCollapse() {
     to: 0,
     fromLine: comment.sourceRange[0],
     toLine:
-      comment.sourceRange.length === 2
-        ? comment.sourceRange[1]
-        : comment.sourceRange[0],
+      comment.sourceRange.length === 2 ? comment.sourceRange[1] : comment.sourceRange[0],
   };
 }
 
@@ -317,27 +324,25 @@ function handleToggleCollapse() {
  * Edits the selected comment.
  * @param comment Prepares the comment for editing.
  */
- async function editComment(comment: ReviewComment) {
-  editCommentUid.value = comment.uid
-  editCommentText.value = comment.text
+async function editComment(comment: ReviewComment) {
+  editCommentUid.value = comment.uid;
+  editCommentText.value = comment.text;
 }
 
 /**
  * Saves the comment edits.
  */
 async function saveCommentEdits() {
-  if (editCommentText.value.trim().length === 0
-    || editCommentUid.value.length === 0) {
-      return
-    }
+  if (editCommentText.value.trim().length === 0 || editCommentUid.value.length === 0) {
+    return;
+  }
 
-  await candidateReviewRepository.updateFields(
-    candidate.value.uid, {
-      [`comments.${editCommentUid.value}.text`]: editCommentText.value
-    })
+  await candidateReviewRepository.updateFields(candidate.value.uid, {
+    [`comments.${editCommentUid.value}.text`]: editCommentText.value,
+  });
 
-  editCommentUid.value = ""
-  editCommentText.value = ""
+  editCommentUid.value = "";
+  editCommentText.value = "";
 }
 
 /**
@@ -346,14 +351,12 @@ async function saveCommentEdits() {
  */
 async function deleteComment(comment: ReviewComment) {
   if (!candidate.value || candidate.value.uid === defaultCandidate.uid) {
-    return
+    return;
   }
 
-  await candidateReviewRepository.updateFields(
-    candidate.value.uid, {
-      [`comments.${comment.uid}`]: deleteField()
-    }
-  )
+  await candidateReviewRepository.updateFields(candidate.value.uid, {
+    [`comments.${comment.uid}`]: deleteField(),
+  });
 }
 
 /**
@@ -363,19 +366,17 @@ async function addCommentReply() {
   const reply: ReviewComment = {
     uid: nanoid(6),
     text: replyText.value,
-    contextType: 'comment',
+    contextType: "comment",
     contextUid: props.comment.rootComment.uid,
-    author: appStore.getCurrentUserRef()
-  }
+    author: appStore.getCurrentUserRef(),
+  };
 
-  await candidateReviewRepository.updateFields(
-    candidate.value.uid, {
-      [`comments.${reply.uid}`]: reply
-    }
-  )
+  await candidateReviewRepository.updateFields(candidate.value.uid, {
+    [`comments.${reply.uid}`]: reply,
+  });
 
-  replyText.value = ''
-  startingReply.value = false
+  replyText.value = "";
+  startingReply.value = false;
 }
 </script>
 
