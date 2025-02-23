@@ -15,12 +15,13 @@
             to="/login"
             label="Get started (it's free!)"
             class="q-mt-sm"
+            :class="{ 'full-width': $q.screen.lt.sm }"
             size="xl"
             color="accent"
           />
           <QBtn
             v-bind="btnProps"
-            :icon="tabBrandGithub"
+            :icon-right="tabBrandGithub"
             @click="
               navigateTo('https://github.com/CharlieDigital/coderev', {
                 external: true,
@@ -29,9 +30,22 @@
             "
             label="View repo"
             class="q-mt-sm q-ml-md"
+            :class="{ 'full-width': $q.screen.lt.sm }"
             size="xl"
             :color="dark ? 'grey-6' : 'accent'"
             outline
+          />
+          <br />
+          <QBtn
+            v-bind="btnProps"
+            href="https://coderev.app/review/wN0zcH1PNnXeVJWW"
+            label="See sample candidate workspace"
+            class="q-mt-sm"
+            :icon-right="tabExternalLink"
+            :class="{ 'full-width': $q.screen.lt.sm }"
+            size="xl"
+            color="accent"
+            flat
           />
         </div>
       </div>

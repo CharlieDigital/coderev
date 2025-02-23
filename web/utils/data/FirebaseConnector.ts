@@ -157,11 +157,18 @@ class FirebaseConnector {
       }
 
       const params = new URLSearchParams(window.location.search);
+
+      // Check if there is a redirect and if the user is NOT on the /login page
+      // Then we keep the user on that page without redirecting.
+      if (!params.has("redirect") && !window.location.href.includes("/login")) {
+        return;
+      }
+
       const redirect = params.get("redirect") ?? "/home";
 
-      console.log(` 🔐 Redirect: ${redirect}`);
-
       const target = `${baseUrl}${redirect}`;
+
+      console.log(` 🔐 Redirect: ${redirect}, target: ${target}, location: ${window.location.href}`);
 
       // Only redirect if we're not already on the page and it's not the landing page
       if (target !== window.location.href) {

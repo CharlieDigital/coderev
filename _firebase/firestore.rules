@@ -23,6 +23,9 @@ service cloud.firestore {
         && (request.auth.token.email == resource.data.email
           || request.auth.uid in get(/databases/$(database)/documents/workspaces/$(resource.data.workspaceUid)).data.collaborators)
 
+      // Allow all access to the demo workspace for read.
+      allow read: if resource.data.workspaceUid == 'DWJWmHIdofurrJtu'
+
       // Only allow delete if the user is referenced on the workspace document.
       allow delete: if request.auth != null
         && request.auth.uid in get(/databases/$(database)/documents/workspaces/$(resource.data.workspaceUid)).data.collaborators

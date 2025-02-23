@@ -739,7 +739,7 @@ async function handleChangeName(name: string) {
     workspace.value.sources[file.hash].title = newNameWithExt;
   } else {
     // Update a new file that hasn't been saved yet.
-    selectedSourceFile.value.name = name;
+    selectedSourceFile.value.name = `${name}${file.ext}`;
   }
 }
 

@@ -4,7 +4,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
 
   const { user } = useAppStore()
 
-  if (!user) {
+  if (!user && to.path !== `/review/${demoCandidateId}`) {
     console.log(" 🔑 No user present; redirecting to login.")
 
     return { name: 'login', query: {redirect: to.fullPath}}

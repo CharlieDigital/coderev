@@ -15,8 +15,14 @@
         v-model="newComment"
         type="textarea"
         color="purple-4"
-        :disable="!selection"
-        :label="!selection ? 'Select a file and source lines to add comments' : undefined"
+        :disable="!selection || readonly"
+        :label="
+          readonly
+            ? 'This is a readonly demo workspace'
+            : !selection
+            ? 'Select a file and source lines to add comments'
+            : undefined
+        "
         :bg-color="dark ? 'grey-10' : 'purple-1'"
         @keydown.enter="addComment"
         outlined
@@ -44,7 +50,9 @@
         <QBtn
           color="accent"
           :icon="tabMessagePlus"
-          :disable="newComment.trim().length === 0"
+          :disable="
+            newComment.trim().length === 0 || candidate.workspaceUid === demoWorkspaceId
+          "
           @click="addComment()"
         />
       </QItemSection>
@@ -83,7 +91,8 @@
         <WorkspaceCommentCard
           v-for="comment in filteredComments"
           :comment-states="commentCollapsed"
-          :comment="comment"
+          :comment
+          :readonly
           @expand="commentCollapsed[comment.rootComment.uid] = false"
           @collapse="commentCollapsed[comment.rootComment.uid] = true"
         />
@@ -122,8 +131,11 @@ import {
 import { QBtn, scroll } from "quasar";
 import { btnProps } from "../../utils/commonProps";
 import { modifier } from "~/composables/useCommandPalette";
+import { demoWorkspaceId } from "../../utils/environment";
 
 const $q = useQuasar();
+
+const $route = useRoute();
 
 const { getScrollTarget, setVerticalScrollPosition } = scroll;
 
@@ -144,6 +156,15 @@ const onlySelectedFile = ref(false);
 const commentCollapsed = reactive<Record<string, boolean>>({});
 
 const showBackToTop = ref(false);
+
+/**
+ * Readonly for the demo workspace except in edit mode.
+ */
+const readonly = computed(
+  () =>
+    candidate.value.workspaceUid === demoWorkspaceId &&
+    $route.path !== `/workspace/${demoWorkspaceId}/c/${demoCandidateId}`
+);
 
 const comments = computed<CommentChain[]>(() => {
   const replies: Record<string, ReviewComment[]> = {};

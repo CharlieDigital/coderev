@@ -35,6 +35,7 @@
             <QBtn
               size="sm"
               :icon="tabCornerDownRight"
+              :disable="readonly"
               @click.stop="startingReply = true"
               rounded
               flat
@@ -46,7 +47,15 @@
             style="padding-left: 4px !important"
             side
           >
-            <QBtn size="sm" :icon="tabDots" @click.stop rounded flat dense>
+            <QBtn
+              size="sm"
+              :icon="tabDots"
+              @click.stop
+              :disable="readonly"
+              rounded
+              flat
+              dense
+            >
               <QMenu anchor="top right" self="top right" auto-close>
                 <QList>
                   <QItem v-close-popup clickable>
@@ -215,6 +224,7 @@ import { tabCornerDownRight } from "quasar-extras-svg-icons/tabler-icons-v2";
 
 const props = defineProps<{
   comment: CommentChain;
+  readonly: boolean;
   commentStates: Record<string, boolean>;
 }>();
 
