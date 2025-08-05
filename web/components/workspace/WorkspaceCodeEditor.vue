@@ -87,6 +87,7 @@ import { go } from '@codemirror/legacy-modes/mode/go';
 import { clike } from '@codemirror/legacy-modes/mode/clike'
 import { julia } from '@codemirror/legacy-modes/mode/julia'
 import { swift } from '@codemirror/legacy-modes/mode/swift'
+import { ruby } from '@codemirror/legacy-modes/mode/ruby'
 import { dracula, tomorrow } from "thememirror";
 import { type SourceFile, type SourceSelection } from "../../../shared/viewModels";
 import { tabFileCode, tabMarkdown, tabTextWrap, tabTextWrapDisabled } from "quasar-extras-svg-icons/tabler-icons";
@@ -235,6 +236,9 @@ const language = computed(() => {
               return StreamLanguage.define(swift)
             case "go":
               return StreamLanguage.define(go)
+            case "ruby":
+            case "rb":
+              return StreamLanguage.define(ruby)
             default:
               return null
           }
@@ -271,6 +275,8 @@ const language = computed(() => {
       return StreamLanguage.define(swift)
     case ".go":
       return StreamLanguage.define(go)
+    case ".rb":
+      return StreamLanguage.define(ruby)
   }
 
   return undefined;
